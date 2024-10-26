@@ -19,6 +19,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_25_190144) do
     t.text "description"
     t.string "publisher"
     t.time "publish_date"
+    t.integer "isbn_13"
+    t.string "language_written"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
