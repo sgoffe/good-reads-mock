@@ -1,0 +1,5 @@
+<% @users.each do |user| %>
+    <%= render partial: "userInfo", locals: {person: user} %>
+    <%= link_to "More about this user", user_path(user) %>
+<% end %>
+<%= link_to "Create new user", new_user_path %>
