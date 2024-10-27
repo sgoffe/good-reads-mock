@@ -15,10 +15,11 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(create_update_params)
-      redirect to user_path(@user)
+      redirect_to user_path(@user)
       #add notices and flashes to everything
     else 
       render :edit, status: :unprocessable_content
+    end
   end
 
   def create
@@ -27,6 +28,7 @@ class UsersController < ApplicationController
       redirect_to users_path
     else
       render :new, status: :unprocessable_content
+    end
   end
 
   def new
