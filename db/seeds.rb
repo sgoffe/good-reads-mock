@@ -43,17 +43,27 @@ r1 = Review.create!(user: 'Sophia Goffe',
                 rating: 5,
                 description: 'currently my favorite book')
 
-r1 = Review.create!(user: 'Meghan Subak',
+r2 = Review.create!(user: 'Meghan Subak',
                 book: 'the cartographers',
                 rating: 4,
-                description: 'fantasy maps library')
+                description: 'Maps Fantasy Library')
 
-# r1 = Review.create!(user: 'Sula',
-#                 book: '',
-#                 rating:,
-#                 description:)
+r3 = Review.create!(user: 'Mickey Mouse',
+                book: 'Crime and Punishment',
+                rating: 3,
+                description: 'disturbed')
 
-# u1 = User.create!(first: '',
-#                 last:,
-#                 email:,
-#                 bio:)
+u1 = User.create!(first: 'Sophia',
+                last: 'Goffe',
+                email: 'sgoffe@colslay.edu',
+                bio: 'living loving and laughing')
+
+u2 = User.create!(first: 'Meghan',
+                last: 'Subak',
+                email: 'msubak@colslay.edu',
+                bio: 'body builder and book lover')
+
+u3 = User.create!(first: 'Mickey',
+                last: 'Mouse',
+                email: "mmouse@colslay.edu",
+                bio: 'a sassy little mouse')
