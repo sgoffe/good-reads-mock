@@ -45,9 +45,9 @@ r1 = Review.create!(user: 'Sophia Goffe',
                 likes: 5)
 
 r2 = Review.create!(user: 'Meghan Subak',
-                book: 'the cartographers',
+                book: 'Dune',
                 rating: 4,
-                description: 'Maps Fantasy Library',
+                description: 'Dune is a mesmerizing blend of political intrigue, survival, and epic battles set on the desert planet of Arrakis. Herbert’s world-building and complex characters draw you in, making it impossible to put down.',
                 likes: 10)
 
 r3 = Review.create!(user: 'Mickey Mouse',
