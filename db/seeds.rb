@@ -41,17 +41,20 @@ b3 = Book.create!(title: 'Angela\'s Ashes',
 r1 = Review.create!(user: 'Sophia Goffe',
                 book: 'Sula',
                 rating: 5,
-                description: 'currently my favorite book')
+                description: 'currently my favorite book',
+                likes: 5)
 
 r2 = Review.create!(user: 'Meghan Subak',
                 book: 'the cartographers',
                 rating: 4,
-                description: 'Maps Fantasy Library')
+                description: 'Maps Fantasy Library',
+                likes: 10)
 
 r3 = Review.create!(user: 'Mickey Mouse',
                 book: 'Crime and Punishment',
                 rating: 3,
-                description: 'disturbed')
+                description: 'disturbed', 
+                likes: 34)
 
 u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
