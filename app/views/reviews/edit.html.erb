@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <h1>Edit Review</h1>
+  </div>
+
+  <%= form_with model: @review, method: :put do |f| %>
+    <%= f.hidden_field :user %>
+    <%= f.hidden_field :book %>
+
+    <div class="form-group">
+      <%= f.label :rating %>
+      <%= f.number_field :rating, min: 0, max: 5, step: 1 %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, class: 'form-control' %>
+    </div>
+
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+
+</div>
