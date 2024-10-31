@@ -1,6 +1,7 @@
 class Review < ApplicationRecord
-	validates :user, presence: true
-	validates :book, presence: true
+	belongs_to :user
+  belongs_to :book
+
 	validates :description, presence: true
 	validates :rating, presence: true
 end

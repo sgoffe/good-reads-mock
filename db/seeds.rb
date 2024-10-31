@@ -37,26 +37,7 @@ b3 = Book.create!(title: 'Angela\'s Ashes',
                 publish_date: Date.new(1996, 9, 5),
                 isbn: 9780007205233,
                 language_written: 'English')
-
-r1 = Review.create!(user: 'Sophia Goffe',
-                book: 'Sula',
-                rating: 5,
-                description: 'currently my favorite book',
-                likes: 5)
-
-r2 = Review.create!(user: 'Meghan Subak',
-                book: 'Dune',
-                rating: 4,
-                description: 'Dune is a mesmerizing blend of political intrigue, survival, and epic battles set on the desert planet of Arrakis. Herbert’s world-building and complex characters draw you in, making it impossible to put down.',
-                likes: 10)
-
-r3 = Review.create!(user: 'Mickey Mouse',
-                book: 'Crime and Punishment',
-                rating: 3,
-                description: 'disturbed', 
-                likes: 34)
-
-u1 = User.create!(first: 'Sophia',
+                u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
                 email: 'sgoffe@colslay.edu',
                 bio: 'living loving and laughing')
@@ -70,3 +51,22 @@ u3 = User.create!(first: 'Mickey',
                 last: 'Mouse',
                 email: "mmouse@colslay.edu",
                 bio: 'a sassy little mouse')
+
+r1 = Review.create!(user_id: 1,
+                book_id: 1,
+                rating: 5,
+                description: 'currently my favorite book',
+                likes: 5)
+
+r2 = Review.create!(user_id: 2,
+                book_id: 1,
+                rating: 4,
+                description: 'Sula is a beautifully haunting story about friendship, betrayal, and the choices that shape us. Toni Morrisons writing is raw and poetic, peeling back the layers of love and identity in ways that are both heart-wrenching and unforgettable.',
+                likes: 10)
+
+r3 = Review.create!(user_id: 3,
+                book_id: 2,
+                rating: 3,
+                description: 'disturbed', 
+                likes: 34)
+

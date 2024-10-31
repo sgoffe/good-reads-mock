@@ -12,18 +12,6 @@ RSpec.describe Review, type: :model do
   end
 
   describe "validations" do
-    it "should require a user" do
-      r = Review.new(book: "Dune", description: "test", rating: 4)
-
-      expect(r.save).to be false
-    end
-
-    it "should require a book" do
-      r = Review.new(user: "John Doe", description: "test", rating: 4)
-
-      expect(r.save).to be false
-    end
-
     it "should require a description" do
       r = Review.new(user: "John Doe", book: "Dune", rating: 4)
 
