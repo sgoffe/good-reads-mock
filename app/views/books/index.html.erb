@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head class="container">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="row">
+    <h1>Welcome Fanatic Reader</h1>
+</div>
+
+<div class="row">
+    <%= form_with url: books_path, method: :get do |form| %>
+      <%= form.label :query, "Search for: " %>
+      <%= form.text_field :query %>
+      <%= form.submit "Search" %>
+    <% end %>
+</div>
+
+<div class="row row-cols-4">
+    <% @books.each_with_index do |book| %>
+        <div class="col">
+            <div class="card mb-1 p-2 h-100">
+            <% if !book.images.length.zero? %>
+                <%= image_tag book.images.first.variant(:thumb), width: 60, class: "card-img-top" %>
+             <% end %>
+                <div class="card-body">
+                    <h3 class="card-title" > <%= book.title %> </h3>
+                    <h5> <%= book.author %> </h5>
+                    <p class="card-text"> <%= book.description %> </p>
+                </div> 
+            </div>
+        </div>
+    <% end %>
+</div>
+</body>
+</html>
