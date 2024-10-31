@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
   end
 
   def show
-
+    @review = Review.find(params[:id])
   end
 
   def create
@@ -15,6 +15,7 @@ class ReviewsController < ApplicationController
   def new
 
   end
+  
 
   def destroy
 
