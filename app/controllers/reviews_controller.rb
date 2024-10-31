@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
 
   def index
-
+    @reviews = Review.all.order(:created_at)
   end
 
   def show
