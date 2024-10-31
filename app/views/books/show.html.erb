@@ -1,0 +1,49 @@
+<div class="container mt-4">
+  <!-- First Section: Book Image and Details -->
+  <div class="row">
+    <div class="col-md-4">
+      <img src="/placeholder.png" class="img-fluid" alt="Book cover" style="height: auto;">
+    </div>
+    <div class="col-md-8">
+      <h2 class="card-title"><%= @book.title %></h2>
+      <p class="card-text"><strong>Author:</strong> <%= @book.author %></p>
+      <p class="card-text"><strong>Release Date:</strong> <%= @book.release_date %></p>
+      <p class="card-text"><strong>Publisher:</strong> <%= @book.publisher %></p>
+      
+      <div class="my-2">
+        <strong>Genre:</strong>
+        <span class="badge bg-primary me-1"><%= @book.genre %></span>
+      </div>
+
+      <div class="my-2">
+        <strong>Language:</strong>
+        <span class="badge bg-secondary me-1"><%= @book.language_written %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Section: Description -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <h4>Description</h4>
+      <p><%= @book.description %></p>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 mt-4">
+    <h4>Reviews</h4>
+    <% @reviews.each_with_index do |review| %>
+      <div class="col">
+        <div class="border-bottom pb-3 mb-3 <%= review == @reviews.first ? 'pt-4' : 'pt-2' %>"> <!-- Adjusted spacing -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0"><%= review.user.first %> <%= review.user.last %></h5>
+            <% if review.likes.present? && review.likes > 0 %>
+              <h6 class="card-subtitle text-muted mb-0"><%= review.likes %> likes</h6>
+            <% end %>
+          </div>
+          <p class="card-text mb-0"><%= review.description %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
