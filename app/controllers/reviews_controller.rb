@@ -29,7 +29,7 @@ class ReviewsController < ApplicationController
   def update
     @review = Review.find(params[:id])
     if @review.update(create_update_params)
-      redirect_to reviews_path, notice: 'Review updated successfully'
+      redirect_to review_path(@review), notice: 'Review updated successfully'
     else
       flash[:alert] = 'Review could not be edited'
       render :edit, status: :unprocessable_content
@@ -37,7 +37,9 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-
+    @review = Review.find(params[:id])
+    @review.destroy
+    redirect_to reviews_path, notice: 'Review deleted successfully'
   end
 
 private 
