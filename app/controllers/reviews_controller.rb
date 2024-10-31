@@ -9,11 +9,17 @@ class ReviewsController < ApplicationController
   end
 
   def new 
-
+    @review = Review.new
   end
 
   def create
-
+    @review = Review.new(create_update_params)
+    if @review.save
+      redirect_to reviews_path, notice: 'Review created successfully'
+    else
+      flash[:alert] = 'Review could not be created'
+      render :new, status: :unprocessable_content
+    end
   end
   
   def edit
