@@ -6,11 +6,22 @@ class Book < ApplicationRecord
     attachable.variant :medium, resize_to_fill: [ 400, 400 ]
   end
 
+  validates :title, :presence => true
+  validates :author, :presence => true
+  validates :genre, :presence => true
+  validates :pages, :presence => true, numericality: {greater_than_or_equal_to: 0}
+  validates :description, :presence => true
+  validates :publisher, :presence => true
+  #validates :publish_date, :presence => true
+  validates :isbn_13, :presence => true #, format: {with: /\A\d{13}\Z/}
+  validates :language_written, :presence => true
+
   def self.pages_less_than_or_eq_to?(pagecount)
-    self.where("pages <=  ?", pagecount).order(:title)
+    self.where("pages <=  ?", pagecount.to_i).order(:title)
   end
 
   def self.by_search_string(substr)
     self.where("title LIKE ?", "%#{substr}%").or(self.where("author LIKE ?", "%#{substr}%")).or(self.where("description LIKE ?", "%#{substr}%"))
   end
+
 end

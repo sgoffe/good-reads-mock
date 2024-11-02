@@ -11,11 +11,11 @@ RSpec.describe "NewCreate", type: :system do
       fill_in 'Title', with: 'Test Book'
       fill_in 'Author', with: 'Test Description'
       select 'Fiction', from: 'Genre'
-      fill_in 'Pages', with: 'Test Address'
+      fill_in 'Pages', with: 100
       fill_in 'Description', with: '0123456789'
       fill_in 'Publisher', with: 'Test Publisher'
-      # fill_in 'Publish date', with: 'Test Publisher' # FIX
-      fill_in 'Isbn 13', with: '0101'
+      fill_in 'Publish date', with: 'Test Publisher' # FIX
+      fill_in 'Isbn 13', with: 560
       fill_in 'Language written', with: 'Test language'
       # attach_file 'Images', "#{Rails.root}/spec/testimg.jpg"
       click_on 'Create Book'
