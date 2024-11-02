@@ -25,10 +25,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(create_update_params)
     if @user.save
-      redirect_to users_path
+      flash[:message] = "Successfully created user #{@user.first} #{@user.last}"
     else
-      render :new, status: :unprocessable_content
+      flash[:message] = "Unable to create user. Please try again"
     end
+    redirect_to users_path
   end
 
   def new

@@ -1,3 +1,6 @@
+<% if flash[:message] %>
+    <%= flash[:message] %>
+<% end %>
 <% @users.each do |user| %>
     <%= render partial: "userInfo", locals: {person: user} %>
     <%= link_to "More about this user", user_path(user) %>
