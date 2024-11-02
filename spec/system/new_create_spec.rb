@@ -10,9 +10,7 @@ RSpec.describe "NewCreate", type: :system do
       visit new_book_path
       fill_in 'Title', with: 'Test Book'
       fill_in 'Author', with: 'Test Description'
-      
-      # select 'fiction', from: 'Genre'
-      fill_in 'Genre', with: 'fiction'
+      select 'Fiction', from: 'Genre'
       fill_in 'Pages', with: 'Test Address'
       fill_in 'Description', with: '0123456789'
       fill_in 'Publisher', with: 'Test Publisher'
