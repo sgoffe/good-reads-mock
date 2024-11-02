@@ -24,14 +24,14 @@ RSpec.describe "NewCreate", type: :system do
       expect(page).to have_content('Test Book')
     end
     
-    # it 'unsuccessful create' do
-    #   s = Sight.new
-    #   allow(Sight).to receive(:new).and_return(s)
-    #   allow(s).to receive(:save).and_return(nil)
-    #   visit new_sight_path
-    #   click_on 'Create Sight'
-    #   expect(page.current_path).to eq(sights_path) # assume no redirect, just render 'new'
-    #   expect(page.text).to match(/Sight could not be created/)
-    # end
+    it 'unsuccessful create' do
+      b = Book.new
+      allow(Book).to receive(:new).and_return(b)
+      allow(b).to receive(:save).and_return(nil)
+      visit new_book_path
+      click_on 'Create Book'
+      expect(page.current_path).to eq(books_path) # assume no redirect, just render 'new'
+      expect(page.text).to match(/Book could not be created/)
+    end
   end
 end

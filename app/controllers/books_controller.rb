@@ -16,7 +16,7 @@ class BooksController < ApplicationController
       flash[:notice] = "Book #{@book.title} created successfully"
       redirect_to books_path
     else
-      flash[:alert] = "Book couldn't be created" 
+      flash[:alert] = "Book could not be created" 
       render :new, status: :unprocessable_entity
     end
   end
