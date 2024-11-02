@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Book, type: :model do
   describe "model attributes" do
-    it "should respond to requied attribute methods" do
+    it "should respond to required attribute methods" do
       b = Book.new
       expect(b).to respond_to(:title)
       expect(b).to respond_to(:author)
