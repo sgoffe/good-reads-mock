@@ -1,0 +1,54 @@
+<div>
+    <h2>Add Book to Catalog</h2>
+</div>
+
+<div>
+    <%= form_for @book, method: :post do |f| %>
+        <div class="form-group">
+            <%= f.label :title %>
+            <%= f.text_field :title, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :author %>
+            <%= f.text_field :author, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :genre %>
+            <%= f.text_field :genre, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :pages %>
+            <%= f.number_field :pages, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :description %>
+            <%= f.text_area :description, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :publisher %>
+            <%= f.text_field :publisher, class: 'form-control' %>
+        </div>
+        
+        <div class="form-group">
+            <%= f.label :publish_date %>
+            <%= f.date_field :publish_date, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :isbn_13 %>
+            <%= f.number_field :isbn_13, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= f.label :language_written %>
+            <%= f.text_field :language_written, class: 'form-control' %>
+        </div>
+
+        <%= f.submit class: "btn btn-primary" %>
+    <% end %>
+</div>
