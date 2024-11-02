@@ -13,7 +13,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.new(create_params)
     if @book.save
-      flash[:notice] = "Book #{@book.title} successfully created"
+      flash[:notice] = "Book #{@book.title} created successfully"
       redirect_to books_path
     else
       flash[:alert] = "Book couldn't be created" 
