@@ -1,8 +1,8 @@
 <div >
   <% @reviews.each do |review| %>
-    <p><%= review.user %></p>
-    <p><%= review.book %></p>
-    <p><%= review.rating %></p>
+    <p>User: <%= review.user %></p>
+    <p>Book: <%= review.book %></p>
+    <p>Rating: <%= review.rating %> stars</p>
     <p><%= review.description %></p>
 
     <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
