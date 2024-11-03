@@ -17,14 +17,26 @@ RSpec.describe "Show route", type: :system do
       expect(Review.all.count).to eq(0)
     end
 
-    it 'handles failed delete' do
-      r = Review.create!(user: 'user 1', book: 'Dune', description: 'test 1', rating: 3)
-      allow_any_instance_of(Review).to receive(:destroy).and_raise(StandardError)
+    describe 'handles failed delete' do
+      it 'due to db error' do
+        r = Review.create!(user: 'user 1', book: 'Dune', description: 'test 1', rating: 3)
+        allow_any_instance_of(Review).to receive(:destroy).and_raise(StandardError)
+  
+        visit review_path(r)
+        click_on 'Delete'
+        expect(page.current_path).to eq(review_path(r))
+        expect(page).to have_content('Error deleting review')
+      end
 
-      visit review_path(r)
-      click_on 'Delete'
-      expect(page.current_path).to eq(review_path(r))
-      expect(page).to have_content('Error deleting review')
+      it 'due to invalid id' do
+        r = Review.create!(user: 'user 1', book: 'Dune', description: 'test 1', rating: 3)
+        allow_any_instance_of(Review).to receive(:destroy).and_raise(ActiveRecord::RecordNotFound)
+
+        visit review_path(r)
+        click_on 'Delete'
+        expect(page.current_path).to eq(reviews_path)
+        expect(page).to have_content('Review not found')
+      end
     end
   end
 end
