@@ -23,9 +23,9 @@
     <% @books.each_with_index do |book| %>
         <div class="col">
             <div class="card mb-1 p-2 h-100">
-            <% if !book.images.length.zero? %>
-                <%= image_tag book.images.first.variant(:thumb), width: 60, class: "card-img-top" %>
-             <% end %>
+            <!-- if !book.images.length.zero? -->
+            <!-- image_tag book.images.first.variant(:thumb), width: 60, class: "card-img-top" -->
+            <!-- end -->
                 <div class="card-body">
                     <h3 class="card-title" > <%= book.title %> </h3>
                     <h5> <%= book.author %> </h5>
