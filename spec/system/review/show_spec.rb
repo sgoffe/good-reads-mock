@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'simplecov'
+SimpleCov.start 'rails'
 
 RSpec.describe "Show route", type: :system do
   before do
@@ -69,10 +71,5 @@ RSpec.describe "Show route", type: :system do
       expect(page.current_path).to eq(reviews_path)
       expect(Review.exists?(id2)).to be(false)
     end
-  end
-
-  it "displays an error for an invalid review" do
-    visit '/reviews/1000'
-    expect(page.text).to match(/Invalid Review/)
   end
 end
