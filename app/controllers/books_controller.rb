@@ -9,16 +9,29 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
   end
+  
+  def create
+    @book = Book.new(create_params)
+    if @book.save
+      flash[:notice] = "Book #{@book.title} created successfully"
+      redirect_to books_path
+    else
+      flash[:alert] = "Book could not be created" 
+      render :new, status: :unprocessable_entity
+    end
+  end
 
-  # def create
-
-  # end
-
-  # def new
-
-  # end
+  def new
+    @book = Book.new
+  end
 
   # def destroy
 
   # end
+  
+  private
+  
+  def create_params
+    params.require(:book).permit(:title, :author, :genre, :pages, :description, :publisher, :publish_date, :isbn_13, :language_written) # any other fields
+  end
 end

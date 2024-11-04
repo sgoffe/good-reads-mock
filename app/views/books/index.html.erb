@@ -19,6 +19,8 @@
     <% end %>
 </div>
 
+<%= link_to "Add a new book", new_book_path %>
+
 <div class="row row-cols-4">
     <% @books.each_with_index do |book| %>
         <div class="col">
