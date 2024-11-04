@@ -1,6 +1,6 @@
 class Book < ApplicationRecord
   # enum :genre, %i[historical_fiction fiction horror romance comedy thriller young_adult science_fiction mystery nonfiction]
-  enum :genre, %i[fiction non-fiction science history fantasy mystery biography]
+  enum :genre, %i[fiction nonfiction science history fantasy mystery biography]
   has_many_attached :images do |attachable|
     attachable.variant :thumb, resize_to_limit: [80, 80]
     attachable.variant :medium, resize_to_fill: [400, 400]
