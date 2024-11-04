@@ -7,7 +7,7 @@ class UpdateBookModelTryTwo < ActiveRecord::Migration[7.2]
       t.integer "pages"
       t.text "description"
       t.string "publisher"
-      t.time "publish_date"
+      t.date "publish_date"
       t.integer "isbn_13"
       t.string "language_written"
       t.datetime "created_at", null: false
