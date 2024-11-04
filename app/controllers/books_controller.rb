@@ -25,10 +25,13 @@ class BooksController < ApplicationController
     @book = Book.new
   end
 
-  # def destroy
-
-  # end
-  
+  def destroy
+    @book = Book.find(params[:id])
+    # @book.images.each {|img| img.purge}
+    @book.destroy
+    redirect_to books_path, notice: 'Book deleted successfully'
+  end
+    
   private
   
   def create_params
