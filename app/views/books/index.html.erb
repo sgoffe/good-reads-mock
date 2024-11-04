@@ -1,44 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<html>
+<head class="container">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Book List</title>
-    <style>
-        .book-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .book-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            width: 200px;
-            text-align: center;
-        }
-        .book-image {
-            width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
+
 <body>
-    <h1>Book List</h1>
-    
-    <div class="book-container">
-        <% @books.each do |book| %>
-            <div class="book-card">
-                <% if book.images.attached? %>
-                    <%= image_tag book.images.first.variant(resize_to_limit: [150, 150]), class: "book-image", alt: "#{book.title} cover" %>
-                <% else %>
-                    <%= image_tag 'placeholder.jpg', class: "book-image", alt: "Placeholder image" %>
-                <% end %>
-                <h3><%= book.title %></h3>
-                <p><strong>Author:</strong> <%= book.author %></p>
+<div class="row">
+    <h1>Welcome Fanatic Reader</h1>
+</div>
+
+<div class="row">
+    <%= form_with url: books_path, method: :get do |form| %>
+      <%= form.label :query, "Search for: " %>
+      <%= form.text_field :query %>
+      <%= form.submit "Search" %>
+    <% end %>
+</div>
+
+<%= link_to "Add a new book", new_book_path %>
+
+<div class="row row-cols-4">
+    <% @books.each_with_index do |book| %>
+        <div class="col">
+            <div class="card mb-1 p-2 h-100">
+            <!-- if !book.images.length.zero? -->
+            <!-- image_tag book.images.first.variant(:thumb), width: 60, class: "card-img-top" -->
+            <!-- end -->
+                <div class="card-body">
+                    <h3 class="card-title" > <%= book.title %> </h3>
+                    <h5> <%= book.author %> </h5>
+                    <p class="card-text"> <%= book.description %> </p>
+                </div> 
             </div>
-        <% end %>
-    </div>
+        </div>
+    <% end %>
+</div>
+
+<div>
+    <%= link_to "Users *temporary*", users_path, class: "btn btn-sm btn-primary" %>
+    <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>
+</div>
 </body>
 </html>
