@@ -1,0 +1,16 @@
+<div >
+  <% @reviews.each do |review| %>
+    <p>User: <%= review.user %></p>
+    <p>Book: <%= review.book %></p>
+    <p>Rating: <%= review.rating %> stars</p>
+    <p><%= review.description %></p>
+
+    <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
+  <%end%>
+
+   <div class="row">
+    <div class="col-2">
+      <%= link_to "Leave Review", new_review_path, class: "btn btn-info" %>
+    </div>
+  </div>
+</div>

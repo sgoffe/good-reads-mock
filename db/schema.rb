@@ -46,8 +46,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_04_042754) do
     t.integer "pages"
     t.text "description"
     t.string "publisher"
-    t.date "publish_date"
-    t.string "isbn_13"
+    t.time "publish_date"
+    t.integer "isbn_13"
     t.string "language_written"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
