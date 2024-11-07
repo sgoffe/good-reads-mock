@@ -1,5 +1,10 @@
 <div>
     <%= render partial: "userInfo", locals: {person: @user} %>
+    <div>
+        <%= "Reviews:" %>
+        <br>
+        <%= "#{@user.reviews}" %>
+    </div>
     <%= link_to "Edit", edit_user_path(@user) %>
     <%= button_to "Delete", @user, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
     <%= link_to "Back to Index", users_path %>
