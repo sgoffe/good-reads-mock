@@ -1,7 +1,8 @@
 <div >
+  <h2>Reviews</h2>
   <% @reviews.each do |review| %>
-    <p>User: <%= review.user %></p>
-    <p>Book: <%= review.book %></p>
+    <p>User: <%= review.user.first %> <%= review.user.last %></p>
+    <p>Book: <%= review.book.title %></p>
     <p>Rating: <%= review.rating %> stars</p>
     <p><%= review.description %></p>
 

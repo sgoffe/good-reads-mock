@@ -27,9 +27,14 @@
     <%= button_to "Delete book (will need permissions)", @book, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Are you sure?" } } %>
 </div>
 <div class="col">
-    <h5> Reviews </h5>
-    <p> <%= @book.reviews %> <p>
-    <br>
+    <h4> Reviews </h4>
+    <% @book.reviews.each do |review| %>
+        <h6>Rating: <%= review.rating %> stars</h6>
+        <p>Reviewer: <%= review.user.first %> <%= review.user.last %></p>
+        <p><%= review.description %></p>
+    
+        <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
+    <%end%>
 </div>
 </div>
 </div>
