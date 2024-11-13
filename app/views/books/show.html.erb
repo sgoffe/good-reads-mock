@@ -1,25 +1,41 @@
 <div class="container">
+<div class="row">
 
 <h2 class="hero"><%= @book.title %></h3>
 
 <h5> <%= @book.author %> </h5>
 <h6> <%= @book.genre.humanize %> • <%= @book.pages %> pages</h5>
 
-<!-- @book.images.each do |image| -->
-    <!-- image_tag image.variant(:medium) -->
-<!-- end -->
+<div class="col">
+    <!-- @book.images.each do |image| -->
+        <!-- image_tag image.variant(:medium) -->
+    <!-- end -->
 
-<br>
-<h6> Description: </h6>
-<p class="card-text"> <%= @book.description %> </p>
-<br>
-<h6> Publisher: <%= @book.publisher %> </h6>
-<h6> Published: <%= @book.publish_date %> </h6>
-<h6> ISBN 13: <%= @book.isbn_13 %> </h6>
-<h6> Language: <%= @book.language_written %> </h6>
-<br>
-<%= link_to "Back to index", books_path, class: "btn btn-secondary" %>
-<br>
-<br>
-<%= button_to "Delete book (will need permissions)", @book, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Are you sure?" } } %>
+    <br>
+    <h6> Description: </h6>
+    <p class="card-text"> <%= @book.description %> </p>
+    <br>
+    <h6> Publisher: <%= @book.publisher %> </h6>
+    <h6> Published: <%= @book.publish_date %> </h6>
+    <h6> ISBN 13: <%= @book.isbn_13 %> </h6>
+    <h6> Language: <%= @book.language_written %> </h6>
+    <br>
+
+    <%= link_to "Back to index", books_path, class: "btn btn-secondary" %>
+    <br>
+    <br>
+    <%= button_to "Delete book (will need permissions)", @book, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Are you sure?" } } %>
+</div>
+<div class="col">
+    <h4>Reviews</h4>
+    <h5>Average rating: <%= @book.reviews.average(:rating) %> stars</h5>
+    <br>
+    <% @book.reviews.each do |review| %>
+        <h6><%= review.user.first %> <%= review.user.last %> • <%= review.rating %> stars</h6>
+        <p><%= review.description %></p>
+    
+        <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
+    <%end%>
+</div>
+</div>
 </div>

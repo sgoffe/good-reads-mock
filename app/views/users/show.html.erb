@@ -1,5 +1,17 @@
 <div>
     <%= render partial: "userInfo", locals: {person: @user} %>
+    <div>
+    <br>
+        <h4><%= @user.first %>'s Reviews</h4>
+        <br>
+        <% @user.reviews.each do |review| %>
+            <p>Book: <%= review.book.title %></p>
+            <p>Rating: <%= review.rating %> stars</p>
+            <p><%= review.description %></p>
+        
+            <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
+        <%end%>
+    </div>
     <%= link_to "Edit", edit_user_path(@user) %>
     <%= button_to "Delete", @user, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
     <%= link_to "Back to Index", users_path %>

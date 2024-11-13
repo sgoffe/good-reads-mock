@@ -38,21 +38,6 @@ b3 = Book.create!(title: 'Angela\'s Ashes',
                 isbn_13: 9780007205233,
                 language_written: 'English')
 
-r1 = Review.create!(user: 'Sophia Goffe',
-                book: 'Sula',
-                rating: 5,
-                description: 'currently my favorite book')
-
-r2 = Review.create!(user: 'Meghan Subak',
-                book: 'the cartographers',
-                rating: 4,
-                description: 'Maps Fantasy Library')
-
-r3 = Review.create!(user: 'Mickey Mouse',
-                book: 'Crime and Punishment',
-                rating: 3,
-                description: 'disturbed')
-
 u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
                 email: 'sgoffe@colslay.edu',
@@ -67,3 +52,15 @@ u3 = User.create!(first: 'Mickey',
                 last: 'Mouse',
                 email: "mmouse@colslay.edu",
                 bio: 'a sassy little mouse')
+
+r1 = b1.reviews.create!(rating: 5,
+                description: 'currently my favorite book', 
+                :user => u1)
+
+r2 = b2.reviews.create!(rating: 4,
+                description: 'Maps Fantasy Library', 
+                :user => u2)
+
+r3 = b3.reviews.create!(rating: 3,
+                description: 'disturbed',
+                :user => u3)
