@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'simplecov'
-SimpleCov.start 'rails'
 
 RSpec.describe Book, type: :model do
   describe "model attributes" do

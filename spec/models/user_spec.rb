@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'simplecov'
-SimpleCov.start 'rails'
 
 RSpec.describe User, type: :model do
   it "should respond to the required fields" do

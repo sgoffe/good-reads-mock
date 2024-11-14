@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'simplecov'
-SimpleCov.start 'rails'
 
 RSpec.describe "NewCreateEditUpdate", type: :system do
   before do

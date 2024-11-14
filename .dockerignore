@@ -46,3 +46,9 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+#Ignore coverage results
+/coverage/
+
+#Ignore ruby version
+/.ruby-version
