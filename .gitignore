@@ -33,3 +33,9 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+#Ignore ruby-version
+.ruby-version
+
+#Ignore coverage files
+/coverage/*
