@@ -6,7 +6,7 @@
     <%= link_to "More about this user", user_path(user) %>
 <% end %>
 <br><br><br>
-<%= link_to "Create new user", new_user_path %>
+<%= button_to "Create new user", new_user_session_path, method: :get%>
 <div>
     <%= link_to "Books *temporary*", books_path, class: "btn btn-sm btn-primary" %>
     <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>

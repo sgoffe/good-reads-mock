@@ -8,9 +8,9 @@ RSpec.describe "UserController", type: :system do
     end
 
     before(:each) do
-        @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", role: admin)
-        @u2 = User.create!(first: "Brett", last: "Boyerton", email: "bb@gmail.com", bio:"howdy", role: standard)
-        @u3 = User.create!(first: "Charlie", last: "Chaplin", email: "cc@gmail.com", bio:"hey there", role: standard)
+        @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+        @u2 = User.create!(first: "Brett", last: "Boyerton", email: "bb@gmail.com", bio:"howdy", password:"bboyerton", role: :standard)
+        @u3 = User.create!(first: "Charlie", last: "Chaplin", email: "cc@gmail.com", bio:"hey there", password:"cchaplin", role: :standard)
     end
 
     describe "index method" do
@@ -35,23 +35,26 @@ RSpec.describe "UserController", type: :system do
         it "successfully creates Durk" do
             visit users_path
             click_on "Create new user"
+            click_on "Sign up"
             fill_in 'First', with: "Durk"
             fill_in 'Last', with: "Deacon"
             fill_in 'Email', with: "dd@gmail.com"
-            fill_in 'Bio', with: "yuhh"
-            click_on "Create User"
-            expect(page).to have_content("Durk Deacon")
+            fill_in 'Password', with: "123456"
+            fill_in 'Password confirmation', with: "123456"
+            click_on "Sign up"
             expect(page).to have_content("dd@gmail.com")
+            expect(page).to have_content("Log Out")
             expect(User.all.count).to eq(4)
         end
 
         it "fails to create Durk" do
             visit users_path
             click_on "Create new user"
+            click_on "Sign up"
             fill_in 'First', with: "Durk"
-            click_on "Create User"
-            expect(page).to have_content("Unable to create user. Please try again")
-            expect(page).not_to have_content("Durk")
+            click_on "Sign up"
+            expect(page).to have_content("errors prohibited this user from being saved")
+            expect(page).not_to have_content("Log Out")
         end
     end
     describe "destroy method" do
@@ -73,6 +76,24 @@ RSpec.describe "UserController", type: :system do
             click_on "More about this user"
             expect(page).to have_content("wassup")
             expect(page).to have_content("Back to Index")
+        end
+    end
+
+    describe "log out" do
+        it "successfully logs out a user" do
+            visit users_path
+            click_on "Create new user"
+            click_on "Sign up"
+            fill_in 'First', with: "Durk"
+            fill_in 'Last', with: "Deacon"
+            fill_in 'Email', with: "dd@gmail.com"
+            fill_in 'Password', with: "123456"
+            fill_in 'Password confirmation', with: "123456"
+            click_on "Sign up"
+            expect(page).to have_content("dd@gmail.com")
+            expect(page).to have_content("Log Out")
+            click_on "Log Out"
+            expect(page).to have_content("Log In")
         end
     end
 
