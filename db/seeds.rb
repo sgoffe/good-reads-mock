@@ -41,17 +41,20 @@ b3 = Book.create!(title: 'Angela\'s Ashes',
 u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
                 email: 'sgoffe@colslay.edu',
-                bio: 'living loving and laughing')
+                bio: 'living loving and laughing',
+                password: 'sgoffe')
 
 u2 = User.create!(first: 'Meghan',
                 last: 'Subak',
                 email: 'msubak@colslay.edu',
-                bio: 'body builder and book lover')
+                bio: 'body builder and book lover',
+                password: 'msubak')
 
 u3 = User.create!(first: 'Mickey',
                 last: 'Mouse',
                 email: "mmouse@colslay.edu",
-                bio: 'a sassy little mouse')
+                bio: 'a sassy little mouse',
+                password: 'mmouse')
 
 r1 = b1.reviews.create!(rating: 5,
                 description: 'currently my favorite book', 
