@@ -31,13 +31,9 @@ RSpec.describe Review, type: :model do
 
   describe "validations" do
     it "should require a user" do
-      b = Book.create!(title: "test", author: "test",
-            genre: :fiction,
-            pages: 100, description: "test",
-            publisher: "test",
-            publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
-      r = Review.new(book: b, rating: 4, description: 'test 1')
-      expect(r.save!).to be false
+      r = Review.new(book: @b1, rating: 4, description: 'test 1')
+      expect(r).to be_invalid
+      expect(r.save).to be false
     end
 
     it "should require an book" do
