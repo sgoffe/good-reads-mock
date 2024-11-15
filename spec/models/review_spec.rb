@@ -37,17 +37,20 @@ RSpec.describe Review, type: :model do
     end
 
     it "should require an book" do
-      r = Review.new(user: 'user 1', rating: 4, description: 'test 1')
+      r = Review.new(user: @u1, rating: 4, description: 'test 1')
+      expect(r).to be_invalid
       expect(r.save).to be false
     end
 
     it "should require a rating" do
-      r = Review.new(user: 'user 1', book: 'book 1', description: 'test 1')
+      r = Review.new(user: @u1, book: @b1, description: 'test 1')
+      expect(r).to be_invalid
       expect(r.save).to be false
     end
 
     it "should require a description" do
-      r = Review.new(user: 'user 1', book: 'book 1', rating: 4)
+      r = Review.new(user: @u1, book: @b1, rating: 4)
+      expect(r).to be_invalid
       expect(r.save).to be false
     end
   end
