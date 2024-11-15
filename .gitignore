@@ -38,4 +38,4 @@
 .ruby-version
 
 #Ignore coverage files
-/coverage/*
+coverage
