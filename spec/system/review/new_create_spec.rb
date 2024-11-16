@@ -1,14 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe "NewCreateEditUpdate", type: :system do
+  include Devise::Test::IntegrationHelpers
+
   before do
     driven_by(:rack_test)
   end
 
-  describe "create a new review " do
+  before(:each) do
+    @admin = User.create!(first: "Allie", last: "Amberson", 
+      email: "aa@gmail.com", bio:"wassup", 
+      password:"aamerson", role: :admin)
+    @b1 = Book.create!(title: "Test Book", author: "test",
+      genre: :fiction,
+      pages: 100, description: "test",
+      publisher: "test",
+      publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+    # @r1 = Review.create!(user: @u1, book: @b1, description: 'first', rating: 3)
+  end
+
+  describe "create a new review" do
     it 'successful create' do
+      sign_in @admin
       visit new_review_path
-      fill_in 'Book', with: 'Test Book'
+      fill_in 'Book', with: 'Sula'
       fill_in 'Rating', with: 4
       fill_in 'Description', with: 'Test Description'
       click_on 'Create Review'

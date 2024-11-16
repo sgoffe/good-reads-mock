@@ -4,7 +4,7 @@
   </div>
 
   <%= form_with model: @review, method: :post do |f| %>
-    <%= f.hidden_field :user, value: 'John Doe' %> <!-- Placeholder value -->
+    <%= f.hidden_field :user, value: current_user %> 
 
     <div class="form-group">
       <%= f.label :book %>
