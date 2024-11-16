@@ -7,9 +7,13 @@ RSpec.describe "Show route", type: :system do
 
   describe "#show" do
     before(:each) do
-      @r1 = Review.create!(user: 'user 1', book: 'Dune', description: 'test 1', rating: 3)
-      @r2 = Review.create!(user: 'user 2', book: 'Dune', description: 'test 2', rating: 2)
-      @r3 = Review.create!(user: 'user 3', book: 'Dune', description: 'test 3', rating: 5)
+      @u1 = User.create!(first: "user 2", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      @b1 = Book.create!(title: "Dune", author: "test", genre: :fiction, pages: 100, description: "test", publisher: "test", 
+                          publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      # @r1 = Review.create!(user: @u1, book: @b1, description: 'first', rating: 3)
+      @r1 = Review.create!(user: @u1, book: @b1, description: 'test 1', rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b1, description: 'test 2', rating: 2)
+      @r3 = Review.create!(user: @u1, book: @b1, description: 'test 3', rating: 5)  
     end
 
     it "navigates to the correct review show page when clicking 'More'" do
@@ -19,8 +23,8 @@ RSpec.describe "Show route", type: :system do
         find("a[href='#{review_path(review)}']").click
 
         expect(current_path).to eq(review_path(review))
-        expect(page).to have_content(review.user)
-        expect(page).to have_content(review.book)
+        expect(page).to have_content(review.user.first)
+        expect(page).to have_content(review.book.title)
         expect(page).to have_content(review.description)
         expect(page).to have_content(review.rating)
 

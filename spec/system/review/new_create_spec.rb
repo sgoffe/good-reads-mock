@@ -47,7 +47,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     end
   end
 
-  describe 'edit a sight' do
+  describe 'edit a review' do
     before (:each) do
       @r = Review.create!(user: 'user 1', book: 'Dune', description: 'test 1', rating: 3)
     end
