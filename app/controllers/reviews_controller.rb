@@ -13,7 +13,8 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    @review = Review.new(create_update_params)
+    @user = current_user
+    @review = @user.reviews.build(create_update_params)
     if @review.save
       redirect_to reviews_path, notice: 'Review created successfully'
     else
@@ -52,6 +53,9 @@ class ReviewsController < ApplicationController
 
 private 
   def create_update_params
-    params.require(:review).permit(:user, :book, :description, :rating)
+    if !params[:book_id].nil?
+      params[:book_id] = @books.find(params[:book_id])
+    end
+    params.require(:review).permit(:book, :description, :rating) #, :book_id
   end
 end
