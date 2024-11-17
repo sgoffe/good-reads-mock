@@ -2,7 +2,11 @@ class NotificationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @notifications = current_user.notifications.order(created_at: :desc)
+    if current_user.id != params[:user_id].to_i
+      redirect_to root_path, alert: "You are not authorized to view this page."
+    else
+      @notifications = current_user.notifications.order(created_at: :desc)
+    end
   end
 
   def recommend
