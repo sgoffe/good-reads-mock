@@ -5,7 +5,6 @@ class CreateNotifications < ActiveRecord::Migration[8.0]
       t.references :receiver, null: false, foreign_key: { to_table: :users }
       t.string :title
       t.text :message
-      t.string :notification_type
       t.references :notifiable, polymorphic: true, null: false
 
       t.timestamps

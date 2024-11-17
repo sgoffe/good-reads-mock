@@ -1,15 +1,22 @@
-<h2>Your Notifications</h2>
-<% if @notifications.nil? %>
-  <h2>No notifications</h2>
-<% else %>
-  <% @notifications.each do |notification| %>
-    <div>
-      <p><strong><%= notification.title %></strong></p>
-      <p><%= notification.message %></p>
-      
-      <% if notification.notifiable_type == "Book" %>
-        <p><%= link_to "View Book", book_path(notification.notifiable) %></p>
+<div class="container mt-2">
+  <h3>Notifications</h3>
+  <% if @notifications.present? %>
+    <div class='list-group'>
+      <% @notifications.each do |notif| %>
+        <a href="<%= notif.notification_url %>" class="list-group-item flex-column justify-content-between">
+          <div class="">
+            <div class="d-flex w-100 justify-content-between">
+              <p class="mb-1"><%= sanitize(notif.formatted_title) %></p>
+              <small><%= notif.formatted_timestamp %></small>
+            </div>
+            <p class="mb-1"><%= notif.message %></p>
+          </div>
+        </a>
       <% end %>
     </div>
+  <% else %>
+    <small>No notifications yet</small>
   <% end %>
-<% end %>
+</div>
+
+
