@@ -65,5 +65,5 @@ r2 = b2.reviews.create!(rating: 4,
                 :user => u2)
 
 r3 = b3.reviews.create!(rating: 3,
-                description: 'disturbed',
+                description: 'sad',
                 :user => u3)

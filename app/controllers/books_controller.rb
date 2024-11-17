@@ -1,9 +1,42 @@
 class BooksController < ApplicationController
   def index
     @books = Book.all.order(:title)
-    if params[:query].present?
+
+    if params[:query].present? && params[:query].length > 2
       @books = @books.by_search_string(params[:query])
+      @query_filt = params[:query]
     end
+
+    if params[:rating].present?
+      @books = @books.with_average_rating(params[:rating].to_f)
+      @rating_filt = params[:rating]
+    end
+
+    if params[:sort].present?
+      @books = @books.unscope(:order)
+      if(params[:sort].match(/rating/i)) 
+        @books = @books.rating
+      end
+      @books = @books.order(params[:sort])
+      @sort_filt = params[:sort]
+      Rails.logger.debug(@books.to_sql)
+    end
+
+    if params[:genre].present?
+      @books = @books.in_genre(params[:genre])
+      @genre_filt = params[:genre]
+    end
+
+    @sorts = [
+      ["Title - A to Z", "title ASC"],
+      ["Title - Z to A", "title DESC"],
+      ["Rating - Highest to Lowest", "rating DESC"],
+      ["Rating - Lowest to Highest", "rating ASC"],
+      ["Author - A to Z", "author ASC"],
+      ["Author - Z to A", "author DESC"],
+      ["Release Date - Newest to Oldest", "publish_date DESC"],
+      ["Release Date - Oldest to Newest", "publish_date ASC"]
+    ]
   end
 
   def show
