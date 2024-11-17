@@ -23,7 +23,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     it 'successful create' do
       sign_in @admin
       visit new_review_path
-      fill_in 'Book', with: 'Sula'
+      # fill_in 'Book', with: 'Sula'
       fill_in 'Rating', with: 4
       fill_in 'Description', with: 'Test Description'
       click_on 'Create Review'

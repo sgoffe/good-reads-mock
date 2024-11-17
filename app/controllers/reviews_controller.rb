@@ -53,9 +53,9 @@ class ReviewsController < ApplicationController
 
 private 
   def create_update_params
-    if !params[:book].nil?
-      params[:book] = @books.by_search_string(params[:book])
+    if !params[:book_id].nil?
+      params[:book_id] = @books.find(params[:book_id])
     end
-    params.require(:review).permit(:book, :description, :rating)
+    params.require(:review).permit(:book, :description, :rating) #, :book_id
   end
 end
