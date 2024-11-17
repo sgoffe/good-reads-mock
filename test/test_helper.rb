@@ -1,13 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
-require 'simplecov'
-SimpleCov.start do 
-  add_filter '/spec/'        
-  add_filter '/config/'     
-  add_filter '/db/'   
-  add_filter '/test/'
-end
+
 # Previous content of test helper now starts here
 
 module ActiveSupport
