@@ -1,13 +1,21 @@
 <% if flash[:message] %>
     <%= flash[:message] %>
 <% end %>
-<% @users.each do |user| %>
-    <%= render partial: "userInfo", locals: {person: user} %>
-    <%= link_to "More about this user", user_path(user) %>
+
+<% if current_user.friends.count == 0 %>
+    <p>This user has no friends</p>
+<% else %>
+    <% @user.friends.each do |friend| %>
+        <%= "Friend: #{friend.email}" %>
+    <% end %>
 <% end %>
-<br><br><br>
-<%= button_to "Create new user", new_user_session_path, method: :get%>
-<div>
-    <%= link_to "Books *temporary*", books_path, class: "btn btn-sm btn-primary" %>
-    <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>
-</div>
+
+<h5>Browse Friends</h5>
+<% @users.each do |user| %>
+    <% if (!User.find(current_user.id).friends.exists?(email: user.email)) %>
+        <%= render partial: "userInfo", locals: {person: user} %>
+        <%= button_to "Add friend", user_friendships_path(current_user.id), method: :get %>
+    <% end %>
+<% end %>
+
+

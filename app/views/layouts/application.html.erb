@@ -15,26 +15,38 @@
   </head>
 
   <body>
-    <% unless controller_name == 'sessions' %>
-      <% if (current_user == nil) %>
-        <%= button_to "Log In", new_user_session_path, method: :get%>
-      <% else %>
-        <%= "#{current_user.email}" %>
-        <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
-      <% end %>
-    <% end %>
-
     <div class="row">
-      <% if flash[:notice] %>
-        <div class="alert alert-success" role="alert">
-          <%= flash[:notice] %>
+      <% unless controller_name == 'sessions' %>
+        <div>
+          <% if (current_user == nil) %>
+            <%= button_to "Log In", new_user_session_path, method: :get%>
+          <% else %>
+            <%= "#{current_user.email}" %>
+            <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
+          <% end %>
         </div>
       <% end %>
 
-      <% if flash[:alert] %>
-        <div class="alert alert-danger" role="alert">
-          <%= flash[:alert] %>
-        </div>
+      <div class="row">
+        <% if flash[:notice] %>
+          <div class="alert alert-success" role="alert">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+
+        <% if flash[:alert] %>
+          <div class="alert alert-danger" role="alert">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if (current_user != nil) %>
+        <%= link_to "Profile", user_path(current_user) %>
+            
+        <%= link_to "Social", users_path %>
+
+        <%= link_to "Home", books_path %>
       <% end %>
     </div>
 

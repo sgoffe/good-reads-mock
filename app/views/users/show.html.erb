@@ -17,13 +17,14 @@
     <%= link_to "Back to Index", users_path %>
 
     <h5>Friends Section</h5>
-    <% if @user.friends == nil %>
+
+    <% if @user.friends.count == 0 %>
         <p>This user has no friends</p>
     <% else %>
         <% @user.friends.each do |friend| %>
-            <%= friend.email %>
+            <%= "Friend: #{friend.email}" %>
         <% end %>
     <% end %>
-
-    <%= link_to "Add friend", user_friendship_path %>
+    
+    <%= button_to "Add friend", user_friendships_path(@user), method: :get%>
 </div>
