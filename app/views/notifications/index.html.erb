@@ -1,0 +1,15 @@
+<h2>Your Notifications</h2>
+<% if @notifications.nil? %>
+  <h2>No notifications</h2>
+<% else %>
+  <% @notifications.each do |notification| %>
+    <div>
+      <p><strong><%= notification.title %></strong></p>
+      <p><%= notification.message %></p>
+      
+      <% if notification.notifiable_type == "Book" %>
+        <p><%= link_to "View Book", book_path(notification.notifiable) %></p>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

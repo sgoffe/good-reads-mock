@@ -26,6 +26,7 @@
     <br>
     <%= button_to "Delete book (will need permissions)", @book, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Are you sure?" } } %>
 </div>
+<%= link_to "Recommend this book", recommend_book_path(@book) %>
 <div class="col">
     <h4>Reviews</h4>
     <h5>Average rating: <%= @book.reviews.average(:rating) %> stars</h5>
