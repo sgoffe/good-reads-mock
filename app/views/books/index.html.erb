@@ -13,10 +13,37 @@
 
 <div class="row">
     <%= form_with url: books_path, method: :get do |form| %>
-      <%= form.label :query, "Search for: " %>
-      <%= form.text_field :query %>
-      <%= form.submit "Search" %>
+        <div>
+            <%= form.label :query, "Search for" %>
+            <%= form.text_field :query, value: @query_filt %>
+        </div>
+
+        <div>
+            <%= form.label :sort, "Sort by" %>
+            <%= form.select :sort, @sorts, selected: @sort_filt %>
+        </div>
+
+        <div>
+            <%= form.label :rating, "Rating above" %>
+            <%= form.number_field :rating, in: 0..5, step: 0.5, value: @rating_filt %>
+        </div>
+
+        <div> 
+            <%= form.label :genre, "Genre" %>
+            <%= form.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, include_blank: true, selected: @genre_filt%>
+        </div>
+
+        <div>
+            <%= form.submit "Filter Books" %>
+        </div>
+
+        <div>
+            <%= link_to "Clear filters", books_path(query: params[:query]) %>
+            <%= link_to "Clear search", books_path %>
+        </div>
+
     <% end %>
+
 </div>
 
 <%= link_to "Add a new book", new_book_path %>
