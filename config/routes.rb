@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   root "books#index"
   resources :books
   resources :users do
-    resources :friendships, only: [:new, :create]
+    resources :friendships, only: [:new, :create, :destroy]
   end
   resources :reviews
 
