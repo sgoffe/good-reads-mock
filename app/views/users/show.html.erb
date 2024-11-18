@@ -16,15 +16,7 @@
     <%= button_to "Delete", @user, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
     <%= link_to "Back to Index", users_path %>
 
-    <h5>Friends Section</h5>
 
-    <% if @user.friends.count == 0 %>
-        <p>This user has no friends</p>
-    <% else %>
-        <% @user.friends.each do |friend| %>
-            <%= "Friend: #{friend.email}" %>
-        <% end %>
-    <% end %>
     
-    <%= button_to "Add friend", user_friendships_path(@user), method: :get%>
+
 </div>
