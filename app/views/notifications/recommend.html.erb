@@ -1,6 +1,6 @@
 <h1>Recommend "<%= @book.title %>" to a Friend</h1>
 
-<%= form_with model: @notification, url: create_recommendation_book_path, method: :post do |form| %>
+<%= form_with model: @notification, url: create_book_recommendation_path, method: :post do |form| %>
   <div class="form-group">
     <%= form.label :receiver_id, "Select a Friend" %>
     <%= form.collection_select :receiver_id, User.where.not(id: current_user.id), :id, :first, prompt: "Choose a Friend" %>
