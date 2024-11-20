@@ -44,7 +44,7 @@
       <% if (current_user != nil) %>
         <%= link_to "Profile", user_path(current_user) %>
             
-        <%= link_to "Social", users_path %>
+        <%= link_to "Social", friendships_find_path %>
 
         <%= link_to "Home", books_path %>
       <% end %>

@@ -1,23 +1,15 @@
 <% if flash[:message] %>
     <%= flash[:message] %>
 <% end %>
-
-<% if current_user.friends.count == 0 %>
-    <p>This user has no friends</p>
-<% else %>
-    <% current_user.friends.each do |friend| %>
-        <%= "Friend: #{friend.first} #{friend.last}, #{friend.email}" %>
-        <%= button_to "Delete this friend", user_friendship_path(current_user.id, friend.id), method: :delete %>
-        <br>
-    <% end %>
-<% end %>
-
-<h5>Browse Friends</h5>
 <% @users.each do |user| %>
-    <% if (user.id != current_user.id && !User.find(current_user.id).friends.exists?(email: user.email)) %>
-        <%= render partial: "userInfo", locals: {person: user} %>
-        <%= button_to "Add friend", user_friendships_path(current_user.id), method: :post, params: {friend_id: user.id}%>
-    <% end %>
+    <%= render partial: "userInfo", locals: {person: user} %>
+    <%= link_to "More about this user", user_path(user) %>
 <% end %>
+<br><br><br>
+<%= button_to "Create new user", new_user_session_path, method: :get%>
+<div>
+    <%= link_to "Books *temporary*", books_path, class: "btn btn-sm btn-primary" %>
+    <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>
+</div>
 
 
