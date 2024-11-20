@@ -18,7 +18,6 @@ class FriendshipsController < ApplicationController
 
 
     def destroy
-        puts params
         @friendship = Friendship.find_by(user_id: params[:user_id], friend_id: params[:id])
         @friendship.destroy!
         redirect_to books_path, notice: 'Friend removed successfully'
