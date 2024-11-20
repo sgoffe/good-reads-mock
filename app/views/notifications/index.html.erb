@@ -6,7 +6,7 @@
         <a href="<%= notif.notification_url %>" class="list-group-item flex-column justify-content-between">
           <div class="">
             <div class="d-flex w-100 justify-content-between">
-              <p class="mb-1"><%= sanitize(notif.formatted_title) %></p>
+              <p id="title" class="mb-1"><%= sanitize(notif.formatted_title) %></p>
               <small><%= notif.formatted_timestamp %></small>
             </div>
             <p class="mb-1"><%= notif.message %></p>

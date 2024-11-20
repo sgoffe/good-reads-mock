@@ -21,13 +21,13 @@ class NotificationsController < ApplicationController
       title: "<strong>#{current_user.first} #{current_user.last}</strong> recommended <strong>#{Book.find(notification_params[:book_id]).title}</strong> to you!",
       message: notification_params[:message],
       notification_type: 'recommendation',
-      notifiable: Book.find(notification_params[:book_id])  # Polymorphic association
+      notifiable: Book.find(notification_params[:book_id]) 
     )
 
     if @notification.save
       redirect_to book_path(notification_params[:book_id]), notice: "Recommendation sent!"
     else
-      render :recommend, alert: "There was an error sending the recommendation."
+      redirect_to book_path(notification_params[:book_id]), alert: "There was an error sending the recommendation."
     end
   end
 
