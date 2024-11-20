@@ -13,6 +13,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "books#index"
   resources :books
-  resources :users
   resources :reviews
+  resources :users do
+    resources :friendships, only: [:new, :create, :destroy]
+  end
+
+  get '/friendships/find', to: 'friendships#find', as: 'friendships_find'
+
 end
