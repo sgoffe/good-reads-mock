@@ -204,10 +204,161 @@ RSpec.describe Book, type: :model do
       expect(Book.by_search_string('desc_test2').count).to eq(1)
     end
 
+    it "should return one book for a string matching title and author" do
+      expect(Book.by_search_string('a_test1 test1_auth').count).to eq(1)
+    end
+
     it "should return two books ordered by titlefor a string matching title of one, desc of another" do
       expect(Book.by_search_string('a_test1').count).to eq(2)
       expect(Book.by_search_string('a_test1').first.title).to eq("a_test1")
     end
-
   end
+
+  describe "#with_average_rating" do
+    before(:each) do 
+      @b1 = Book.create!(title: "a_test1", author: "test1_auth",
+                  genre: :fiction,
+                  pages: 100, description: "desc_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b2 = Book.create!(title: "b_test2", author: "test2_auth",
+                  genre: :nonfiction,
+                  pages: 200, description: "desc_test2",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b3 = Book.create!(title: "c_test3", author: "test3_auth",
+                  genre: :historical_fiction,
+                  pages: 300, description: "a_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)
+    end
+
+    it "should return books greater than or equal to rating" do
+      expect(Book.with_average_rating(3).count.length).to eq(2)
+    end
+
+    it 'returns zero books for a rating higher than all in db' do
+      expect(Book.with_average_rating(5).count.length).to eq(0)
+    end
+  end
+
+  describe "#rating" do
+    before(:each) do 
+      @b1 = Book.create!(title: "a_test1", author: "test1_auth",
+                  genre: :fiction,
+                  pages: 100, description: "desc_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b2 = Book.create!(title: "b_test2", author: "test2_auth",
+                  genre: :nonfiction,
+                  pages: 200, description: "desc_test2",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b3 = Book.create!(title: "c_test3", author: "test3_auth",
+                  genre: :historical_fiction,
+                  pages: 300, description: "a_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)            
+    end
+
+    it "should return books grouped by id" do
+      expect(Book.rating.map(&:id)).to contain_exactly(@b1.id, @b3.id)
+    end
+    it "should not return books without reviews" do
+      expect(Book.rating.map(&:id)).to contain_exactly(@b1.id, @b3.id)
+    end
+  end
+
+  describe "#in_genre(substr)" do
+    before(:each) do
+      Book.create!(title: "a_test1", author: "test1_auth",
+                  genre: :fiction,
+                  pages: 100, description: "desc_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      Book.create!(title: "b_test2", author: "test2_auth",
+                  genre: :nonfiction,
+                  pages: 200, description: "desc_test2",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      Book.create!(title: "c_test3", author: "test3_auth",
+                  genre: :historical_fiction,
+                  pages: 300, description: "a_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+    end
+
+    it "should return zero books for a genre that doesn't match" do
+      expect(Book.in_genre(:nothing).count).to eq(0)
+    end
+
+    it "should return all books in given genre" do 
+      expect(Book.in_genre(:fiction).count).to eq(1)
+    end
+  end
+
+  describe "#users" do 
+    before(:each) do 
+      @b1 = Book.create!(title: "a_test1", author: "test1_auth",
+                  genre: :fiction,
+                  pages: 100, description: "desc_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b2 = Book.create!(title: "b_test2", author: "test2_auth",
+                  genre: :nonfiction,
+                  pages: 200, description: "desc_test2",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b3 = Book.create!(title: "c_test3", author: "test3_auth",
+                  genre: :historical_fiction,
+                  pages: 300, description: "a_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)            
+    end
+
+    it "should respond to the users method to return all users who have reviewed a book" do
+      expect(@b1.users.distinct.count).to eq(1)
+      expect(@b1.users.first).to eq(@u1)
+    end
+  end
+
+  describe "#reviews" do 
+    before(:each) do 
+      @b1 = Book.create!(title: "a_test1", author: "test1_auth",
+                  genre: :fiction,
+                  pages: 100, description: "desc_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b2 = Book.create!(title: "b_test2", author: "test2_auth",
+                  genre: :nonfiction,
+                  pages: 200, description: "desc_test2",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @b3 = Book.create!(title: "c_test3", author: "test3_auth",
+                  genre: :historical_fiction,
+                  pages: 300, description: "a_test1",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      @u2 = User.create!(first: "Allister", last: "Amy", email: "aaaaa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)
+      @r3 = Review.create!(user: @u2, book: @b3, description: "me", rating: 4)            
+    end            
+
+    it "should respond to the users method to return all reviews of a book" do
+      expect(@b1.reviews.distinct.count).to eq(1)
+      expect(@b3.reviews.first).to eq(@r2)
+    end
+  end
+
 end

@@ -40,6 +40,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_17_230219) do
     t.index ["receiver_id"], name: "index_notifications_on_receiver_id"
     t.index ["sender_id"], name: "index_notifications_on_sender_id"
   end
+  
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "friend_id"
+  end
 
   create_table "reviews", force: :cascade do |t|
     t.integer "rating"
