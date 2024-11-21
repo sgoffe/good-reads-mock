@@ -66,6 +66,6 @@ private
     # if !params[:book_id].nil?
     #   params[:book_id] = @books.find(params[:book_id])
     # end
-    params.require(:review).permit(:description, :rating)
+    params.require(:review).permit(:review_text, :rating)
   end
 end

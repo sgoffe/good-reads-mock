@@ -15,9 +15,9 @@ RSpec.describe "Index route", type: :system do
 		publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
 	
 	
-	@r1 = Review.create!(user: @u1, book: @b1, description: 'first', rating: 3)
-	@r2 = Review.create!(user: @u1, book: @b1, description: 'second', rating: 3)
-	@r3 = Review.create!(user: @u1, book: @b1, description: 'third', rating: 3)
+	@r1 = Review.create!(user: @u1, book: @b1, review_text: 'first', rating: 3)
+	@r2 = Review.create!(user: @u1, book: @b1, review_text: 'second', rating: 3)
+	@r3 = Review.create!(user: @u1, book: @b1, review_text: 'third', rating: 3)
 end
 
 	describe "#index" do

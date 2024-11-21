@@ -33,7 +33,7 @@
     <br>
     <% @book.reviews.each do |review| %>
         <h6><%= review.user.first %> <%= review.user.last %> • <%= review.rating %> stars</h6>
-        <p><%= review.description %></p>
+        <p><%= review.review_text %></p>
     
         <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
     <%end%>

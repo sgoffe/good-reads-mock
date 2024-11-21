@@ -232,8 +232,8 @@ RSpec.describe Book, type: :model do
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
-      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
-      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)
+      @r1 = Review.create!(user: @u1, book: @b1, review_text: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, review_text: "la", rating: 4)
     end
 
     it "should return books greater than or equal to rating" do
@@ -263,8 +263,8 @@ RSpec.describe Book, type: :model do
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
-      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
-      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)            
+      @r1 = Review.create!(user: @u1, book: @b1, review_text: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, review_text: "la", rating: 4)            
     end
 
     it "should return books grouped by id" do
@@ -321,8 +321,8 @@ RSpec.describe Book, type: :model do
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
-      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
-      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)            
+      @r1 = Review.create!(user: @u1, book: @b1, review_text: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, review_text: "la", rating: 4)            
     end
 
     it "should respond to the users method to return all users who have reviewed a book" do
@@ -350,9 +350,9 @@ RSpec.describe Book, type: :model do
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
       @u2 = User.create!(first: "Allister", last: "Amy", email: "aaaaa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
-      @r1 = Review.create!(user: @u1, book: @b1, description: "la", rating: 3)
-      @r2 = Review.create!(user: @u1, book: @b3, description: "la", rating: 4)
-      @r3 = Review.create!(user: @u2, book: @b3, description: "me", rating: 4)            
+      @r1 = Review.create!(user: @u1, book: @b1, review_text: "la", rating: 3)
+      @r2 = Review.create!(user: @u1, book: @b3, review_text: "la", rating: 4)
+      @r3 = Review.create!(user: @u2, book: @b3, review_text: "me", rating: 4)            
     end            
 
     it "should respond to the users method to return all reviews of a book" do

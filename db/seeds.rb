@@ -57,13 +57,13 @@ u3 = User.create!(first: 'Mickey',
                 password: 'mmouse')
 
 r1 = b1.reviews.create!(rating: 5,
-                description: 'currently my favorite book', 
+                review_text: 'currently my favorite book', 
                 :user => u1)
 
 r2 = b2.reviews.create!(rating: 4,
-                description: 'Maps Fantasy Library', 
+                review_text: 'Maps Fantasy Library', 
                 :user => u2)
 
 r3 = b3.reviews.create!(rating: 3,
-                description: 'sad',
+                review_text: 'sad',
                 :user => u3)

@@ -6,6 +6,6 @@ class Review < ApplicationRecord
   validates :user_id, :presence => true
   validates_associated :user
   validates :rating, presence: true
-  validates :description, presence: true
+  validates :review_text, presence: true
 
 end
