@@ -26,17 +26,31 @@ RSpec.describe Book, type: :model do
     end
 
     it "should have the correct enumeration for genre" do
-      expect(Book.genres.keys).to include("historical_fiction")
-      expect(Book.genres.keys).to include("fiction")
-      expect(Book.genres.keys).to include("horror")
-      expect(Book.genres.keys).to include("romance")
-      expect(Book.genres.keys).to include("comedy")
-      expect(Book.genres.keys).to include("thriller")
-      expect(Book.genres.keys).to include("young_adult")
-      expect(Book.genres.keys).to include("science_fiction")
-      expect(Book.genres.keys).to include("mystery")
-      expect(Book.genres.keys).to include("nonfiction")
-    end
+      genres = [
+        'fiction',
+        'nonfiction',
+        'romance',
+        'fantasy',
+        'mystery',
+        'biography',
+        'history',
+        'science',
+        'technology',
+        'philosophy',
+        'religion',
+        'young_adult',
+        'literature',
+        'travel',
+        'health',
+        'business',
+        'art',
+        'historical_fiction'
+      ]
+      
+      genres.each do |genre|
+        expect(Book.genres.keys).to include(genre)
+      end
+    end    
 
     # should work eventually 
 

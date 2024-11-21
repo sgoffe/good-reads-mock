@@ -32,7 +32,7 @@
             <%= form.label :genre, "Genre" %>
             <%= form.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, include_blank: true, selected: @genre_filt%>
         </div>
-
+a
         <div>
             <%= form.submit "Filter Books" %>
         </div>

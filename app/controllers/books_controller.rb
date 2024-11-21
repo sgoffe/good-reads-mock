@@ -41,6 +41,16 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    
+    # get book data from GoogleBooks API
+    google_books_api_url = "https://www.googleapis.com/books/v1/volumes?q=isbn:#{@book.isbn_13}"
+    response = HTTParty.get(google_books_api_url)
+    book_data = response.parsed_response['items']&.first
+
+    if book_data
+      # get buy links from the API
+      @buy_links = book_data['saleInfo']['buyLink'] if book_data['saleInfo']
+    end
   end
   
   def create
