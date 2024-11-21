@@ -2,7 +2,28 @@ class Book < ApplicationRecord
   has_many :reviews
   has_many :users, through: :reviews
   
-  enum :genre, %i[historical_fiction fiction horror romance comedy thriller young_adult science_fiction mystery nonfiction]
+  # enum :genre, %i[historical_fiction fiction horror romance comedy thriller young_adult science_fiction mystery nonfiction]
+  enum :genre, %i[
+    fiction
+    nonfiction
+    romance
+    fantasy
+    mystery
+    biography
+    history
+    science
+    technology
+    philosophy
+    religion
+    young_adult
+    literature
+    travel
+    health
+    business
+    art
+    historical_fiction
+  ]
+
 
   has_many_attached :images do |attachable|
     attachable.variant :thumb, resize_to_limit: [ 80, 80 ]

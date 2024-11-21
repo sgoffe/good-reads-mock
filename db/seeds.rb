@@ -8,6 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# populate custom books
 b1 = Book.create!(title: 'Sula',
                 author: 'Toni Morrison',
                 genre: :historical_fiction,
@@ -38,6 +39,11 @@ b3 = Book.create!(title: 'Angela\'s Ashes',
                 isbn_13: 9780007205233,
                 language_written: 'English')
 
+# populate books from rake file
+puts "Populating books from Google Books API..."
+Rake::Task['populate:books'].invoke
+
+puts "Populating users..."
 u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
                 email: 'sgoffe@colslay.edu',
@@ -56,6 +62,7 @@ u3 = User.create!(first: 'Mickey',
                 bio: 'a sassy little mouse',
                 password: 'mmouse')
 
+# populate reviews
 r1 = b1.reviews.create!(rating: 5,
                 description: 'currently my favorite book', 
                 :user => u1)

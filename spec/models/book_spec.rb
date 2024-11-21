@@ -25,7 +25,7 @@ RSpec.describe Book, type: :model do
       expect(Book.all.count).to eq(1)
     end
 
-    it "should have the correct enumeration for attraction_type" do
+    it "should have the correct enumeration for genre" do
       expect(Book.genres.keys).to include("historical_fiction")
       expect(Book.genres.keys).to include("fiction")
       expect(Book.genres.keys).to include("horror")

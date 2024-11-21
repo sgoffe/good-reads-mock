@@ -7,8 +7,27 @@ namespace :populate do
     base_url = 'https://www.googleapis.com/books/v1/volumes'
     max_results = 5 
 
-    genres = ['fiction', 'nonfiction', 'science', 'history', 'fantasy', 'mystery', 'biography']
-
+    genres = [
+      'fiction',
+      'nonfiction',
+      'romance',
+      'fantasy',
+      'mystery',
+      'biography',
+      'history',
+      'science',
+      'technology',
+      'philosophy',
+      'religion',
+      'young_adult',
+      'literature',
+      'travel',
+      'health',
+      'business',
+      'art',
+      'historical_fiction'
+    ]
+    
     genres.each do |genre|
       start_index = 0
       total_books_fetched = 0
