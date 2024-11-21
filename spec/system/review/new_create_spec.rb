@@ -22,13 +22,12 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
   describe "create a new review" do
     it 'successful create' do
       sign_in @admin
-      visit new_review_path
-      # fill_in 'Book', with: 'Sula'
+      visit new_book_review_path(@b1)
       fill_in 'Rating', with: 4
       fill_in 'Description', with: 'Test Description'
       click_on 'Create Review'
       expect(page).to have_content('Review created successfully')
-      expect(page.current_path).to eq(reviews_path)
+      expect(page.current_path).to eq(book_path(@b1.id))
       expect(page).to have_content('Test Book')
     end
 
@@ -37,8 +36,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       allow(Review).to receive(:new).and_return(r)
       allow(r).to receive(:save).and_return(nil)
 
-      visit new_review_path
-      fill_in 'Book', with: 'Test Book'
+      visit new_book_review_path(@b1.id)
       fill_in 'Rating', with: 4
       fill_in 'Description', with: 'Test Description'
       click_on 'Create Review'

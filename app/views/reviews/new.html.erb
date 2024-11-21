@@ -3,13 +3,7 @@
     <h1>Create New Review</h1>
   </div>
 
-  <%= form_with model: @review, url: user_reviews_path, method: :post do |f| %>
-
-    <div class="form-group">
-      <%= f.label :book %>
-      <%= f.text_field :book, class: 'form-control' %>
-      
-    </div>
+  <%= form_with model: @review, url: book_reviews_path(@book), method: :post do |f| %>
 
     <div class="form-group">
       <%= f.label :rating %>
