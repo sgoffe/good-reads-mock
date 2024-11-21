@@ -24,7 +24,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       sign_in @admin
       visit new_book_review_path(@b1)
       fill_in 'Rating', with: 4
-      fill_in 'Review Text', with: 'Test Review Text'
+      fill_in 'Review text', with: 'Test Review Text'
       click_on 'Create Review'
       expect(page).to have_content('Review created successfully')
       expect(page.current_path).to eq(book_path(@b1.id))
@@ -32,13 +32,13 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     end
 
     it "handles failed create" do 
-      r = Review.new
-      allow(Review).to receive(:new).and_return(r)
-      allow(r).to receive(:save).and_return(nil)
+      # r = Review.new
+      # allow(Review).to receive(:new).and_return(r)
+      # allow(r).to receive(:save).and_return(nil)
 
       visit new_book_review_path(@b1.id)
       fill_in 'Rating', with: 4
-      fill_in 'Review Text', with: 'Test Review Text'
+      fill_in 'Review text', with: 'Test Review Text'
       click_on 'Create Review'
 
       expect(page).to have_content('Review could not be created')
@@ -47,15 +47,18 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
 
   describe 'edit a review' do
     before (:each) do
-      @r = Review.create!(user: 'user 1', book: 'Dune', review_text: 'test 1', rating: 3)
+      @r = Review.new(review_text: 'test 1', rating: 3)
+      @r.user = @admin
+      @b1.reviews << @r
+      @r.save!
     end
 
     it 'successful update' do
-      visit reviews_path
+      visit book_reviews_path(@b1.id)
       find("a[href='#{review_path(@r)}']").click
       expect(page).to have_content('test 1')
       click_on 'Edit'
-      fill_in 'Review Text', with: 'new review text'
+      fill_in 'Review text', with: 'new review text'
       click_on 'Update Review'
       expect(page).to have_content('new review text')
     end
@@ -68,7 +71,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       find("a[href='#{review_path(@r)}']").click
       expect(page).to have_content('test 1')
       click_on 'Edit'
-      fill_in 'Review Text', with: 'new review text'
+      fill_in 'Review text', with: 'new review text'
       click_on 'Update Review'
       
       expect(page).to have_content('Review could not be edited')
