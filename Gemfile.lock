@@ -112,6 +112,13 @@ GEM
     docile (1.4.1)
     drb (2.2.1)
     erubi (1.13.0)
+    factory_bot (6.5.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
+    faker (3.5.1)
+      i18n (>= 1.8.11, < 2)
     faraday (2.12.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -408,6 +415,8 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 4.9)
+  factory_bot_rails
+  faker
   httparty
   image_processing (~> 1.2)
   importmap-rails
