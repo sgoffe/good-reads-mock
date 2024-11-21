@@ -16,7 +16,7 @@ RSpec.describe "Show route", type: :system do
     end
 
     it "navigates to the correct review show page when clicking 'More'" do
-      visit books_reviews_path(@b1.id)
+      visit book_reviews_path(@b1.id)
 
       Review.all.each do |review|
         find("a[href='#{review_path(review)}']").click
