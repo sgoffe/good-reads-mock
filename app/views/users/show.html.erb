@@ -7,7 +7,7 @@
         <% @user.reviews.each do |review| %>
             <p>Book: <%= review.book.title %></p>
             <p>Rating: <%= review.rating %> stars</p>
-            <p><%= review.description %></p>
+            <p><%= review.review_text %></p>
         
             <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
         <%end%>

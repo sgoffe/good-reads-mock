@@ -2,7 +2,7 @@
   <h4><%= @review.book.title %> (<%= @review.book.author %>)</h4>
   <h5><%= @review.rating %> stars</h5>
   <p>Reviewer: <%= @review.user.first %> <%= @review.user.last %></p>
-  <p><%= @review.description %></p>
+  <p><%= @review.review_text %></p>
 
   <%= link_to "Edit", edit_review_path(@review), class: "btn btn-info" %>
   <%= button_to "Delete", @review, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Are you sure?" } } %>

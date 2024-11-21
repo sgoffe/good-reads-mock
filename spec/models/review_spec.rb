@@ -19,11 +19,11 @@ RSpec.describe Review, type: :model do
       expect(s).to respond_to(:user_id)
       expect(s).to respond_to(:book_id)
       expect(s).to respond_to(:rating)
-      expect(s).to respond_to(:description)
+      expect(s).to respond_to(:review_text)
     end
 
     it "should allow creation of model objects with all attributes" do
-      r = Review.new(user: @u1, book: @b1, rating: 4, description: 'test 1') 
+      r = Review.new(user: @u1, book: @b1, rating: 4, review_text: 'test 1') 
       expect(r.save!).to be true
       expect(Review.all.count).to eq(1)
     end
@@ -31,24 +31,24 @@ RSpec.describe Review, type: :model do
 
   describe "validations" do
     it "should require a user" do
-      r = Review.new(book: @b1, rating: 4, description: 'test 1')
+      r = Review.new(book: @b1, rating: 4, review_text: 'test 1')
       expect(r).to be_invalid
       expect(r.save).to be false
     end
 
     it "should require an book" do
-      r = Review.new(user: @u1, rating: 4, description: 'test 1')
+      r = Review.new(user: @u1, rating: 4, review_text: 'test 1')
       expect(r).to be_invalid
       expect(r.save).to be false
     end
 
     it "should require a rating" do
-      r = Review.new(user: @u1, book: @b1, description: 'test 1')
+      r = Review.new(user: @u1, book: @b1, review_text: 'test 1')
       expect(r).to be_invalid
       expect(r.save).to be false
     end
 
-    it "should require a description" do
+    it "should require review text" do
       r = Review.new(user: @u1, book: @b1, rating: 4)
       expect(r).to be_invalid
       expect(r.save).to be false
