@@ -19,7 +19,11 @@ RSpec.describe "Show route", type: :system do
   describe "destroying a review" do
     it 'deletes a review' do
       expect(Review.all.count).to eq(0)
-      review = Review.create!(user: @u1, book: @b1, review_text: 'test 1', rating: 3)
+      review = Review.new(review_text: 'test 1', rating: 3)
+      review.user = @u1
+      (@b1).reviews << review
+      review.save!
+
       visit review_path(review)
       expect(page).to have_content('test 1')
       click_on 'Delete'

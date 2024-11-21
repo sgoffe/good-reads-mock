@@ -32,9 +32,9 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     end
 
     it "handles failed create" do 
-      r = Review.new
-      allow(Review).to receive(:new).and_return(r)
-      allow(r).to receive(:save).and_return(nil)
+      # r = Review.new
+      # allow(Review).to receive(:new).and_return(r)
+      # allow(r).to receive(:save).and_return(nil)
 
       visit new_book_review_path(@b1.id)
       fill_in 'Rating', with: 4
@@ -47,11 +47,14 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
 
   describe 'edit a review' do
     before (:each) do
-      @r = Review.create!(user: 'user 1', book: 'Dune', review_text: 'test 1', rating: 3)
+      @r = Review.new(review_text: 'test 1', rating: 3)
+      @review.user = @admin
+      (@b1).reviews << @r
+      @r.save!
     end
 
     it 'successful update' do
-      visit reviews_path
+      visit book_reviews_path
       find("a[href='#{review_path(@r)}']").click
       expect(page).to have_content('test 1')
       click_on 'Edit'
