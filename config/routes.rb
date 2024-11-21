@@ -12,15 +12,20 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "books#index"
-  resources :books 
+  resources :books do
+    resources :reviews
+  end
   resources :users do
+    resources :reviews
     resources :notifications, only: [:index] 
     resources :friendships, only: [:new, :create, :destroy]
   end
-  resources :reviews
+  resources :reviews, only: [:index, :show]
+  
 
   # custom routes 
   get '/books/:id/recommend', to: 'notifications#recommend', as: 'recommend_book'
   post '/books/:id/create_recommendation', to: 'notifications#create_recommendation', as: 'create_book_recommendation'
   get '/friendships/find', to: 'friendships#find', as: 'friendships_find'
+  # get '/reviews', to: 'reviews#index', as: 'reviews'
 end

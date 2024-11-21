@@ -8,12 +8,14 @@
 
     <%= link_to 'More', review, class: "btn btn-sm btn-primary more-btn"%>
   <%end%>
-
+  
+  <% if current_user != nil %>
    <div class="row">
     <div class="col-2">
-      <%= link_to "Leave Review", new_review_path, class: "btn btn-info" %>
+      <%= link_to "Leave Review", new_user_review_path(current_user), method: :post, class: "btn btn-info" %>
     </div>
    </div>
+  <% end %>
 
    <div>
     <%= link_to "Users *temporary*", users_path, class: "btn btn-sm btn-primary" %>
