@@ -3,12 +3,12 @@
     <h1>Create New Review</h1>
   </div>
 
-  <%= form_with model: @review, method: :post do |f| %>
-    <%= f.hidden_field :user, value: current_user %> 
+  <%= form_with model: @review, url: user_reviews_path, method: :post do |f| %>
 
     <div class="form-group">
       <%= f.label :book %>
       <%= f.text_field :book, class: 'form-control' %>
+      
     </div>
 
     <div class="form-group">
