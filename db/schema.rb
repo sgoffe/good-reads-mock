@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_17_230219) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_21_183537) do
   create_table "books", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -25,30 +25,28 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_17_230219) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "notifications", force: :cascade do |t|
-    t.integer "sender_id", null: false
-    t.integer "receiver_id", null: false
-    t.string "title"
-    t.text "message"
-    t.string "notification_type"
-    t.string "notifiable_type", null: false
-    t.integer "notifiable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "url"
-    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
-    t.index ["receiver_id"], name: "index_notifications_on_receiver_id"
-    t.index ["sender_id"], name: "index_notifications_on_sender_id"
-  end
-  
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
+    t.string "title"
+    t.text "message"
+    t.string "notifiable_type", null: false
+    t.integer "notifiable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["receiver_id"], name: "index_notifications_on_receiver_id"
+    t.index ["sender_id"], name: "index_notifications_on_sender_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.integer "rating"
-    t.text "description"
+    t.text "review_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
