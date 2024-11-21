@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resources :notifications, only: [:index] 
     resources :friendships, only: [:new, :create, :destroy]
   end
-  resources :reviews, only: [:index, :show, :destroy]
+  resources :reviews, only: [:index, :show, :edit, :destroy]
   
 
   # custom routes 

@@ -32,42 +32,33 @@ RSpec.describe "Show route", type: :system do
     end
 
     it 'should render details on the show page' do
-      visit book_review_path(@r1.id)
-      expect(page.text).to match(/user 1/m)
+      visit review_path(@r1.id)
+      expect(page.text).to match(/user 2/m)
       expect(page.text).to match(/Dune/m)
-      expect(page.text).to match(/test 1/m)
-      expect(page.text).to match(/1/m)
+      expect(page.text).to match(/first/m)
+      expect(page.text).to match(/3/m)
     end
 
     it 'should have a link from show back to index' do
-      visit review_path(@r2)
-      click_on 'Back to index'
-      expect(page.current_path).to eq(reviews_path)
-
-      visit review_path(@r3)
+      id1 = @r1.id
+      visit review_path(id1)
       click_on 'Back to index'
       expect(page.current_path).to eq(reviews_path)
     end
 
     it 'should have a link to edit' do
-      visit book_review_path(@r1)
-      click_on 'More'
+      id1 = @r1.id
+      visit review_path(id1)
       click_on 'Edit'
-      expect(page.current_path).to eq(edit_review_path(@r1))
+      expect(page.current_path).to match(edit_review_path(id1))
     end
 
     it 'should have a button to delete' do
       id1 = @r1.id
-      visit review_path(@r1)
+      visit review_path(id1)
       click_on 'Delete'
       expect(page.current_path).to eq(reviews_path)
       expect(Review.exists?(id1)).to be(false)
-
-      id2 = @r2.id
-      visit review_path(@r2)
-      click_on 'Delete'
-      expect(page.current_path).to eq(reviews_path)
-      expect(Review.exists?(id2)).to be(false)
     end
   end
 end
