@@ -10,13 +10,22 @@ class ReviewsController < ApplicationController
 
   def new 
     @review = Review.new
+    @user = current_user
   end
 
   def create
-    @user = current_user
-    @review = @user.reviews.build(create_update_params)
-    if @review.save
-      redirect_to reviews_path, notice: 'Review created successfully'
+
+
+    # @review = Review.new(user_id: params[:user_id], book_id: params[:book_id])
+
+
+    if !current_user.nil?
+      @review = Review.new(create_update_params)
+      @review.book = Book.find_by_search_string() #FIXME
+        (@sight).reviews << @review
+      if review.save
+        redirect_to reviews_path, notice: 'Review created successfully'
+      end
     else
       flash[:alert] = 'Review could not be created'
       render :new, status: :unprocessable_content
@@ -53,9 +62,12 @@ class ReviewsController < ApplicationController
 
 private 
   def create_update_params
-    if !params[:book_id].nil?
-      params[:book_id] = @books.find(params[:book_id])
-    end
-    params.require(:review).permit(:book, :description, :rating) #, :book_id
+    # if !params[:book].nil?
+    #   @book = Book.find(params[:book])
+    # end
+    # if !params[:book_id].nil?
+    #   params[:book_id] = @books.find(params[:book_id])
+    # end
+    params.require(:review).permit(:user_id, :book_id, :description, :rating) #, :book_id
   end
 end
