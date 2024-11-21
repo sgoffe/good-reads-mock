@@ -48,13 +48,13 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
   describe 'edit a review' do
     before (:each) do
       @r = Review.new(review_text: 'test 1', rating: 3)
-      @review.user = @admin
-      (@b1).reviews << @r
+      @r.user = @admin
+      @b1.reviews << @r
       @r.save!
     end
 
     it 'successful update' do
-      visit book_reviews_path
+      visit book_reviews_path(@b1.id)
       find("a[href='#{review_path(@r)}']").click
       expect(page).to have_content('test 1')
       click_on 'Edit'

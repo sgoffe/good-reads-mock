@@ -19,7 +19,7 @@ class ReviewsController < ApplicationController
       @review = Review.new(create_update_params)
   
       @review.user = current_user
-      (@book).reviews << @review
+      @book.reviews << @review
 
       if @review.save
         redirect_to book_path(@book), notice: 'Review created successfully'
@@ -37,7 +37,7 @@ class ReviewsController < ApplicationController
   def update
     @review = Review.find(params[:id])
     if @review.update(create_update_params)
-      redirect_to review_path(@review), notice: 'Review updated successfully'
+      redirect_to book_review_path(@review), notice: 'Review updated successfully'
     else
       flash[:alert] = 'Review could not be edited'
       render :edit, status: :unprocessable_content

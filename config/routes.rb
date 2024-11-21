@@ -20,12 +20,12 @@ Rails.application.routes.draw do
     resources :notifications, only: [:index] 
     resources :friendships, only: [:new, :create, :destroy]
   end
-  resources :reviews, only: [:index, :show]
+  resources :reviews, only: [:index, :show, :destroy]
   
 
   # custom routes 
   get '/books/:id/recommend', to: 'notifications#recommend', as: 'recommend_book'
   post '/books/:id/create_recommendation', to: 'notifications#create_recommendation', as: 'create_book_recommendation'
   get '/friendships/find', to: 'friendships#find', as: 'friendships_find'
-  # get '/reviews', to: 'reviews#index', as: 'reviews'
+  # get '/books/:id/reviews/:id', to: 'reviews#show'
 end
