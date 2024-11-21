@@ -4,7 +4,7 @@
   <p>Reviewer: <%= @review.user.first %> <%= @review.user.last %></p>
   <p><%= @review.review_text %></p>
 
-  <%= link_to "Edit", edit_review_path(@review), class: "btn btn-info" %>
+  <%= link_to "Edit", edit_book_review_path(@review), class: "btn btn-info" %>
   <%= button_to "Delete", @review, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Are you sure?" } } %>
   <%= link_to "Back to index", reviews_path, class: "btn btn-secondary" %>
 

@@ -10,21 +10,19 @@ class ReviewsController < ApplicationController
 
   def new 
     @review = Review.new
-    @user = current_user
+    @book = Book.find(params[:book_id])
   end
 
   def create
-
-
-    # @review = Review.new(user_id: params[:user_id], book_id: params[:book_id])
-
-
     if !current_user.nil?
+      @book = Book.find(params[:book_id])
       @review = Review.new(create_update_params)
-      @review.book = Book.find_by_search_string() #FIXME
-        (@sight).reviews << @review
-      if review.save
-        redirect_to reviews_path, notice: 'Review created successfully'
+  
+      @review.user = current_user
+      @book.reviews << @review
+
+      if @review.save
+        redirect_to book_path(@book), notice: 'Review created successfully'
       end
     else
       flash[:alert] = 'Review could not be created'
@@ -39,7 +37,7 @@ class ReviewsController < ApplicationController
   def update
     @review = Review.find(params[:id])
     if @review.update(create_update_params)
-      redirect_to review_path(@review), notice: 'Review updated successfully'
+      redirect_to review_path(@review.id), notice: 'Review updated successfully'
     else
       flash[:alert] = 'Review could not be edited'
       render :edit, status: :unprocessable_content
@@ -68,6 +66,6 @@ private
     # if !params[:book_id].nil?
     #   params[:book_id] = @books.find(params[:book_id])
     # end
-    params.require(:review).permit(:user_id, :book_id, :review_text, :rating) #, :book_id
+    params.require(:review).permit(:review_text, :rating)
   end
 end
