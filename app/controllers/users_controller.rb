@@ -22,20 +22,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def create
-    @user = User.new(create_update_params)
-    if @user.save
-      flash[:message] = "Successfully created user #{@user.first} #{@user.last}"
-    else
-      flash[:message] = "Unable to create user. Please try again"
-    end
-    redirect_to users_path
-  end
-
-  def new
-    @user = User.new
-  end
-
   def destroy
     @user = User.find(params[:id])
     if @user.destroy

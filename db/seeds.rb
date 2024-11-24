@@ -40,7 +40,7 @@ b3 = Book.create!(title: 'Angela\'s Ashes',
 
 u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
-                email: 'sgoffe@colslay.edu',
+                email: 'sgoffee@colslay.edu',
                 bio: 'living loving and laughing',
                 password: 'sgoffe')
 

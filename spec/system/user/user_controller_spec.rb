@@ -28,6 +28,16 @@ RSpec.describe "UserController", type: :system do
             expect(page).to have_content("Barry")
             expect(page).not_to have_content("Brett")
         end
+
+        it "fails to update Brett" do
+            visit user_path(@u2)
+            click_on "Edit"
+            fill_in "First", with: "Barry"
+            expect(User).to receive(:find).and_return(@u1)
+            expect(@u1).to receive(:update).and_return(nil)
+            click_on "Update User"
+            expect(page).to have_content("Edit User")
+        end
     end
     describe "new/create methods" do 
         it "successfully creates Durk" do
