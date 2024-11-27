@@ -1,3 +1,5 @@
 <div>
     <%= render partial: "userInfo", locals: {person: current_user} %>
+
+    <%= link_to "Inbox", user_notifications_path(current_user) %>
 </div>
