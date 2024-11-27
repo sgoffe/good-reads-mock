@@ -27,5 +27,6 @@ Rails.application.routes.draw do
   get '/books/:id/recommend', to: 'notifications#recommend', as: 'recommend_book'
   post '/books/:id/create_recommendation', to: 'notifications#create_recommendation', as: 'create_book_recommendation'
   get '/friendships/find', to: 'friendships#find', as: 'friendships_find'
+  get '/profile', to: 'users#profile'
   # get '/books/:id/reviews/:id', to: 'reviews#show'
 end
