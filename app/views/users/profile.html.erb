@@ -2,12 +2,15 @@
 <div class="row">
     <div class="col text-end">
         <h1><%= current_user.first.chr.capitalize %><%= current_user.last.chr.capitalize %></h1>
-        <%= link_to "Inbox", user_notifications_path(current_user) %>
+    </div>
+    
+    <div class="col-auto text-start">
+        <%= render partial: "userInfo", locals: {person: current_user} %>
+        <p class="fst-italic">Fanatic Reader since <%= current_user.created_at.strftime("%F") %></p>
     </div>
     
     <div class="col text-start">
-        <%= render partial: "userInfo", locals: {person: current_user} %>
+        <%= button_to "Inbox", user_notifications_path(current_user) %>
     </div>
-    
 </div>
 </div>
