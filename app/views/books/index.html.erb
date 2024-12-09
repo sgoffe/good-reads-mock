@@ -62,6 +62,8 @@
                         
                         <% if book.is_a?(Book) %>
                             <%= link_to "Reviews for #{book.title}", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
+                            <%= link_to "More...", book_path(book.id), class: "btn btn-sm btn-primary" %>
+
                         <% else %>
                             <%= link_to "More...", google_book_path(book.id), class: "btn btn-sm btn-primary" %>
                             <%= link_to "View on Google Books", "https://books.google.com?q=#{book[:title]}", class: "btn btn-sm btn-secondary" %>
