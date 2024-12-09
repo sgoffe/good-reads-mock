@@ -81,10 +81,13 @@ class BooksController < ApplicationController
   end
 
   def show_google
-    @book = Book.find_by(id: params[:id])
+    google_id = params[:id]
+    google_books_data = fetch_books_from_google_books
 
-    unless @book
-      redirect_to books_path, alert: "Book not found"
+    @book = google_books_data.find { |book| book.id == google_id }
+
+    if @book.nil?
+      redirect_to books_path, alert: 'Google book not found'
     end
   end
   
