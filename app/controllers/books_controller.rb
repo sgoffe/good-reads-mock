@@ -1,6 +1,13 @@
+require 'ostruct'
+
 class BooksController < ApplicationController
+
   def index
-    @books = Book.all.order(:title)
+    if params[:source] == 'google_books'
+      @books = fetch_books_from_google_books()
+    else
+      @books = Book.all.order(:title)
+    end
 
     if params[:query].present? && params[:query].length > 2
       @books = @books.by_search_string(params[:query])
@@ -19,7 +26,6 @@ class BooksController < ApplicationController
       end
       @books = @books.order(params[:sort])
       @sort_filt = params[:sort]
-      Rails.logger.debug(@books.to_sql)
     end
 
     if params[:genre].present?
@@ -60,7 +66,7 @@ class BooksController < ApplicationController
 
   def destroy
     @book = Book.find(params[:id])
-    # @book.images.each {|img| img.purge}
+    # @book.images.each {|img| img.purge }
     @book.destroy
     redirect_to books_path, notice: 'Book deleted successfully'
   end
@@ -70,4 +76,24 @@ class BooksController < ApplicationController
   def create_params
     params.require(:book).permit(:title, :author, :genre, :pages, :description, :publisher, :publish_date, :isbn_13, :language_written) # any other fields
   end
+
+  # google books API response parser helper function
+  def fetch_books_from_google_books(query = '%27%27')
+    # query = params[:query] || ''
+    url = "https://www.googleapis.com/books/v1/volumes?q=#{query}"
+    response = HTTParty.get(url)
+    books_data = response.parsed_response["items"] || []
+  
+    books_data.map.with_index do |item, index|
+      OpenStruct.new(
+        id: "google_#{index}",
+        title: item["volumeInfo"]["title"],
+        author: item["volumeInfo"]["authors"]&.join(', ') || 'Unknown Author',
+        description: item["volumeInfo"]["description"] || 'No description available.',
+        genre: item["volumeInfo"]["categories"]&.join(', ') || 'Unknown',
+        publisher: item["volumeInfo"]["publisher"] || 'Unknown'
+      )
+    end
+  end  
+
 end

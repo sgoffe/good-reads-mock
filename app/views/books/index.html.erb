@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
 <head class="container">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,45 +29,51 @@
 
         <div> 
             <%= form.label :genre, "Genre" %>
-            <%= form.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, include_blank: true, selected: @genre_filt%>
+            <%= form.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, include_blank: true, selected: @genre_filt %>
         </div>
 
         <div>
             <%= form.submit "Filter Books" %>
         </div>
-
-        <div>
-            <%= link_to "Clear filters", books_path(query: params[:query]) %>
-            <%= link_to "Clear search", books_path %>
-        </div>
-
     <% end %>
-
 </div>
 
-<%= link_to "Add a new book", new_book_path %>
+<div class="row">
+    <%= link_to "View Seeded Books", books_path(source: "seeded_books", query: params[:query]), class: "btn btn-primary" %>
+    <%= link_to "View Google Books", books_path(source: "google_books", query: params[:query]), class: "btn btn-secondary" %>
+</div>
 
-<div class="row row-cols-4">
-    <% @books.each_with_index do |book| %>
-        <div class="col">
-            <div class="card mb-1 p-2 h-100">
-            <!-- if !book.images.length.zero? -->
-            <!-- image_tag book.images.first.variant(:thumb), width: 60, class: "card-img-top" -->
-            <!-- end -->
-                <div id ="book-card" class="card-body">
-                    <h3 class="card-title" > <%= book.title %> </h3>
-                    <h5> <%= book.author %> </h5>
-                    <p class="card-text"> <%= book.description %> </p>
-                    <%= link_to "More...", book, class: "btn btn-sm btn-primary" %>
-                </div> 
+<% if @books.any? %>
+    <div class="row row-cols-4">
+        <% @books.each do |book| %>
+            <div class="col">
+                <div class="card mb-1 p-2 h-100">
+                <div id="book-card" class="card-body">
+                    <h3 class="card-title"><%= book[:title] %></h3>
+                    <h5><%= book[:author] || 'Unknown Author' %></h5>
+                    <p class="card-text"><%= truncate(book[:description] || 'No description available.', length: 100) %></p>
+                    <p><strong>Genre:</strong> <%= book[:genre] || 'Unknown' %></p>
+                    <p><strong>Publisher:</strong> <%= book[:publisher] || 'Unknown' %></p>
+
+                    <% if book.is_a?(Book) %>
+                        <%= link_to "Reviews for #{book.title}", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
+                    <% else %>
+                        <%= link_to "View on Google Books", "https://books.google.com?q=#{book[:title]}", class: "btn btn-sm btn-secondary" %>
+                        <p>No reviews available for this book.</p>
+                    <% end %>
+                </div>
+                </div>
             </div>
-        </div>
-    <% end %>
-</div>
+        <% end %>
+    </div>
+<% else %>
+    <p>No books found.</p>
+<% end %>
 
 <div>
     <%= link_to "Users *temporary*", users_path, class: "btn btn-sm btn-primary" %>
     <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>
 </div>
+
 </body>
 </html>
