@@ -48,20 +48,22 @@
         <% @books.each do |book| %>
             <div class="col">
                 <div class="card mb-1 p-2 h-100">
-                <div id="book-card" class="card-body">
-                    <h3 class="card-title"><%= book[:title] %></h3>
-                    <h5><%= book[:author] || 'Unknown Author' %></h5>
-                    <p class="card-text"><%= truncate(book[:description] || 'No description available.', length: 100) %></p>
-                    <p><strong>Genre:</strong> <%= book[:genre] || 'Unknown' %></p>
-                    <p><strong>Publisher:</strong> <%= book[:publisher] || 'Unknown' %></p>
+                    <div id="book-card" class="card-body">
+                        <h3 class="card-title"><%= book[:title] %></h3>
+                        <h5><%= book[:author] || 'Unknown Author' %></h5>
+                        <p class="card-text"><%= truncate(book[:description] || 'No description available.', length: 100) %></p>
+                        <p><strong>Genre:</strong> <%= book[:genre] || 'Unknown' %></p>
+                        <p><strong>Publisher:</strong> <%= book[:publisher] || 'Unknown' %></p>
+                        
+                        <%= link_to "More...", book_path(book), class: "btn btn-sm btn-primary" %>
 
-                    <% if book.is_a?(Book) %>
-                        <%= link_to "Reviews for #{book.title}", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
-                    <% else %>
-                        <%= link_to "View on Google Books", "https://books.google.com?q=#{book[:title]}", class: "btn btn-sm btn-secondary" %>
-                        <p>No reviews available for this book.</p>
-                    <% end %>
-                </div>
+                        <% if book.is_a?(Book) %>
+                            <%= link_to "Reviews for #{book.title}", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
+                        <% else %>
+                            <%= link_to "View on Google Books", "https://books.google.com?q=#{book[:title]}", class: "btn btn-sm btn-secondary" %>
+                            <p>No reviews available for this book.</p>
+                        <% end %>
+                    </div>
                 </div>
             </div>
         <% end %>
