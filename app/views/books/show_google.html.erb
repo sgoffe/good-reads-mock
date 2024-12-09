@@ -1,7 +1,43 @@
-<h1><%= @book.title %></h1>
-<h3>Author: <%= @book.author %></h3>
-<p><%= @book.description %></p>
-<p><strong>Genre:</strong> <%= @book.genre %></p>
-<p><strong>Publisher:</strong> <%= @book.publisher %></p>
+<div class="container">
+<div class="row">
 
-<%= link_to 'Back to Books', books_path, class: 'btn btn-secondary' %>
+<h2 class="hero"><%= @book.title %></h3>
+
+<h5> <%= @book.author %> </h5>
+<h6> <%= @book.genre.humanize %> • <%= @book.pages %> pages</h5>
+
+<div class="col">
+    <!-- @book.images.each do |image| -->
+        <!-- image_tag image.variant(:medium) -->
+    <!-- end -->
+
+    <br>
+    <h6> Description: </h6>
+    <p class="card-text"> <%= @book.description %> </p>
+    <br>
+    <h6> Publisher: <%= @book.publisher %> </h6>
+    <h6> Published: <%= @book.publish_date %> </h6>
+    <h6> ISBN 13: <%= @book.isbn_13 %> </h6>
+    <h6> Language: <%= @book.language_written %> </h6>
+    <br>
+
+    <%= link_to "Back to index", books_path, class: "btn btn-secondary" %>
+    <br>
+    <br>
+
+    <%= button_to "Add to Library", add_google_book_path(book: {
+    title: @book.title,
+    author: @book.author,
+    genre: @book.genre,
+    description: @book.description,
+    publisher: @book.publisher,
+    publish_date: @book.publish_date,
+    pages: @book.pages,
+    language_written: @book.language_written,
+    isbn_13: @book.isbn_13
+    }), method: :post, class: "btn btn-success" %>
+
+</div>
+
+</div>
+</div>

@@ -8,9 +8,11 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# Seeds file to ensure records exist with the new genre as a string
+
 b1 = Book.create!(title: 'Sula',
                 author: 'Toni Morrison',
-                genre: :historical_fiction,
+                genre: 'historical_fiction',
                 pages: 174,
                 description: 'Sula and Nel are two young black girls: clever and poor. They grow up together sharing their secrets, dreams and happiness. Then Sula breaks free from their small-town community in the uplands of Ohio to roam the cities of America. When she returns ten years later much has changed. Including Nel, who now has a husband and three children. The friendship between the two women becomes strained and the whole town grows wary as Sula continues in her wayward, vagabond and uncompromising ways.',
                 publisher: 'Plume',
@@ -20,7 +22,7 @@ b1 = Book.create!(title: 'Sula',
 
 b2 = Book.create!(title: 'Jailbird',
                 author: 'Kurt Vonnegut Jr.',
-                genre: :fiction,
+                genre: 'fiction',
                 pages: 288,
                 description: 'Jailbird takes us into a fractured and comic, pure Vonnegut world of high crimes and misdemeanors in government—and in the heart. This wry tale follows bumbling bureaucrat Walter F. Starbuck from Harvard to the Nixon White House to the penitentiary as Watergate’s least known co-conspirator. But the humor turns dark when Vonnegut shines his spotlight on the cold hearts and calculated greed of the mighty, giving a razor-sharp edge to an unforgettable portrait of power and politics in our times.',
                 publisher: 'Dell',
@@ -30,7 +32,7 @@ b2 = Book.create!(title: 'Jailbird',
 
 b3 = Book.create!(title: 'Angela\'s Ashes',
                 author: 'Frank McCourt',
-                genre: :nonfiction,
+                genre: 'nonfiction',
                 pages: 452,
                 description: 'So begins the Pulitzer Prize winning memoir of Frank McCourt, born in Depression-era Brooklyn to recent Irish immigrants and raised in the slums of Limerick, Ireland. Frank\'s mother, Angela, has no money to feed the children since Frank\'s father, Malachy, rarely works, and when he does he drinks his wages. Yet Malachy—exasperating, irresponsible and beguiling—does nurture in Frank an appetite for the one thing he can provide: a story. Frank lives for his father\'s tales of Cuchulain, who saved Ireland, and of the Angel on the Seventh Step, who brings his mother babies.',
                 publisher: 'Harper Perennial',
@@ -58,12 +60,12 @@ u3 = User.create!(first: 'Mickey',
 
 r1 = b1.reviews.create!(rating: 5,
                 review_text: 'currently my favorite book', 
-                :user => u1)
+                user: u1) 
 
 r2 = b2.reviews.create!(rating: 4,
                 review_text: 'Maps Fantasy Library', 
-                :user => u2)
+                user: u2)
 
 r3 = b3.reviews.create!(rating: 3,
                 review_text: 'sad',
-                :user => u3)
+                user: u3) 
