@@ -33,6 +33,11 @@
         </div>
 
         <div>
+            <%= form.label :source, "Source" %>
+            <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), include_blank: true %>
+        </div>
+
+        <div>
             <%= form.submit "Filter Books" %>
         </div>
     <% end %>
@@ -55,11 +60,10 @@
                         <p><strong>Genre:</strong> <%= book[:genre] || 'Unknown' %></p>
                         <p><strong>Publisher:</strong> <%= book[:publisher] || 'Unknown' %></p>
                         
-                        <%= link_to "More...", book_path(book), class: "btn btn-sm btn-primary" %>
-
                         <% if book.is_a?(Book) %>
                             <%= link_to "Reviews for #{book.title}", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
                         <% else %>
+                            <%= link_to "More...", google_book_path(book.id), class: "btn btn-sm btn-primary" %>
                             <%= link_to "View on Google Books", "https://books.google.com?q=#{book[:title]}", class: "btn btn-sm btn-secondary" %>
                             <p>No reviews available for this book.</p>
                         <% end %>

@@ -4,35 +4,66 @@ class BooksController < ApplicationController
 
   def index
     if params[:source] == 'google_books'
-      @books = fetch_books_from_google_books()
-    else
+      @books = fetch_books_from_google_books(params[:query])
+    elsif params[:source] == 'seeded_books'
       @books = Book.all.order(:title)
+    else
+      @books = Book.all.order(:title) # Default case when no source is specified
     end
-
+  
+    # Apply search query filtering if query is present
     if params[:query].present? && params[:query].length > 2
-      @books = @books.by_search_string(params[:query])
+      if params[:source] == 'google_books'
+        # Manually filter Google Books by title or author using select!
+        @books.select! { |book| book.title.downcase.include?(params[:query].downcase) || book.author.to_s.downcase.include?(params[:query].downcase) }
+      else
+        @books = @books.by_search_string(params[:query])
+      end
       @query_filt = params[:query]
     end
-
+  
+    # Apply rating filtering if rating is provided
     if params[:rating].present?
-      @books = @books.with_average_rating(params[:rating].to_f)
+      if params[:source] == 'google_books'
+        # Manually filter Google Books by rating
+        @books.select! { |book| book.respond_to?(:average_rating) && book.average_rating.to_f >= params[:rating].to_f }
+      else
+        @books = @books.with_average_rating(params[:rating].to_f)
+      end
       @rating_filt = params[:rating]
     end
-
-    if params[:sort].present?
-      @books = @books.unscope(:order)
-      if(params[:sort].match(/rating/i)) 
-        @books = @books.rating
-      end
-      @books = @books.order(params[:sort])
-      @sort_filt = params[:sort]
-    end
-
+  
+    # Apply genre filtering if genre is provided
     if params[:genre].present?
-      @books = @books.in_genre(params[:genre])
+      if params[:source] == 'google_books'
+        # Manually filter Google Books by genre
+        @books.select! { |book| book.genre.to_s.downcase.include?(params[:genre].downcase) }
+      else
+        @books = @books.in_genre(params[:genre])
+      end
       @genre_filt = params[:genre]
     end
-
+  
+    # Apply sorting if sort param is provided
+    if params[:sort].present?
+      if params[:source] == 'google_books'
+        # Manually sort Google Books based on title or rating
+        if params[:sort].match(/title/i)
+          @books.sort_by! { |book| book.title }
+        elsif params[:sort].match(/rating/i)
+          @books.sort_by! { |book| -book.average_rating.to_f }
+        end
+      else
+        @books = @books.unscope(:order)
+        if(params[:sort].match(/rating/i)) 
+          @books = @books.rating
+        end
+        @books = @books.order(params[:sort])
+      end
+      @sort_filt = params[:sort]
+    end
+  
+    # Define sorts for the Book model
     @sorts = [
       ["Title - A to Z", "title ASC"],
       ["Title - Z to A", "title DESC"],
@@ -44,9 +75,20 @@ class BooksController < ApplicationController
       ["Release Date - Oldest to Newest", "publish_date ASC"]
     ]
   end
-
+  
   def show
     @book = Book.find(params[:id])
+  end
+
+  def show_google
+    google_id = params[:id]
+    google_books_data = fetch_books_from_google_books
+
+    @book = google_books_data.find { |book| book.id == google_id }
+
+    if @book.nil?
+      redirect_to books_path, alert: 'Google book not found'
+    end
   end
   
   def create
@@ -78,8 +120,7 @@ class BooksController < ApplicationController
   end
 
   # google books API response parser helper function
-  def fetch_books_from_google_books(query = '%27%27')
-    # query = params[:query] || ''
+  def fetch_books_from_google_books(query = 'Testing')
     url = "https://www.googleapis.com/books/v1/volumes?q=#{query}"
     response = HTTParty.get(url)
     books_data = response.parsed_response["items"] || []
@@ -94,6 +135,5 @@ class BooksController < ApplicationController
         publisher: item["volumeInfo"]["publisher"] || 'Unknown'
       )
     end
-  end  
-
+  end
 end

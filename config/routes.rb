@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   root "books#index"
   resources :books do
     resources :reviews
-  end
+  end  
+
   resources :users do
     resources :reviews
     resources :notifications, only: [:index] 
@@ -28,5 +29,7 @@ Rails.application.routes.draw do
   post '/books/:id/create_recommendation', to: 'notifications#create_recommendation', as: 'create_book_recommendation'
   get '/friendships/find', to: 'friendships#find', as: 'friendships_find'
   get '/profile', to: 'users#profile'
+  get '/google_books/:id', to: 'books#show_google', as: 'google_book'
+
   # get '/books/:id/reviews/:id', to: 'reviews#show'
 end

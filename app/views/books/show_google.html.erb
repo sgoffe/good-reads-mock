@@ -1,0 +1,7 @@
+<h1><%= @book.title %></h1>
+<h3>Author: <%= @book.author %></h3>
+<p><%= @book.description %></p>
+<p><strong>Genre:</strong> <%= @book.genre %></p>
+<p><strong>Publisher:</strong> <%= @book.publisher %></p>
+
+<%= link_to 'Back to Books', books_path, class: 'btn btn-secondary' %>
