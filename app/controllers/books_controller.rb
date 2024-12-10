@@ -160,7 +160,7 @@ class BooksController < ApplicationController
   private
   
   def create_params
-    params.require(:book).permit(:title, :author, :genre, :pages, :description, :publisher, :publish_date, :isbn_13, :language_written)
+    params.require(:book).permit(:title, :author, :genre, :pages, :description, :publisher, :publish_date, :isbn_13, :language_written, :image)
   end
 
   def set_global_query
@@ -188,7 +188,8 @@ class BooksController < ApplicationController
         publish_date: item['volumeInfo']['publishedDate'] || 'Unknown',
         pages: item['volumeInfo']['pageCount'] || 'Unknown',
         language_written: item['volumeInfo']['language'] || 'Unknown',
-        isbn_13: item['volumeInfo']['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown'
+        isbn_13: item['volumeInfo']['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown',
+        image_url: item['volumeInfo']['imageLinks']&.dig('thumbnail') || nil
         # google_books_url: "https://books.google.com?q=#{item[:title]}"
       )
     end

@@ -57,10 +57,22 @@
                     <div class="card-body">
                         <h3 class="card-title"><%= book.title %></h3>
                         <h5><%= book.author || 'Unknown Author' %></h5>
+
+                        <%# image for Seeded Books (attached images) %>
+                        <% if book.is_a?(Book) && book.image.attached? %>
+                            <%= image_tag book.image.variant(resize: "200x200"), alt: "#{book.title} cover", class: "img-fluid" %>
+                        <% elsif book.is_a?(OpenStruct) && book[:image_url] %>
+                            <%# for Google Books, image URL  %>
+                            <%= image_tag book[:image_url], alt: "#{book.title} cover", class: "img-fluid" %>
+                        <% else %>
+                            <%# default to cover if no image is available %>
+                            <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
+                        <% end %>
+
                         <p class="card-text"><%= truncate(book.description || 'No description available.', length: 100) %></p>
                         <p><strong>Genre:</strong> <%= book.genre || 'Unknown' %></p>
                         <p><strong>Publisher:</strong> <%= book.publisher || 'Unknown' %></p>
-                        <li><%= book.id %></li>
+                        <!-- <li><%= book.id %></li> -->
 
                         <div class="btn-group">
                             <% if book.is_a?(Book) %>

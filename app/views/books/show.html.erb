@@ -7,9 +7,11 @@
 <h6> <%= @book.genre %> • <%= @book.pages %> pages</h5>
 
 <div class="col">
-    <!-- @book.images.each do |image| -->
-        <!-- image_tag image.variant(:medium) -->
-    <!-- end -->
+    <% if @book.image.attached? %>
+      <%= image_tag @book.image.variant(resize: "300x300"), alt: "#{@book.title} cover", class: "img-fluid" %>
+    <% else %>
+      <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
+    <% end %>
 
     <br>
     <h6> Description: </h6>
