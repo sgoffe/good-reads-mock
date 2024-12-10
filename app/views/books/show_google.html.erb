@@ -26,15 +26,15 @@
     <br>
 
     <%= button_to "Add to Library", add_google_book_path(book: {
-    title: @book.title,
-    author: @book.author,
-    genre: @book.genre,
-    description: @book.description,
-    publisher: @book.publisher,
-    publish_date: @book.publish_date,
-    pages: @book.pages,
-    language_written: @book.language_written,
-    isbn_13: @book.isbn_13
+        title: @book.title,
+        author: @book.author,
+        genre: @book.genre,
+        description: @book.description,
+        publisher: @book.publisher,
+        publish_date: @book.publish_date,
+        pages: @book.pages,
+        language_written: @book.language_written,
+        isbn_13: @book.isbn_13
     }), method: :post, class: "btn btn-success" %>
 
 </div>

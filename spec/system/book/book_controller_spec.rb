@@ -7,14 +7,12 @@ RSpec.describe "Book actions", type: :system do
     driven_by(:rack_test)
   end
 
-  
-
   describe "create a new book " do
     it 'successful create' do
       visit new_book_path
       fill_in 'Title', with: 'Test Book'
       fill_in 'Author', with: 'Test Description'
-      select 'Fiction', from: 'Genre'
+      fill_in 'Genre', with: 'Fiction' 
       fill_in 'Pages', with: 100
       fill_in 'Description', with: '0123456789'
       fill_in 'Publisher', with: 'Test Publisher'
@@ -45,22 +43,21 @@ RSpec.describe "Book actions", type: :system do
                 email: "aa@gmail.com", bio:"wassup", 
                 password:"aamerson", role: :admin)
       @b1 = Book.create!(title: "a_test1", author: "test",
-                  genre: :fiction,
+                  genre: "fiction", 
                   pages: 100, description: "test",
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @b2 = Book.create!(title: "b_test2", author: "test",
-                  genre: :fiction,
+                  genre: "fiction", 
                   pages: 200, description: "test",
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @b3 = Book.create!(title: "c_test3", author: "test",
-                  genre: :fiction,
+                  genre: "fiction", 
                   pages: 300, description: "test",
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
-                  @r1 = Review.create!(user: @u1, book: @b1, review_text: 'first', rating: 3)
-	    
+      @r1 = Review.create!(user: @u1, book: @b1, review_text: 'first', rating: 3)
     end
 
     it 'should have links from each site on index to the respective show page' do
@@ -115,23 +112,23 @@ RSpec.describe "Book actions", type: :system do
                 email: "aa@gmail.com", bio:"wassup", 
                 password:"aamerson", role: :admin)
       @b1 = Book.create!(title: "a_test1", author: "test",
-                  genre: :nonfiction,
+                  genre: "nonfiction", 
                   pages: 100, description: "test",
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @b2 = Book.create!(title: "b_test2", author: "test",
-                  genre: :fiction,
+                  genre: "fiction", 
                   pages: 200, description: "test",
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @b3 = Book.create!(title: "c_test3", author: "test",
-                  genre: :fiction,
+                  genre: "fiction", 
                   pages: 300, description: "test",
                   publisher: "test",
                   publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @r2 = Review.create!(user: @u1, book: @b1, review_text: 'second', rating: 4)
       @r3 = Review.create!(user: @u1, book: @b2, review_text: 'third', rating: 3)
-                end
+    end
 
     it "should allow the user to search by filling in query" do
       visit books_path
@@ -169,27 +166,21 @@ RSpec.describe "Book actions", type: :system do
 
     it "should filter by genre" do
       visit books_path
-      select 'Fiction', from: 'genre'
+      fill_in 'genre', with: 'fiction'
       click_button 'Filter Books'
       expect(page.text).to match(/c_test3/i)
       expect(page.text).to match(/b_test2/i)
       expect(page.text).not_to match(/a_test1/i)
     end
-
   end
-
 
   describe "destroy" do
     before(:each) do 
-    # @u1 = User.create!(first: "Allie", last: "Amberson", 
-    #             email: "aa@gmail.com", bio:"wassup", 
-    #             password:"aamerson", role: :admin)
-    @b1 = Book.create!(title: "a_test1", author: "test",
-                genre: :nonfiction,
+      @b1 = Book.create!(title: "a_test1", author: "test",
+                genre: "nonfiction", 
                 pages: 100, description: "test",
                 publisher: "test",
                 publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
-    #@r1 = Review.create!(user: @u1, book: @b1, review_text: 'second', rating: 4)
     end
 
     it "should destroy book" do #and associated review

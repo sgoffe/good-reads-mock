@@ -14,7 +14,7 @@
     <%= form_with url: books_path, method: :get, local: true do |form| %>
         <div>
             <%= form.label :query, "Search for" %>
-            <%= form.text_field :query, value: @query_filt %>
+            <%= form.text_field :query %>
         </div>
 
         <div>
@@ -27,10 +27,10 @@
             <%= form.number_field :rating, in: 0..5, step: 0.5, value: @rating_filt %>
         </div>
 
-        <%# <div> %>
-            <%# <%= form.label :genre, "Genre" %> 
-            <%# <%= form.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, include_blank: true, selected: @genre_filt %> 
-        <%# </div> %>
+        <div>
+            <%= form.label :genre, "Genre" %> 
+            <%= form.text_field :genre %>
+        </div>
 
         <div>
             <%= form.label :source, "Source" %>
@@ -54,26 +54,24 @@
     <div class="row row-cols-4">
         <% @books.each do |book| %>
             <div class="col">
-                <div class="card mb-1 p-2 h-100">
-                    <div id="book-card" class="card-body">
-                        <h3 class="card-title"><%= book[:title] %></h3>
-                        <h5><%= book[:author] || 'Unknown Author' %></h5>
-                        <p class="card-text"><%= truncate(book[:description] || 'No description available.', length: 100) %></p>
-                        <p><strong>Genre:</strong> <%= book[:genre] || 'Unknown' %></p>
-                        <p><strong>Publisher:</strong> <%= book[:publisher] || 'Unknown' %></p>
+                <div class="card mb-1 p-2 h-100" id="book-card">
+                    <div class="card-body">
+                        <h3 class="card-title"><%= book.title %></h3>
+                        <h5><%= book.author || 'Unknown Author' %></h5>
+                        <p class="card-text"><%= truncate(book.description || 'No description available.', length: 100) %></p>
+                        <p><strong>Genre:</strong> <%= book.genre || 'Unknown' %></p>
+                        <p><strong>Publisher:</strong> <%= book.publisher || 'Unknown' %></p>
                         <li><%= book.id %></li>
 
                         <div class="btn-group">
                             <% if book.is_a?(Book) %>
                                 <!-- Seeded Books -->
-                                <%= link_to "more...", book_path(book.id), class: "btn btn-sm btn-primary" %>
+                                <%= link_to "More...", book_path(book), class: "btn btn-sm btn-primary" %>
                                 <%= link_to "Reviews", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
                             <% else %>
                                 <!-- Google Books -->
                                 <%= link_to "More...", google_book_path(id: book.id), class: "btn btn-sm btn-primary" %>
-                                <%= link_to "View on Google Books", "https://books.google.com?q=#{book[:title]}", class: "btn btn-sm btn-secondary" %>
-                                <%# <%= link_to "Google Books", book[:google_books_url], target: "_blank", class: "btn btn-sm btn-secondary" %>
-                                <%# <%= button_to "Add to My Library", add_google_book_path, method: :post, class: "btn btn-sm btn-success" %>
+                                <%= link_to "View on Google Books", "https://books.google.com?q=#{book.title}", class: "btn btn-sm btn-secondary" %>
                             <% end %>
                         </div>
                     </div>

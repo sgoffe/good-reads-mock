@@ -4,13 +4,15 @@ class BooksController < ApplicationController
   before_action :set_global_query, only: [:index, :show_google]
 
   def index
+    params[:source] ||= 'seeded_books'
+  
     @books = if params[:source] == 'google_books'
                fetch_books_from_google_books(@query, params[:max_results] || 10)
              else
                Book.all.order(:title)
              end
-
-    # search query filtering
+  
+    # Search query filtering
     if @query.present? && @query.length > 2
       if params[:source] == 'google_books'
         @books.select! do |book|
@@ -22,8 +24,8 @@ class BooksController < ApplicationController
       end
       @query_filt = @query
     end
-
-    # rating filtering
+  
+    # Rating filtering
     if params[:rating].present?
       if params[:source] == 'google_books'
         @books.select! { |book| book.respond_to?(:average_rating) && book.average_rating.to_f >= params[:rating].to_f }
@@ -32,8 +34,8 @@ class BooksController < ApplicationController
       end
       @rating_filt = params[:rating]
     end
-
-    # genre filtering
+  
+    # Genre filtering
     if params[:genre].present?
       if params[:source] == 'google_books'
         @books.select! { |book| book.genre.to_s.downcase.include?(params[:genre].downcase) }
@@ -42,7 +44,7 @@ class BooksController < ApplicationController
       end
       @genre_filt = params[:genre]
     end
-
+  
     # Apply sorting if sort param is provided
     if params[:sort].present?
       if params[:source] == 'google_books'
@@ -53,8 +55,8 @@ class BooksController < ApplicationController
       end
       @sort_filt = params[:sort]
     end
-
-    # sorts definition
+  
+    # Sort options
     @sorts = [
       ["Title - A to Z", "title ASC"],
       ["Title - Z to A", "title DESC"],
@@ -120,7 +122,14 @@ class BooksController < ApplicationController
   def add_google_book
     book_data = params[:book]
   
-    # Initialize a new book with the data from Google Books
+    existing_book = Book.find_by(isbn_13: book_data[:isbn_13])
+    
+    if existing_book
+      redirect_to book_path(existing_book), notice: "This book is already in your library."
+      return
+    end
+  
+    # new book with the data from Google Books
     @google_book = Book.new(
       title: book_data[:title],
       author: book_data[:author],
@@ -133,12 +142,14 @@ class BooksController < ApplicationController
       isbn_13: book_data[:isbn_13]
     )
   
+    # Save the book if it's valid, and redirect to its show page
     if @google_book.save
       redirect_to book_path(@google_book), notice: "Google Book '#{@google_book.title}' was successfully added."
     else
       redirect_to books_path, alert: "Error adding Google Book."
     end
   end
+
   def destroy
     @book = Book.find(params[:id])
     # @book.images.each {|img| img.purge }
@@ -153,11 +164,15 @@ class BooksController < ApplicationController
   end
 
   def set_global_query
-    @query = params[:query] || 'default'
+    @query = params[:query] || ''
   end
 
   # Google Books API response parser helper function
   def fetch_books_from_google_books(query = 'default', max_results = 10)
+    if query == ''
+      query = 'default'
+    end
+    
     url = "https://www.googleapis.com/books/v1/volumes?q=#{query}"
     response = HTTParty.get(url)
     books_data = response.parsed_response['items'] || []
