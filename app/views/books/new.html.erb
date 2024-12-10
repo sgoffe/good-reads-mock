@@ -15,6 +15,11 @@
         </div>
 
         <div class="form-group">
+            <%= f.label :image %>
+            <%= f.file_field :image, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
             <%= f.label :genre %>
             <%= f.text_area :genre, class: 'form-control' %>
         </div>

@@ -25,6 +25,17 @@ RSpec.describe Book, type: :model do
       expect(Book.all.count).to eq(1)
     end
 
+    it "should allow attachment of an image" do
+      b = Book.new(title: "test", author: "test",
+                  genre: "fiction",
+                  pages: 100, description: "test",
+                  publisher: "test",
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      b.image.attach(io: File.open(Rails.root.join('spec', 'test_images', 'test_cover.jpg')), filename: 'test_cover.jpg')
+
+      expect(b.save).to be true
+    end
+
     # No longer needed
     # it "should have the correct enumeration for attraction_type" do
     #   expect(Book.genres.keys).to include("historical_fiction")
