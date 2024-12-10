@@ -13,16 +13,17 @@ class BooksController < ApplicationController
              end
   
     # Search query filtering
-    if @query.present? && @query.length > 2
+    if params[:query].present? && @query.length > 2
+      @query = params[:query]
       if params[:source] == 'google_books'
         @books.select! do |book|
-          book[:title].to_s.downcase.include?(@query.downcase) || 
-          book[:author].to_s.downcase.include?(@query.downcase)
+          book[:title].to_s.downcase.include?(params[:query].downcase) || 
+          book[:author].to_s.downcase.include?(params[:query].downcase)
         end
       else
-        @books = @books.by_search_string(@query)
+        @books = @books.by_search_string(params[:query])
       end
-      @query_filt = @query
+      @query_filt = params[:query]
     end
   
     # Rating filtering
@@ -77,17 +78,18 @@ class BooksController < ApplicationController
 
   def show_google
     google_id = params[:id]
-    
+    @query = params[:query] || ''
+  
+    # if @query.blank? && session[:last_google_query].present?
+    #   @query = session[:last_google_query]
+    # else
+    #   session[:last_google_query] = @query
+    # end
+  
     @max_results = params[:max_results] || 10
-    @book = Book.find_by(id: google_id)
-  
-    if @book
-      redirect_to book_path(@book)
-      return
-    end
-  
+    
     google_books_data = fetch_books_from_google_books(@query, @max_results)
-    @book = google_books_data.find { |book| book[:id] == google_id }
+    @book = google_books_data.find { |book| book.id == google_id }
   
     unless @book
       redirect_to books_path, alert: 'Google book not found'
@@ -97,6 +99,7 @@ class BooksController < ApplicationController
     flash[:alert] = 'Something went wrong while fetching Google Books data'
     redirect_to books_path
   end
+  
   
   
   def create
@@ -112,11 +115,6 @@ class BooksController < ApplicationController
 
   def new
     @book = Book.new
-  end
-
-  def search_google
-    @query = params[:query]
-    @books = search_google_books(@query)
   end
 
   def add_google_book

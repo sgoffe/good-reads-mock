@@ -105,6 +105,75 @@ RSpec.describe "Book actions", type: :system do
     end
   end
 
+  describe "show_google" do
+    before(:each) do
+      @user = User.create!(first: "John", last: "Doe", email: "john@example.com", password: "password", role: :admin)
+      
+      @google_book_data = OpenStruct.new(
+        id: "google_1",
+        title: "Google Book Title",
+        author: "Google Author",
+        description: "Google Book Description",
+        genre: "Fiction",
+        publisher: "Google Publisher",
+        publish_date: "2022-01-01",
+        pages: 300,
+        language_written: "English",
+        isbn_13: "1234567890123",
+        image_url: "https://th.bing.com/th/id/OIP.caKIPkEzOmvoKgGoa-KXwgAAAA?w=135&h=206&c=7&r=0&o=5&dpr=2&pid=1.7"
+      )
+      
+      allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books)
+        .and_return([@google_book_data])
+      
+      # other methods... eventually...
+    end
+    
+    it "displays the Google book details correctly" do
+      visit show_google_book_path(id: "google_1", query: 'Testing')
+      
+      # Check that the book's title and other details are rendered on the page
+      expect(page).to have_content("Google Book Title")
+      expect(page).to have_content("Google Author")
+      expect(page).to have_content("Google Book Description")
+      expect(page).to have_content("Fiction")
+      expect(page).to have_content("Google Publisher")
+      expect(page).to have_content("2022-01-01")
+      expect(page).to have_content("300 pages")
+      expect(page).to have_content("English")
+    end
+    
+    it "redirects to the existing book if it is already in the database" do
+
+      Book.create!(title: "Google Book Title", author: "Google Author", genre: "Fiction", 
+                  description: "Google Book Description", publisher: "Google Publisher", 
+                  publish_date: Date.new(2022, 1, 1), isbn_13: "1234567890123")
+      
+      visit show_google_book_path(id: "google_1", query: 'Test Query')
+      
+      expect(page).to have_current_path(book_path(Book.last))
+    end
+    
+    it "shows an error message if the Google book is not found" do
+
+      allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books).and_return([])
+
+      visit show_google_book_path(id: "google_1", query: 'Non-existent Query')
+
+      expect(page).to have_content("Google book not found")
+      expect(page).to have_current_path(books_path)
+    end
+
+    it "handles exceptions correctly" do
+      allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books).and_raise(StandardError)
+
+      visit show_google_book_path(id: "google_1", query: 'Test Query')
+
+      expect(page).to have_content("Something went wrong while fetching Google Books data")
+      expect(page).to have_current_path(books_path)
+    end
+  end
+
   describe "filtering within index" do 
 
     before(:each) do
