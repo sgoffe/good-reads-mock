@@ -5,11 +5,14 @@ class BooksController < ApplicationController
 
   def index
     params[:source] ||= 'seeded_books'
-  
+
+    params[:page] = params[:page].to_i > 0 ? params[:page].to_i : 1
+    @per_page = 10
+
     @books = if params[:source] == 'google_books'
-               fetch_books_from_google_books(@query, params[:max_results] || 10)
+               fetch_books_from_google_books(@query, @per_page, params[:page])
              else
-               Book.all.order(:title)
+               Book.all.order(:title).page(params[:page]).per(@per_page)
              end
   
     # Search query filtering
@@ -169,12 +172,11 @@ class BooksController < ApplicationController
   end
 
   # Google Books API response parser helper function
-  def fetch_books_from_google_books(query = 'default', max_results = 10)
-    if query == ''
-      query = 'default'
-    end
-    
-    url = "https://www.googleapis.com/books/v1/volumes?q=#{query}"
+  def fetch_books_from_google_books(query = 'default', max_results = 10, page = 1)
+    query = 'default' if query.blank?
+
+    start_index = (page - 1) * max_results
+    url = "https://www.googleapis.com/books/v1/volumes?q=#{query}&startIndex=#{start_index}&maxResults=#{max_results}"
     response = HTTParty.get(url)
     books_data = response.parsed_response['items'] || []
 
@@ -191,7 +193,6 @@ class BooksController < ApplicationController
         language_written: item['volumeInfo']['language'] || 'Unknown',
         isbn_13: item['volumeInfo']['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown',
         img_url: item['volumeInfo']['imageLinks']&.dig('thumbnail') || nil
-        # google_books_url: "https://books.google.com?q=#{item[:title]}"
       )
     end
   end
