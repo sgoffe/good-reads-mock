@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {registrations: "users/registrations"}
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -12,21 +11,39 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "books#index"
+
+  # books/reviews routes
   resources :books do
     resources :reviews
+
+    collection do
+      get 'search_google', to: 'books#search_google', as: 'search_google'
+      post 'add_google_book', to: 'books#add_google_book', as: 'add_google_book'
+    end
+
+    member do
+      get 'recommend', to: 'notifications#recommend', as: 'recommend'
+      post 'create_recommendation', to: 'notifications#create_recommendation', as: 'create_recommendation'
+      post 'add_google_book', to: 'books#add_google_book'
+    end
   end
+
+  # users routes
   resources :users do
     resources :reviews
-    resources :notifications, only: [:index] 
+    resources :notifications, only: [:index]
     resources :friendships, only: [:new, :create, :destroy]
   end
-  resources :reviews, only: [:index, :show, :edit, :destroy]
-  
 
-  # custom routes 
-  get '/books/:id/recommend', to: 'notifications#recommend', as: 'recommend_book'
+  resources :reviews, only: [:index, :show, :edit, :destroy]
+
+  # Custom routes 
+  get '/books/:id/recommend', to: 'notifications#recommend', as: 'book_recommendation'
   post '/books/:id/create_recommendation', to: 'notifications#create_recommendation', as: 'create_book_recommendation'
   get '/friendships/find', to: 'friendships#find', as: 'friendships_find'
   get '/profile', to: 'users#profile'
+  post '/google_books/add', to: 'books#add_google_book', as: 'add_google_book'
+  get '/google_books/:id', to: 'books#show_google', as: 'google_book'
+
   # get '/books/:id/reviews/:id', to: 'reviews#show'
 end

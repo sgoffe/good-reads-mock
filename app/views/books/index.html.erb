@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
 <head class="container">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,10 +11,10 @@
 </div>
 
 <div class="row">
-    <%= form_with url: books_path, method: :get do |form| %>
+    <%= form_with url: books_path, method: :get, local: true do |form| %>
         <div>
             <%= form.label :query, "Search for" %>
-            <%= form.text_field :query, value: @query_filt %>
+            <%= form.text_field :query %>
         </div>
 
         <div>
@@ -28,47 +27,66 @@
             <%= form.number_field :rating, in: 0..5, step: 0.5, value: @rating_filt %>
         </div>
 
-        <div> 
-            <%= form.label :genre, "Genre" %>
-            <%= form.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, include_blank: true, selected: @genre_filt%>
+        <div>
+            <%= form.label :genre, "Genre" %> 
+            <%= form.text_field :genre %>
         </div>
 
         <div>
-            <%= form.submit "Filter Books" %>
+            <%= form.label :source, "Source" %>
+            <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), include_blank: true %>
         </div>
 
         <div>
-            <%= link_to "Clear filters", books_path(query: params[:query]) %>
-            <%= link_to "Clear search", books_path %>
+            <%= form.submit "Filter Books", class: "btn btn-primary" %>
         </div>
-
     <% end %>
-
 </div>
 
-<%= link_to "Add a new book", new_book_path %>
+<div class="row">
+    <%= link_to "View Seeded Books", books_path(source: "seeded_books", query: params[:query]), class: "btn btn-primary" %>
+    <%= link_to "View Google Books", books_path(source: "google_books", query: params[:query]), class: "btn btn-secondary" %>
+</div>
 
-<div class="row row-cols-4">
-    <% @books.each_with_index do |book| %>
-        <div class="col">
-            <div class="card mb-1 p-2 h-100">
-            <!-- if !book.images.length.zero? -->
-            <!-- image_tag book.images.first.variant(:thumb), width: 60, class: "card-img-top" -->
-            <!-- end -->
-                <div id ="book-card" class="card-body">
-                    <h3 class="card-title" > <%= book.title %> </h3>
-                    <h5> <%= book.author %> </h5>
-                    <p class="card-text"> <%= book.description %> </p>
-                    <%= link_to "More...", book, class: "btn btn-sm btn-primary" %>
-                </div> 
+<!-- Books List -->
+<% if @books.any? %>
+    <div class="row row-cols-4">
+        <% @books.each do |book| %>
+            <div class="col">
+                <div class="card mb-1 p-2 h-100" id="book-card">
+                    <div class="card-body">
+                        <h3 class="card-title"><%= book.title %></h3>
+                        <h5><%= book.author || 'Unknown Author' %></h5>
+                        <p class="card-text"><%= truncate(book.description || 'No description available.', length: 100) %></p>
+                        <p><strong>Genre:</strong> <%= book.genre || 'Unknown' %></p>
+                        <p><strong>Publisher:</strong> <%= book.publisher || 'Unknown' %></p>
+                        <li><%= book.id %></li>
+
+                        <div class="btn-group">
+                            <% if book.is_a?(Book) %>
+                                <!-- Seeded Books -->
+                                <%= link_to "More...", book_path(book), class: "btn btn-sm btn-primary" %>
+                                <%= link_to "Reviews", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
+                            <% else %>
+                                <!-- Google Books -->
+                                <%= link_to "More...", google_book_path(id: book.id), class: "btn btn-sm btn-primary" %>
+                                <%= link_to "View on Google Books", "https://books.google.com?q=#{book.title}", class: "btn btn-sm btn-secondary" %>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    <% end %>
-</div>
+        <% end %>
+    </div>
+<% else %>
+    <p class="alert alert-info">No books found. Try adjusting your filters or search keywords.</p>
+<% end %>
 
+<!-- Temp Nav -->
 <div>
     <%= link_to "Users *temporary*", users_path, class: "btn btn-sm btn-primary" %>
     <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>
 </div>
+
 </body>
 </html>

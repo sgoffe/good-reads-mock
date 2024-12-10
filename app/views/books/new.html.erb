@@ -16,7 +16,7 @@
 
         <div class="form-group">
             <%= f.label :genre %>
-            <%= f.select :genre, Book.genres.keys.map { |w| [w.humanize, w] }, {}, class: 'form-control' %>
+            <%= f.text_area :genre, class: 'form-control' %>
         </div>
 
         <div class="form-group">
