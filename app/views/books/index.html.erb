@@ -81,7 +81,7 @@
                                 <%= link_to "Reviews", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
                             <% else %>
                                 <!-- Google Books -->
-                                <%= link_to "More...", google_book_path(id: book.id), class: "btn btn-sm btn-primary" %>
+                                <%= link_to "More...", google_book_path(id: book.id, query: @query), class: "btn btn-sm btn-primary" %>
                                 <%= link_to "View on Google Books", "https://books.google.com?q=#{book.title}", class: "btn btn-sm btn-secondary" %>
                             <% end %>
                         </div>
