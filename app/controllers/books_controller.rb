@@ -139,8 +139,11 @@ class BooksController < ApplicationController
       publish_date: book_data[:publish_date],
       pages: book_data[:pages],
       language_written: book_data[:language_written],
-      isbn_13: book_data[:isbn_13]
+      isbn_13: book_data[:isbn_13],
+      img_url: book_data[:img_url]
     )
+
+    print ("google book data: #{@book_data}")
   
     # Save the book if it's valid, and redirect to its show page
     if @google_book.save
@@ -189,7 +192,7 @@ class BooksController < ApplicationController
         pages: item['volumeInfo']['pageCount'] || 'Unknown',
         language_written: item['volumeInfo']['language'] || 'Unknown',
         isbn_13: item['volumeInfo']['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown',
-        image_url: item['volumeInfo']['imageLinks']&.dig('thumbnail') || nil
+        img_url: item['volumeInfo']['imageLinks']&.dig('thumbnail') || nil
         # google_books_url: "https://books.google.com?q=#{item[:title]}"
       )
     end

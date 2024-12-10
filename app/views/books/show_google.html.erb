@@ -7,9 +7,12 @@
 <h6> <%= @book.genre.humanize %> • <%= @book.pages %> pages</h5>
 
 <div class="col">
-    <!-- @book.images.each do |image| -->
-        <!-- image_tag image.variant(:medium) -->
-    <!-- end -->
+    <% if @book.img_url.present? %>
+        <img src="<%= @book.img_url %>" alt="<%= @book.title %>" style="max-width: 300px; height: auto;">
+    <% else %>
+        <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
+    <% end %>
+
 
     <br>
     <h6> Description: </h6>
@@ -34,7 +37,9 @@
         publish_date: @book.publish_date,
         pages: @book.pages,
         language_written: @book.language_written,
-        isbn_13: @book.isbn_13
+        isbn_13: @book.isbn_13,
+        img_url: @book.img_url
+        
     }), method: :post, class: "btn btn-success" %>
 
 </div>
