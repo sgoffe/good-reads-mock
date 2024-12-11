@@ -12,6 +12,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def admin
+    @user = User.find(params[:id])
+  end
+
   def update
     @user = User.find(params[:id])
     if @user.update(create_update_params)
