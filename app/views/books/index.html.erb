@@ -94,12 +94,13 @@
         <% end %>
     </div>
     
+    <!-- Next Page stuff -->
     <div class="pagination-buttons">
         <% if params[:page].to_i > 1 %>
             <%= link_to "Previous Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i - 1), class: "btn btn-primary" %>
         <% end %>
 
-        <% if @books.size == @per_page %>
+        <% if @has_more_pages %>
             <%= link_to "Next Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i + 1), class: "btn btn-secondary" %>
         <% end %>
     </div>

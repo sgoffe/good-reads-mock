@@ -5,15 +5,15 @@ class BooksController < ApplicationController
 
   def index
     params[:source] ||= 'seeded_books'
-
     params[:page] = params[:page].to_i > 0 ? params[:page].to_i : 1
     @per_page = 10
-
-    @books = if params[:source] == 'google_books'
-               fetch_books_from_google_books(@query, @per_page, params[:page])
-             else
-               Book.all.order(:title).page(params[:page]).per(@per_page)
-             end
+  
+    if params[:source] == 'google_books'
+      @books, @has_more_pages = fetch_books_from_google_books(@query, @per_page, params[:page])
+    else
+      @books = Book.all.order(:title).page(params[:page]).per(@per_page)
+      @has_more_pages = @books.current_page < @books.total_pages
+    end  
   
     # Search query filtering
     if params[:query].present? && @query.length > 2
@@ -81,28 +81,33 @@ class BooksController < ApplicationController
 
   def show_google
     google_id = params[:id]
-    @query = params[:query] || ''
-  
-    # if @query.blank? && session[:last_google_query].present?
-    #   @query = session[:last_google_query]
-    # else
-    #   session[:last_google_query] = @query
-    # end
-  
-    @max_results = params[:max_results] || 10
     
-    google_books_data = fetch_books_from_google_books(@query, @max_results)
-    @book = google_books_data.find { |book| book.id == google_id }
-  
-    unless @book
+    url = "https://www.googleapis.com/books/v1/volumes/#{google_id}"
+    response = HTTParty.get(url)
+    
+    if response.success?
+      book_data = response.parsed_response['volumeInfo']
+      
+      @book = OpenStruct.new(
+        id: google_id,
+        title: book_data['title'],
+        author: book_data['authors']&.join(', ') || 'Unknown Author',
+        description: book_data['description'] || 'No description available.',
+        genre: book_data['categories']&.join(', ') || 'Unknown',
+        publisher: book_data['publisher'] || 'Unknown',
+        publish_date: book_data['publishedDate'] || 'Unknown',
+        pages: book_data['pageCount'] || 'Unknown',
+        language_written: book_data['language'] || 'Unknown',
+        isbn_13: book_data['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown',
+        img_url: book_data['imageLinks']&.dig('thumbnail') || nil
+      )
+    else
       redirect_to books_path, alert: 'Google book not found'
-      return
     end
   rescue StandardError => e
     flash[:alert] = 'Something went wrong while fetching Google Books data'
     redirect_to books_path
   end
-  
   
   
   def create
@@ -174,15 +179,17 @@ class BooksController < ApplicationController
   # Google Books API response parser helper function
   def fetch_books_from_google_books(query = 'default', max_results = 10, page = 1)
     query = 'default' if query.blank?
-
     start_index = (page - 1) * max_results
     url = "https://www.googleapis.com/books/v1/volumes?q=#{query}&startIndex=#{start_index}&maxResults=#{max_results}"
     response = HTTParty.get(url)
+  
     books_data = response.parsed_response['items'] || []
-
-    books_data.map.with_index do |item, index|
+    total_items = response.parsed_response['totalItems'] || 0
+    has_more_pages = start_index + books_data.size < total_items
+  
+    books = books_data.map.with_index do |item, index|
       OpenStruct.new(
-        id: "google_#{index}",
+        id: item['id'],
         title: item['volumeInfo']['title'],
         author: item['volumeInfo']['authors']&.join(', ') || 'Unknown Author',
         description: item['volumeInfo']['description'] || 'No description available.',
@@ -195,5 +202,7 @@ class BooksController < ApplicationController
         img_url: item['volumeInfo']['imageLinks']&.dig('thumbnail') || nil
       )
     end
-  end
+  
+    [books, has_more_pages]
+  end  
 end
