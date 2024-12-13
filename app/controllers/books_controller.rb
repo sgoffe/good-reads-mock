@@ -52,7 +52,6 @@ class BooksController < ApplicationController
     # Apply sorting if sort param is provided
     if params[:sort].present?
       if params[:source] == 'google_books'
-        # Manually sort Google Books based on title or rating
         @books.sort_by! { |book| params[:sort].include?('rating') ? -book.average_rating.to_f : book.title }
       else
         @books = @books.unscope(:order).order(params[:sort])
@@ -101,14 +100,22 @@ class BooksController < ApplicationController
         isbn_13: book_data['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown',
         img_url: book_data['imageLinks']&.dig('thumbnail') || nil
       )
+  
+      existing_book = Book.find_by(isbn_13: @book.isbn_13) || Book.find_by(title:@book.title, author: @book.author)
+    
+      if existing_book
+        redirect_to book_path(existing_book)
+        return
+      end
+    
     else
-      redirect_to books_path, alert: 'Google book not found'
+      flash[:alert] = 'Google book not found'
+      redirect_to books_path
     end
   rescue StandardError => e
     flash[:alert] = 'Something went wrong while fetching Google Books data'
     redirect_to books_path
-  end
-  
+  end  
   
   def create
     @book = Book.new(create_params)
@@ -128,14 +135,14 @@ class BooksController < ApplicationController
   def add_google_book
     book_data = params[:book]
   
-    existing_book = Book.find_by(isbn_13: book_data[:isbn_13])
+    existing_book = Book.find_by(isbn_13: book_data[:isbn_13]) || 
+                    Book.find_by(title: book_data[:title], author: book_data[:author])
     
     if existing_book
       redirect_to book_path(existing_book), notice: "This book is already in your library."
       return
     end
   
-    # new book with the data from Google Books
     @google_book = Book.new(
       title: book_data[:title],
       author: book_data[:author],
@@ -148,8 +155,6 @@ class BooksController < ApplicationController
       isbn_13: book_data[:isbn_13],
       img_url: book_data[:img_url]
     )
-
-    print ("google book data: #{@book_data}")
   
     # Save the book if it's valid, and redirect to its show page
     if @google_book.save

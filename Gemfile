@@ -49,6 +49,8 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # add gems for testing
+  gem 'selenium-webdriver'
+  gem 'webmock'
   gem "rspec"
   gem "rspec-rails"
   gem "simplecov", require: false
