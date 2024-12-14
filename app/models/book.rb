@@ -8,7 +8,7 @@ class Book < ApplicationRecord
   #   attachable.variant :thumb, resize_to_limit: [ 80, 80 ]
   #   attachable.variant :medium, resize_to_fill: [ 400, 400 ]
   # end
-  has_one_attached :image
+  # has_one_attached :image
 
 
   # validates :title, :presence => true

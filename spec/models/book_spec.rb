@@ -13,6 +13,7 @@ RSpec.describe Book, type: :model do
       expect(b).to respond_to(:publish_date)
       expect(b).to respond_to(:isbn_13)
       expect(b).to respond_to(:language_written)
+      expect(b).to respond_to(:img_url)
     end
 
     it "should allow creation of model objects with all attributes" do
@@ -20,21 +21,22 @@ RSpec.describe Book, type: :model do
                   genre: :fiction,
                   pages: 100, description: "test",
                   publisher: "test",
-                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test"),
+                  img_url: "https://th.bing.com/th/id/OIP.caKIPkEzOmvoKgGoa-KXwgAAAA?w=135&h=206&c=7&r=0&o=5&dpr=2&pid=1.7"
       expect(b.save).to be true
       expect(Book.all.count).to eq(1)
     end
 
-    it "should allow attachment of an image" do
-      b = Book.new(title: "test", author: "test",
-                  genre: "fiction",
-                  pages: 100, description: "test",
-                  publisher: "test",
-                  publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
-      b.image.attach(io: File.open(Rails.root.join('spec', 'test_images', 'test_cover.jpg')), filename: 'test_cover.jpg')
+    # it "should allow attachment of an image" do
+    #   b = Book.new(title: "test", author: "test",
+    #               genre: "fiction",
+    #               pages: 100, description: "test",
+    #               publisher: "test",
+    #               publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+    #   b.image.attach(io: File.open(Rails.root.join('spec', 'test_images', 'test_cover.jpg')), filename: 'test_cover.jpg')
 
-      expect(b.save).to be true
-    end
+    #   expect(b.save).to be true
+    # end
 
     # No longer needed
     # it "should have the correct enumeration for attraction_type" do
