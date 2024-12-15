@@ -231,3 +231,99 @@ RSpec.describe "Existing Google Books", type: :system do
     expect(page).to have_current_path(books_path)
   end
 end
+
+RSpec.describe BooksController, type: :controller do
+  describe 'POST #add_google_book' do
+    let(:valid_google_book_params) do
+      {
+        book: {
+          title: 'Test Book Title',
+          author: 'Test Author',
+          genre: 'Fiction',
+          description: 'A test book description',
+          publisher: 'Test Publisher',
+          publish_date: '2024-01-01',
+          pages: 300,
+          language_written: 'en',
+          isbn_13: '9781234567897',
+          img_url: example_image_url
+        }
+      }
+    end
+
+    let(:existing_book) do
+      Book.create!(
+        title: 'Test Book Title',
+        author: 'Test Author',
+        genre: 'Fiction',
+        description: 'A test book description',
+        publisher: 'Test Publisher',
+        publish_date: '2024-01-01',
+        pages: 300,
+        language_written: 'en',
+        isbn_13: '9781234567897',
+        img_url: example_image_url
+      )
+    end
+
+    context 'when the book does not already exist' do
+      it 'creates a new book and redirects to its show page' do
+        expect do
+          post :add_google_book, params: valid_google_book_params
+        end.to change(Book, :count).by(1)
+
+        created_book = Book.last
+        expect(created_book.title).to eq(valid_google_book_params[:book][:title])
+        expect(created_book.author).to eq(valid_google_book_params[:book][:author])
+        expect(created_book.genre).to eq(valid_google_book_params[:book][:genre])
+        expect(created_book.isbn_13).to eq(valid_google_book_params[:book][:isbn_13])
+        expect(response).to redirect_to(book_path(created_book))
+        expect(flash[:notice]).to eq("Google Book 'Test Book Title' was successfully added.")
+      end
+    end
+
+    context 'when the book already exists by ISBN' do
+      before { existing_book }
+
+      it 'redirects to the existing book show page with a notice' do
+        expect do
+          post :add_google_book, params: valid_google_book_params
+        end.not_to change(Book, :count)
+
+        expect(response).to redirect_to(book_path(existing_book))
+        expect(flash[:notice]).to eq("This book is already in your library.")
+      end
+    end
+
+    context 'when the book already exists by title and author' do
+      before { existing_book }
+
+      it 'redirects to the existing book show page with a notice' do
+        params_without_isbn = valid_google_book_params.dup
+        params_without_isbn[:book].delete(:isbn_13)
+
+        expect do
+          post :add_google_book, params: params_without_isbn
+        end.not_to change(Book, :count)
+
+        expect(response).to redirect_to(book_path(existing_book))
+        expect(flash[:notice]).to eq("This book is already in your library.")
+      end
+    end
+
+    context 'when the book data is invalid' do
+      let(:invalid_google_book_params) do
+        { book: { title: '', author: '', isbn_13: '' } }
+      end
+
+      it 'does not create a new book and redirects to the books index with an alert' do
+        expect do
+          post :add_google_book, params: invalid_google_book_params
+        end.not_to change(Book, :count)
+
+        expect(response).to redirect_to(books_path)
+        expect(flash[:alert]).to eq("Error adding Google Book.")
+      end
+    end
+  end
+end
