@@ -49,12 +49,15 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # add gems for testing
+  gem 'selenium-webdriver'
+  gem 'webmock'
   gem "rspec"
   gem "rspec-rails"
   gem "simplecov", require: false
   gem "capybara"
   gem 'factory_bot_rails'
   gem 'faker'
+  gem "rails-controller-testing"
 end
 
 group :development do
@@ -71,3 +74,5 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 gem "dockerfile-rails", ">= 1.6", :group => :development
 
 gem "dotenv-rails", "~> 3.1", :groups => [:development, :test]
+
+gem "kaminari", "~> 1.2"
