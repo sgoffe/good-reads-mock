@@ -15,7 +15,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       genre: :fiction,
       pages: 100, description: "test",
       publisher: "test",
-      publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+      publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
     # @r1 = Review.create!(user: @u1, book: @b1, review_text: 'first', rating: 3)
   end
 

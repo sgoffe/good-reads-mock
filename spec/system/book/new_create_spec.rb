@@ -14,7 +14,7 @@
 #       fill_in 'Pages', with: 100
 #       fill_in 'Description', with: '0123456789'
 #       fill_in 'Publisher', with: 'Test Publisher'
-#       fill_in 'Publish date', with: '2222-02-02'
+#       fill_in 'Publish date', with: '2002-02-02'
 #       fill_in 'Isbn 13', with: 560
 #       fill_in 'Language written', with: 'Test language'
 #       # attach_file 'Images', "#{Rails.root}/spec/testimg.jpg"

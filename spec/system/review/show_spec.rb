@@ -9,7 +9,7 @@ RSpec.describe "Show route", type: :system do
     before(:each) do
       @u1 = User.create!(first: "user 2", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
       @b1 = Book.create!(title: "Dune", author: "test", genre: :fiction, pages: 100, description: "test", publisher: "test", 
-                          publish_date: Date.new(2222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+                          publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @r1 = Review.new(review_text: 'first', rating: 3)
       @r1.user = @u1
       @b1.reviews << @r1

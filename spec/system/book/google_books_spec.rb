@@ -3,6 +3,12 @@ require 'webmock/rspec'
 
 example_image_url = "https://th.bing.com/th/id/OIP.caKIPkEzOmvoKgGoa-KXwgAAAA?w=135&h=206&c=7&r=0&o=5&dpr=2&pid=1.7"
 
+def stub_google_books_search(query, result, filters = {})
+  allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books).with(
+    query, 10, 1, hash_including(filters)
+  ).and_return([result, false])
+end
+
 RSpec.shared_context "Google Books API Setup" do
   let(:google_api_response) do
     {
@@ -33,76 +39,120 @@ RSpec.describe "Book Index with Google Books", type: :feature do
   include_context "Google Books API Setup"
 
   before do
-    @user = User.create!(first: "John", last: "Doe", email: "john@example.com", password: "password", role: :admin)
-
-    @books = [
-      { title: "a_test1", isbn_13: 1111111111111 },
-      { title: "a_test2", isbn_13: 2222222222222 },
-      { title: "a_test3", isbn_13: 3333333333333 }
-    ].map do |attrs|
-      Book.create!(
-        title: attrs[:title],
-        author: "test",
-        description: "test",
-        genre: "nonfiction",
-        publisher: "test",
-        publish_date: Date.new(2222, 2, 2),
-        language_written: "test",
-        pages: 100,
-        isbn_13: attrs[:isbn_13],
+    @google_books = [
+      OpenStruct.new(
+        id: "1",
+        title: "default Classic novel Google Book 1",
+        author: "Google Author 1",
+        description: "Description 1",
+        genre: "Genre 1",
+        publisher: "Publisher 1",
+        publish_date: "2023",
+        pages: 123,
+        language_written: "en",
+        isbn_13: "1234567890123",
+        img_url: example_image_url
+      ),
+      OpenStruct.new(
+        id: "2",
+        title: "default New novel Google Book 2",
+        author: "Google Author 2",
+        description: "Description 2",
+        genre: "Genre 2",
+        publisher: "Publisher 2",
+        publish_date: "2024",
+        pages: 123,
+        language_written: "en",
+        isbn_13: "1234567890123",
         img_url: example_image_url
       )
-    end
+    ]
+    @gbook1 = @google_books[0]
+    @gbook2 = @google_books[1]
 
-    allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books).and_return([
-      [
-        OpenStruct.new(
-          id: "1",
-          title: "Google Book 1",
-          author: "Google Author 1",
-          description: "Description 1",
-          genre: "Genre 1",
-          publisher: "Publisher 1",
-          publish_date: "2023",
-          pages: 123,
-          language_written: "en",
-          isbn_13: "1234567890123",
-          img_url: example_image_url
-        ),
-        OpenStruct.new(
-          id: "2",
-          title: "Google Book 2",
-          author: "Google Author 2",
-          description: "Description 2",
-          genre: "Genre 2",
-          publisher: "Publisher 2",
-          publish_date: "2024",
-          pages: 456,
-          language_written: "en",
-          isbn_13: "9876543210987",
-          img_url: example_image_url
-        )
-      ],
-      false
-    ])
+    # Default stub for unexpected arguments
+  allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books).with(
+    anything, anything, anything, anything
+  ).and_return([[], false])
+
+  # Stubbing specific cases using a helper method
+  stub_google_books_search("default", [@gbook1, @gbook2], title: "", author: "", genre: "")
+  stub_google_books_search("", [@gbook1, @gbook2], title: "", author: "", genre: "")
+  stub_google_books_search("google book", [@gbook1], title: "Classic novel", author: "", genre: "")
+  stub_google_books_search("google book", [@gbook2], title: "New novel", author: "", genre: "")
+  stub_google_books_search("google book", [@gbook1], title: "", author: "Google Author 1", genre: "")
+  stub_google_books_search("google book", [@gbook2], title: "", author: "Google Author 2", genre: "")
+  stub_google_books_search("google book", [@gbook1], title: "", author: "", genre: "genre 1")
+  stub_google_books_search("google book", [@gbook2], title: "", author: "", genre: "genre 2")
   end
 
-  it "displays books from Google Books API when the filter is applied" do
+  it "displays books from Google Books API when source is selected" do
     visit books_path
 
     select "Google Books", from: "source"
     click_button "Filter Books"
 
-    expect(page).to have_content("Google Book 1")
-    expect(page).to have_content("Google Author 1")
-    expect(page).to have_content("Google Book 2")
-    expect(page).to have_content("Google Author 2")
+    expect(page).to have_content(@gbook1.title)
+    expect(page).to have_content(@gbook1.author)
+    expect(page).to have_xpath("//img[@src='#{@gbook1.img_url}']")
+  end
 
-    expect(page).to have_xpath("//img[@src='#{example_image_url}']")
+  it "filters Google Books results by title keyword" do
+    visit books_path(source: 'google_books', query: 'google book', filter: { title: 'Classic novel' })
 
-    @books.each do |book|
-      expect(page).not_to have_content(book.title)
-    end
+    expect(page).to have_content(@gbook1.title)
+    expect(page).to have_content(@gbook1.author)
+    expect(page).not_to have_content(@gbook2.title)
+    expect(page).not_to have_content(@gbook2.author)
+
+    visit books_path(source: 'google_books', query: 'google book', filter: { title: 'New novel' })
+
+    expect(page).to have_content(@gbook2.title)
+    expect(page).to have_content(@gbook2.author)
+    expect(page).not_to have_content(@gbook1.title)
+    expect(page).not_to have_content(@gbook1.author)
+  end
+
+  it "filters Google Books results by author" do
+    visit books_path(source: 'google_books', query: 'google book', filter: { author: 'Google Author 1' })
+
+    expect(page).to have_content(@gbook1.title)
+    expect(page).to have_content(@gbook1.author)
+    expect(page).not_to have_content(@gbook2.title)
+    expect(page).not_to have_content(@gbook2.author)
+
+    visit books_path(source: 'google_books', query: 'google book', filter: { author: 'Google Author 2' })
+
+    expect(page).to have_content(@gbook2.title)
+    expect(page).to have_content(@gbook2.author)
+    expect(page).not_to have_content(@gbook1.title)
+    expect(page).not_to have_content(@gbook1.author)
+  end
+
+  it "filters Google Books results by genre" do
+    visit books_path(source: 'google_books', query: 'google book', filter: { genre: 'genre 1' })
+
+    expect(page).to have_content(@gbook1.title)
+    expect(page).to have_content(@gbook1.author)
+    expect(page).not_to have_content(@gbook2.title)
+    expect(page).not_to have_content(@gbook2.author)
+
+    visit books_path(source: 'google_books', query: 'google book', filter: { genre: 'genre 2' })
+
+    expect(page).to have_content(@gbook2.title)
+    expect(page).to have_content(@gbook2.author)
+    expect(page).not_to have_content(@gbook1.title)
+    expect(page).not_to have_content(@gbook1.author)
+  end
+
+  it "returns no results if filters do not match any books" do
+    visit books_path(source: 'google_books', query: 'google book', filter: { title: 'Nonexistent Book' })
+
+    expect(page).to have_content("No books found")
+    expect(page).not_to have_content(@gbook1.title)
+    expect(page).not_to have_content(@gbook1.author)
+    expect(page).not_to have_content(@gbook2.title)
+    expect(page).not_to have_content(@gbook2.author)
   end
 end
 
@@ -148,7 +198,7 @@ RSpec.describe "Existing Google Books", type: :system do
       pages: 100,
       description: "Existing Book Description",
       publisher: "Existing Publisher",
-      publish_date: Date.new(2222, 2, 2),
+      publish_date: Date.new(2002, 2, 2),
       isbn_13: 1234567890123,
       language_written: "English",
       img_url: example_image_url

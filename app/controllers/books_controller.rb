@@ -9,7 +9,13 @@ class BooksController < ApplicationController
     @per_page = 10
   
     if params[:source] == 'google_books'
-      @books, @has_more_pages = fetch_books_from_google_books(@query, @per_page, params[:page])
+      filters = {
+        title: params.dig(:filter, :title) || "",
+        author: params.dig(:filter, :author) || "",
+        genre: params.dig(:filter, :genre) || ""
+      }
+
+      @books, @has_more_pages = fetch_books_from_google_books(@query, @per_page, params[:page], filters)
     else
       @books = Book.all.order(:title).page(params[:page]).per(@per_page)
       @has_more_pages = @books.current_page < @books.total_pages
@@ -32,7 +38,8 @@ class BooksController < ApplicationController
     # Rating filtering
     if params[:rating].present?
       if params[:source] == 'google_books'
-        @books.select! { |book| book.respond_to?(:average_rating) && book.average_rating.to_f >= params[:rating].to_f }
+        # rating filter shouldnt matter for the google books
+        # @books.select! { |book| book.respond_to?(:average_rating) && book.average_rating.to_f >= params[:rating].to_f }
       else
         @books = @books.with_average_rating(params[:rating].to_f)
       end
@@ -42,7 +49,8 @@ class BooksController < ApplicationController
     # Genre filtering
     if params[:genre].present?
       if params[:source] == 'google_books'
-        @books.select! { |book| book.genre.to_s.downcase.include?(params[:genre].downcase) }
+        # genre filter shouldnt matter for the google books
+        # @books.select! { |book| book.genre.to_s.downcase.include?(params[:genre].downcase) }
       else
         @books = Book.where(genre: params[:genre])
       end
@@ -119,15 +127,23 @@ class BooksController < ApplicationController
   
   def create
     @book = Book.new(create_params)
+  
     if @book.save
-      flash[:notice] = "Book #{@book.title} created successfully"
+      if params[:book][:image].present?
+        @book.image.attach(params[:book][:image])
+        if @book.image.attached?
+          @book.update(img_url: url_for(@book.image))
+        end
+      end
+  
+      flash[:notice] = "Book '#{@book.title}' created successfully."
       redirect_to books_path
     else
-      flash[:alert] = "Book could not be created" 
+      flash[:alert] = "Book could not be created."
       render :new, status: :unprocessable_entity
     end
   end
-
+  
   def new
     @book = Book.new
   end
@@ -174,7 +190,7 @@ class BooksController < ApplicationController
   private
   
   def create_params
-    params.require(:book).permit(:title, :author, :genre, :pages, :description, :publisher, :publish_date, :isbn_13, :language_written, :image)
+    params.require(:book).permit(:title, :author, :genre, :pages, :description, :publisher, :publish_date, :isbn_13, :language_written, :img_url)
   end
 
   def set_global_query
@@ -182,17 +198,26 @@ class BooksController < ApplicationController
   end
 
   # Google Books API response parser helper function
-  def fetch_books_from_google_books(query = 'default', max_results = 10, page = 1)
+  def fetch_books_from_google_books(query = 'default', max_results = 10, page = 1, filters = {})
     query = 'default' if query.blank?
     start_index = (page - 1) * max_results
-    url = "https://www.googleapis.com/books/v1/volumes?q=#{query}&startIndex=#{start_index}&maxResults=#{max_results}"
+    filter_query = ""
+  
+    # Add filters to the query
+    filter_query += "+subject:#{filters[:genre]}" if filters[:genre].present?
+    filter_query += "+inauthor:#{filters[:author]}" if filters[:author].present?
+    filter_query += "+intitle:#{filters[:title]}" if filters[:title].present?
+  
+    # Build URL with filters
+    url = "https://www.googleapis.com/books/v1/volumes?q=#{query}#{filter_query}&startIndex=#{start_index}&maxResults=#{max_results}"
+    
     response = HTTParty.get(url)
   
     books_data = response.parsed_response['items'] || []
     total_items = response.parsed_response['totalItems'] || 0
     has_more_pages = start_index + books_data.size < total_items
   
-    books = books_data.map.with_index do |item, index|
+    books = books_data.map do |item|
       OpenStruct.new(
         id: item['id'],
         title: item['volumeInfo']['title'],
@@ -209,5 +234,5 @@ class BooksController < ApplicationController
     end
   
     [books, has_more_pages]
-  end  
+  end
 end
