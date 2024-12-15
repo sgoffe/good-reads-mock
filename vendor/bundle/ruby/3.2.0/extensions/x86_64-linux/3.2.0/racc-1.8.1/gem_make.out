@@ -1,0 +1,26 @@
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+/home/emro/.rbenv/versions/3.2.0/bin/ruby -I /home/emro/.rbenv/versions/3.2.0/lib/ruby/3.2.0 extconf.rb
+creating Makefile
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-j68zkx sitelibdir\=./.gem.20241207-679-j68zkx clean
+make: Warning: File 'Makefile' has modification time 7.8 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-j68zkx sitelibdir\=./.gem.20241207-679-j68zkx
+make: Warning: File 'Makefile' has modification time 7.7 s in the future
+compiling cparse.c
+linking shared-object racc/cparse.so
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-j68zkx sitelibdir\=./.gem.20241207-679-j68zkx install
+make: Warning: File 'Makefile' has modification time 4.7 s in the future
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20241207-679-j68zkx/racc
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-j68zkx sitelibdir\=./.gem.20241207-679-j68zkx clean
+make: Warning: File 'Makefile' has modification time 4 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.

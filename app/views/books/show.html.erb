@@ -4,12 +4,12 @@
 <h2 class="hero"><%= @book.title %></h3>
 
 <h5> <%= @book.author %> </h5>
-<h6> <%= @book.genre.humanize %> • <%= @book.pages %> pages</h5>
+<h6> <%= @book.genre %> • <%= @book.pages %> pages</h5>
 
 <div class="col">
-    <!-- @book.images.each do |image| -->
-        <!-- image_tag image.variant(:medium) -->
-    <!-- end -->
+    <% if @book.img_url.present? %>
+        <img src="<%= @book.img_url %>" alt="<%= @book.title %>" style="max-width: 300px; height: auto;">
+    <% end %>
 
     <br>
     <h6> Description: </h6>
@@ -20,7 +20,11 @@
     <h6> ISBN 13: <%= @book.isbn_13 %> </h6>
     <h6> Language: <%= @book.language_written %> </h6>
     <br>
-
+    <br>
+    <%# Search Button for Government Library System %>
+    <%= link_to "Find in Library System", "https://www.worldcat.org/search?q=isbn:#{@book.isbn_13}", 
+                target: "_blank", 
+                class: "btn btn-success" %>
     <%= link_to "Back to index", books_path, class: "btn btn-secondary" %>
     <br>
     <br>
