@@ -1,8 +1,8 @@
 <!-- Full-page background and flex layout -->
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
   <!-- Logo and heading -->
   <div class="mx-auto w-full">
-    <%= image_tag('bookshelf.png', class: 'mx-auto h-28 w-28', alt: 'Bookshelf logo') %>
+    <%= image_tag('bookshelf.png', class: 'mx-auto h-32 w-32', alt: 'Bookshelf logo') %>
     <h2 class="mt-2 text-center text-2xl font-bold tracking-tight text-gray-900">Log in to your account</h2>
   </div>
 
@@ -23,6 +23,7 @@
         <div>
           <div class="flex items-center justify-between mt-3">
             <%= f.label :password, class: "block text-sm font-medium text-gray-900" %>
+            <%= link_to "Forgot password?", new_user_password_path, class: "font-semibold text-sm text-violet-500 hover:text-violet-300" %>
           </div>
           <div class="mt-2">
             <%= f.password_field :password, autocomplete: "current-password", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-violet-500" %>
@@ -39,7 +40,7 @@
     <!-- Sign up prompt -->
     <p class="mt-10 text-center text-sm text-gray-500">
       Not a member?
-      <a href="#" class="font-semibold text-violet-500 hover:text-violet-300">Sign up here!</a>
+      <%= link_to "Sign up here!", new_user_registration_path, class: "font-semibold text-violet-500 hover:text-violet-300" %>
     </p>
   </div>
 </div>
