@@ -38,10 +38,13 @@ class BooksController < ApplicationController
     # Rating filtering
     if params[:rating].present?
       if params[:source] == 'google_books'
-        # rating filter shouldnt matter for the google books
-        # @books.select! { |book| book.respond_to?(:average_rating) && book.average_rating.to_f >= params[:rating].to_f }
+        # Skip rating filter for Google Books
       else
-        @books = @books.with_average_rating(params[:rating].to_f)
+        @books = Book.joins(:reviews)
+                     .group("books.id")
+                     .select("books.*, AVG(reviews.rating) AS avg_rating")
+                     .having("AVG(reviews.rating) >= ?", params[:rating].to_f)
+                     .order("avg_rating DESC")
       end
       @rating_filt = params[:rating]
     end
