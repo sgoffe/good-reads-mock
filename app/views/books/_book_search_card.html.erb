@@ -1,3 +1,21 @@
-<div class="row">
-  <%= book.title %>
+<div class="flex space-x-4 p-4 border border-slate-300 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-60 duration-300">
+  <!-- Image Section -->
+  <div class="w-1/4">
+    <%= image_tag("default_cover.jpg", alt: "Book Cover", class: "w-full h-auto object-cover rounded-lg") %>
+  </div>
+  
+  <!-- Info Section -->
+  <div class="w-3/4 flex flex-col space-y-2">
+    <h2 class="text-lg font-semibold text-slate-800"><%= book.title %></h2>
+    <p class="text-sm text-slate-600"><%= book.author %></p> 
+    <p class="text-sm text-slate-500"><%= book.description.truncate(150) %></p>
+    <p class="text-sm text-slate-500"><%= book.publish_date.strftime("%B %d, %Y") %></p>
+    <%= render 'shared/star_rating', rating: 3.98 %>
+    
+    <!-- Quick Actions -->
+    <div class="mt-2 space-x-2">
+      <%= button_to "Quick Bookmark", "#", method: :post, class: "px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+      <%= link_to "Quick Review", "#", class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300" %>
+    </div>
+  </div>
 </div>

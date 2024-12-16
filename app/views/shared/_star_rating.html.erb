@@ -1,0 +1,18 @@
+<%# app/views/shared/_star_rating.html.erb %>
+<div class="flex items-center">
+  <% rounded_rating = round_to_quarter(rating) %>
+  
+  <% (1..5).each do |i| %>
+    <% if rounded_rating >= i %>
+      <!-- Full star -->
+      <i class="fas fa-star text-yellow-300 me-1"></i>
+    <% elsif rounded_rating > (i - 1) && rounded_rating < i %>
+      <!-- Half star -->
+      <i class="fas fa-star-half-alt text-yellow-300 me-1"></i>
+    <% else %>
+      <!-- Empty star -->
+      <i class="fas fa-star text-gray-300 me-1"></i>
+    <% end %>
+  <% end %>
+  <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400"><%= rounded_rating %> / 5</p>
+</div>
