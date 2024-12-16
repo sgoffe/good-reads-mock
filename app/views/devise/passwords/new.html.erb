@@ -1,16 +1,39 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<!-- Full-page background and flex layout -->
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <!-- Logo and heading -->
+  <div class="mx-auto w-full">
+    <%= image_tag('bookshelf.png', class: 'mx-auto h-32 w-32', alt: 'Bookshelf logo') %>
+    <h2 class="mt-2 text-center text-2xl font-bold tracking-tight text-gray-900">Forgot your password?</h2>
+    <p class="text-sm text-gray-500 text-center mt-1">Enter your email to receive instructions to reset your password.</p>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+  <!-- Form container -->
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
+    <!-- Devise form starts here -->
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <div class="space-y-6">
+        <!-- Error messages -->
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-<%= render "devise/shared/links" %>
+        <!-- Email input -->
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-500" %>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div>
+          <%= f.submit "Send", class: "flex w-full justify-center rounded-full bg-violet-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-violet-300 mt-3" %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Sign in prompt -->
+    <p class="mt-10 text-center text-sm text-gray-500">
+      Remember your password?
+      <%= link_to "Sign in here!", new_user_session_path, class: "font-semibold text-violet-500 hover:text-violet-300" %>
+    </p>
+  </div>
+</div>
