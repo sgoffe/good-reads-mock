@@ -18,7 +18,7 @@
     <div class="row">
     <% current_user.lists.each do |list| %>
         <div class="col">
-          <%= render partial: 'userlist', locals: {list: list}  %>
+          <%= render partial: 'list', locals: {list: list}  %>
         </div>
     <% end %>
     </div>
