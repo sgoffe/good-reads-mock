@@ -1,26 +1,46 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<!-- Full-page background and flex layout -->
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
+  <!-- Logo and heading -->
+  <div class="mx-auto w-full">
+    <%= image_tag('bookshelf.png', class: 'mx-auto h-32 w-32', alt: 'Bookshelf logo') %>
+    <h2 class="mt-2 text-center text-2xl font-bold tracking-tight text-gray-900">Log in to your account</h2>
   </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
+  <!-- Form container -->
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <!-- Devise form starts here -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <form class="space-y-10" action="#" method="POST">
+        <!-- Email input -->
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
+
+        <!-- Password input -->
+        <div>
+          <div class="flex items-center justify-between mt-3">
+            <%= f.label :password, class: "block text-sm font-medium text-gray-900" %>
+            <%= link_to "Forgot password?", new_user_password_path, class: "font-semibold text-sm text-violet-500 hover:text-violet-300" %>
+          </div>
+          <div class="mt-2">
+            <%= f.password_field :password, autocomplete: "current-password", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div>
+          <%= f.submit "Log in", class: "flex w-full justify-center rounded-full bg-violet-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-violet-300 mt-3" %>
+        </div>
+      </form>
+    <% end %>
+
+    <!-- Sign up prompt -->
+    <p class="mt-10 text-center text-sm text-gray-500">
+      Not a member?
+      <%= link_to "Sign up here!", new_user_registration_path, class: "font-semibold text-violet-500 hover:text-violet-300" %>
+    </p>
   </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

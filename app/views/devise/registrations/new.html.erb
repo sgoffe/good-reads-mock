@@ -1,40 +1,73 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-
-  <div class="field">
-    <%= f.label :first %><br />
-    <%= f.text_field :first %>
+<!-- Full-page background and flex layout -->
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <!-- Logo and heading -->
+  <div class="mx-auto w-full">
+    <%= image_tag('bookshelf.png', class: 'mx-auto h-32 w-32', alt: 'Bookshelf logo') %>
+    <h2 class="mt-2 text-center text-2xl font-bold tracking-tight text-gray-900">Sign up for an account</h2>
   </div>
 
-  <div class="field">
-    <%= f.label :last %><br />
-    <%= f.text_field :last %>
-  </div>
+  <!-- Form container -->
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <!-- Devise form starts here -->
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <div class="space-y-6">
+        <!-- Error messages -->
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+        <!-- First name input -->
+        <div>
+          <%= f.label :first, class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.text_field :first, class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+        <!-- Last name input -->
+        <div>
+          <%= f.label :last, class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.text_field :last, class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+        <!-- Email input -->
+        <div>
+          <%= f.label :email, class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+        <!-- Password input -->
+        <div>
+          <%= f.label :password, class: "block text-sm font-medium text-gray-900" %>
+          <% if @minimum_password_length %>
+            <em class="text-sm text-gray-500">(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %>
+          <div class="mt-2">
+            <%= f.password_field :password, autocomplete: "new-password", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
 
-<%= render "devise/shared/links" %>
+        <!-- Password confirmation input -->
+        <div>
+          <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-900" %>
+          <div class="mt-2">
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "block w-full rounded-full bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div>
+          <%= f.submit "Sign up", class: "flex w-full justify-center rounded-full bg-violet-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-violet-300 mt-3" %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Sign in prompt -->
+    <p class="mt-10 text-center text-sm text-gray-500">
+      Already have an account?
+      <%= link_to "Sign in here!", new_user_session_path, class: "font-semibold text-violet-500 hover:text-violet-300" %>
+    </p>
+  </div>
+</div>
