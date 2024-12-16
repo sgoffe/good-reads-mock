@@ -1,0 +1,15 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th><%=list.title%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% list.books.each do |book| %>
+      <tr>
+        <td> <%= book.title %> </td>
+        <td> <%= book.author  %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

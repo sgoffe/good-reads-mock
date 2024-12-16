@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   # books/reviews routes
   resources :books do
     resources :reviews
+    # resources :lists, only: [:index]
 
     collection do
       get 'search_google', to: 'books#search_google', as: 'search_google'
@@ -33,6 +34,7 @@ Rails.application.routes.draw do
     resources :reviews
     resources :notifications, only: [:index]
     resources :friendships, only: [:new, :create, :destroy]
+    resources :lists
   end
 
   resources :reviews, only: [:index, :show, :edit, :destroy]
@@ -44,6 +46,7 @@ Rails.application.routes.draw do
   get '/profile', to: 'users#profile'
   post '/google_books/add', to: 'books#add_google_book', as: 'add_google_book'
   get '/google_books/:id', to: 'books#show_google', as: 'google_book'
+  # get '/library', to: 'lists#index', as: 'library'
 
   # get '/books/:id/reviews/:id', to: 'reviews#show'
 end

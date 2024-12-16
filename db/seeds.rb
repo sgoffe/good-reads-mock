@@ -69,3 +69,18 @@ r2 = b2.reviews.create!(rating: 4,
 r3 = b3.reviews.create!(rating: 3,
                 review_text: 'sad',
                 user: u3) 
+
+l1 = List.create!(title: "my first list",
+                user: u1)
+                l1.books << b1
+                l1.books << b3
+
+l2 = List.create!(title: "my second first list",
+                user: u2)
+                l2.books << b2
+                l2.books << b3
+
+l3 = List.create!(title: "my third first list",
+                user: u2)
+                l2.books << b1
+                l2.books << b3
