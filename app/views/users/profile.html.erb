@@ -1,18 +1,26 @@
 <div class="container text-center">
-<div class="row">
-    <div class="col text-end">
-        <h1><%= current_user.first.chr.capitalize %><%= current_user.last.chr.capitalize %></h1>
+    <div class="row">
+        <div class="col text-end">
+            <h1><%= current_user.first.chr.capitalize %><%= current_user.last.chr.capitalize %></h1>
+        </div>
+        
+        <div class="col-auto text-start">
+            <h2><%= "#{current_user.first} #{current_user.last}" %></h2>
+            <p><%= current_user.email %></p>
+            <p><%= "Bio: #{current_user.bio}" %></p>
+            <p class="fst-italic">Fanatic Reader since <%= current_user.created_at.strftime("%F") %></p>
+        </div>
+        
+        <div class="col text-start">
+            <%= button_to "Inbox", user_notifications_path(current_user) %>
+        </div>
     </div>
-    
-    <div class="col-auto text-start">
-        <h2><%= "#{current_user.first} #{current_user.last}" %></h2>
-        <p><%= current_user.email %></p>
-        <p><%= "Bio: #{current_user.bio}" %></p>
-        <p class="fst-italic">Fanatic Reader since <%= current_user.created_at.strftime("%F") %></p>
-    </div>
-    
-    <div class="col text-start">
-        <%= button_to "Inbox", user_notifications_path(current_user) %>
+    <div class="row">
+    <% current_user.lists.each do |list| %>
+        <div class="col">
+          <%= render partial: 'userlist', locals: {list: list}  %>
+        </div>
+    <% end %>
     </div>
 </div>
-</div>
+

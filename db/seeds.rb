@@ -82,5 +82,5 @@ l2 = List.create!(title: "my second first list",
 
 l3 = List.create!(title: "my third first list",
                 user: u2)
-                l2.books << b1
-                l2.books << b3
+                l3.books << b1
+                l3.books << b3
