@@ -33,6 +33,59 @@ RSpec.describe Book, type: :model do
       b = Book.new(valid_attributes.merge(pages: -2))
       expect(b.save).to be false
     end
+
+    context 'when publish_date is in the past or today' do
+      it 'is valid if the publish_date is today' do
+        book = Book.new(
+          title: 'Test Book',
+          author: 'Test Author',
+          genre: 'Test Genre',
+          pages: 100,
+          description: 'Test Description',
+          publisher: 'Test Publisher',
+          publish_date: Date.today,
+          isbn_13: '1234567890123',
+          language_written: 'English'
+        )
+        
+        expect(book).to be_valid
+      end
+
+      it 'is valid if the publish_date is in the past' do
+        book = Book.new(
+          title: 'Past Book',
+          author: 'Past Author',
+          genre: 'Past Genre',
+          pages: 100,
+          description: 'Past Description',
+          publisher: 'Past Publisher',
+          publish_date: Date.yesterday,
+          isbn_13: '1234567890123',
+          language_written: 'English'
+        )
+        
+        expect(book).to be_valid
+      end
+    end
+
+    context 'when publish_date is in the future' do
+      it 'is invalid if the publish_date is in the future' do
+        book = Book.new(
+          title: 'Future Book',
+          author: 'Future Author',
+          genre: 'Future Genre',
+          pages: 100,
+          description: 'Future Description',
+          publisher: 'Future Publisher',
+          publish_date: Date.tomorrow,
+          isbn_13: '1234567890123',
+          language_written: 'English'
+        )
+
+        expect(book).to be_invalid
+        expect(book.errors[:publish_date]).to include("can't be in the future")
+      end
+    end
   end
 
   describe "custom methods" do
