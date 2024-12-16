@@ -50,48 +50,8 @@
 
 <!-- Books List -->
 <% if @books.any? %>
-    <div class="row row-cols-4">
-        <% @books.each do |book| %>
-            <div class="col">
-                <div class="card mb-1 p-2 h-100" id="book-card">
-                    <div class="card-body">
-                        <h3 class="card-title"><%= book.title %></h3>
-                        <h5><%= book.author || 'Unknown Author' %></h5>
-
-                        <%# Seeded Books image %>
-                        <% if book.is_a?(Book) %>
-                            <% if book.img_url.present? %>
-                                <img src="<%= book.img_url %>" alt="<%= book.title %>" style="max-width: 300px; height: auto;">
-                            <% else %>
-                                <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
-                            <% end %>
-                        <% elsif book.is_a?(OpenStruct) && book[:img_url] %>
-                            <%# Google Books image%>
-                            <%= image_tag book[:img_url], alt: "#{book.title} cover", class: "img-fluid" %>
-                        <% else %>
-                            <%# no image use default cover %>
-                            <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
-                        <% end %>
-
-                        <p class="card-text"><%= truncate(book.description || 'No description available.', length: 100) %></p>
-                        <p><strong>Genre:</strong> <%= book.genre || 'Unknown' %></p>
-                        <p><strong>Publisher:</strong> <%= book.publisher || 'Unknown' %></p>
-
-                        <div class="btn-group">
-                            <% if book.is_a?(Book) %>
-                                <!-- Seeded Books -->
-                                <%= link_to "More...", book_path(book), class: "btn btn-sm btn-primary" %>
-                                <%= link_to "Reviews", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
-                            <% else %>
-                                <!-- Google Books -->
-                                <%= link_to "More...", google_book_path(id: book.id, query: @query), class: "btn btn-sm btn-primary" %>
-                                <%= link_to "View on Google Books", "https://books.google.com?q=#{book.title}", class: "btn btn-sm btn-secondary" %>
-                            <% end %>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <% end %>
+    <div class="grid lg:grid-cols-3 gap-4 mx-3 md:grid-cols-2 sm:grid-col-1">
+        <%= render :partial => "shared/book_card", :collection => @books, :as => :book %>
     </div>
     
     <!-- Next Page stuff -->
