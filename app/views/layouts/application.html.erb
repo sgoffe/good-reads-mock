@@ -32,7 +32,7 @@
       </div>
     </div>
       
-    <% unless controller_name == 'sessions' %>
+    <% unless controller_name == 'sessions' || controller_name == 'passwords' || controller_name == 'registrations' %>
       <%= render 'layouts/navbar'%>
     <% end %>
 
