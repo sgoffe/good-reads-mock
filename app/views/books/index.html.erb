@@ -1,6 +1,7 @@
-<div class="flex h-screen">
+<div class="flex h-auto min-h-screen mb-16">
   <!-- Left Column -->
-  <div class="w-1/4 h-full px-4 pt-8 shadow-r shadow-sm">
+  <div class="w-1/4 h-full px-4 pt-8">
+    <p class="text-lg font-semibold mb-2">Filters</p>
     <%= form_with url: books_path, method: :get, local: true, class: "space-y-4" do |form| %>
       <div class="flex flex-col space-y-2">
         <%= form.label :query, "Search", class: "text-sm font-medium text-slate-700" %>
@@ -28,28 +29,30 @@
       </div>
 
       <div>
-        <%= form.submit "Filter Books", class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+        <%= form.submit "Filter Books", class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
       </div>
     <% end %>
   </div>
 
   <!-- Right Column -->
-  <div class="w-3/4 overflow-y-scroll grid grid-cols-1 px-10 pt-8">
+  <div class="w-3/4 px-10 pt-8">
     <% if @books.any? %>
-      <%= render partial: 'book_search_card', collection: @books, as: :book %>
+      <!-- Grid container with 1 column, limiting to 10 rows -->
+      <div class="grid grid-cols-1 gap-6">
+        <%= render partial: 'book_search_card', collection: @books.first(10), as: :book %>
+      </div>
 
       <!-- Pagination -->
-      <div class="pagination-buttons">
+      <div class="pagination-buttons mt-4">
         <% if params[:page].to_i > 1 %>
-          <%= link_to "Previous Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i - 1), class: "btn btn-primary" %>
+          <%= link_to "Previous Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i - 1), class: "w-full border-2 border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white py-2 px-4 rounded-full text-sm font-medium transition duration-300" %>
         <% end %>
         <% if @has_more_pages %>
-          <%= link_to "Next Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i + 1), class: "btn btn-secondary" %>
+          <%= link_to "Next Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i + 1), class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
         <% end %>
       </div>
     <% else %>
       <p class="alert alert-info">No books found. Try adjusting your filters or search keywords.</p>
     <% end %>
   </div>
-
 </div>
