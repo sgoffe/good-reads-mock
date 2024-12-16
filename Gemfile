@@ -73,6 +73,9 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 
 gem "dockerfile-rails", ">= 1.6", :group => :development
 
+gem 'tailwindcss-rails'
+
+
 gem "dotenv-rails", "~> 3.1", :groups => [:development, :test]
 
 gem "kaminari", "~> 1.2"
