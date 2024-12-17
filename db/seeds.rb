@@ -2,22 +2,17 @@ require 'open-uri'
 require 'json'
 require 'date'
 
-# Function to fetch book data from Google Books API and seed the books table
 def seed_books_from_titles(book_titles)
   book_titles.each do |title|
-    # Encode title for the API query
     query = URI.encode_www_form_component(title)
     url = "https://www.googleapis.com/books/v1/volumes?q=intitle:#{query}"
 
-    # Fetch data from Google Books API
     begin
       response = URI.open(url).read
       book_data = JSON.parse(response)
 
-      # Check if any items were returned
       if book_data['items']
         book_info = nil
-        # Initializing variables to store final values
         title = nil
         author = nil
         description = nil
@@ -31,18 +26,15 @@ def seed_books_from_titles(book_titles)
         google_books_id = nil
         rating = nil
 
-        # Loop through items and look for missing fields
         book_data['items'].each do |item|
           item_info = item['volumeInfo']
 
-          # If we haven't set title yet, try setting it from this item
           title ||= item_info['title']
           author ||= item_info['authors']&.join(", ") || "Unknown"
           description ||= item_info['description'] || "No description available"
           genre ||= item_info['categories']&.join(", ") || nil
           publisher ||= item_info['publisher'] || "Unknown"
 
-          # Attempt to parse publish_date, if it's not already set
           if publish_date.nil? && item_info['publishedDate']
             begin
               publish_date = Date.parse(item_info['publishedDate'])
@@ -52,16 +44,14 @@ def seed_books_from_titles(book_titles)
             end
           end
 
-          # Set other fields if not already set
           pages ||= item_info['pageCount'] || 0
           language ||= item_info['language'] || "Unknown"
           img_url ||= item_info['imageLinks']&.dig('thumbnail') || "default_cover.jpg"
           isbn_13 ||= item_info['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier')
-          google_books_id ||= item['id']  # Ensure we are getting the ID from the correct location
+          google_books_id ||= item['id']  
           rating ||= item_info['averageRating'] || "No rating available"
         end
 
-        # Collect missing fields dynamically
         missing_fields = []
         missing_fields << 'title' unless title
         missing_fields << 'publisher' unless publisher
@@ -69,11 +59,9 @@ def seed_books_from_titles(book_titles)
         missing_fields << 'publish_date' unless publish_date
         missing_fields << 'isbn_13' unless isbn_13
 
-        # Report if any required fields are missing
         if missing_fields.any?
           puts "Required fields missing for book '#{title}': #{missing_fields.join(', ')}. Skipping..."
         else
-          # Ensure we have valid values for required fields before creating the book
           Book.create!(
             title: title,
             author: author,
@@ -84,7 +72,7 @@ def seed_books_from_titles(book_titles)
             language_written: language,
             img_url: img_url,
             isbn_13: isbn_13,
-            google_books_id: google_books_id,  # Ensure google_books_id is passed correctly
+            google_books_id: google_books_id, 
             genre: genre,
             rating: rating
           )
