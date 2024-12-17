@@ -14,5 +14,9 @@
     <div class="col text-start">
         <%= button_to "Inbox", user_notifications_path(current_user) %>
     </div>
+
+    <div class="col text-start">
+        <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
+    </div>
 </div>
 </div>
