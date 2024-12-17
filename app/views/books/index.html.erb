@@ -2,36 +2,36 @@
   <!-- Left Column -->
   <div class="w-1/4 h-full px-4 pt-8">
     <p class="text-lg font-semibold mb-2">Filters</p>
-    <%= form_with url: books_path, method: :get, local: true, class: "space-y-4" do |form| %>
-      <div class="flex flex-col space-y-2">
-        <%= form.label :query, "Search", class: "text-sm font-medium text-slate-700" %>
-        <%= form.text_field :query, class: "w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300", placeholder: "Search books..." %>
-      </div>
+      <%= form_with url: books_path, method: :get, local: true, class: "space-y-4" do |form| %>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :query, "Search", class: "text-sm font-medium text-slate-700" %>
+          <%= form.text_field :query, value: params[:query], class: "w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300", placeholder: "Search books..." %>
+        </div>
 
-      <div class="flex flex-col space-y-2">
-        <%= form.label :sort, "Sort by", class: "text-sm font-medium text-slate-700" %>
-        <%= form.select :sort, @sorts, { selected: @sort_filt }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
-      </div>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :sort, "Sort by", class: "text-sm font-medium text-slate-700" %>
+          <%= form.select :sort, @sorts, { selected: params[:sort] || @sort_filt }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
+        </div>
 
-      <div class="flex flex-col space-y-2">
-        <%= form.label :rating, "Rating above", class: "text-sm font-medium text-slate-700" %>
-        <%= form.number_field :rating, in: 0..5, step: 0.5, value: @rating_filt, class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
-      </div>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :rating, "Rating above", class: "text-sm font-medium text-slate-700" %>
+          <%= form.number_field :rating, in: 0..5, step: 0.5, value: params[:rating] || @rating_filt, class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+        </div>
 
-      <div class="flex flex-col space-y-2">
-        <%= form.label :genre, "Genre", class: "text-sm font-medium text-slate-700" %>
-        <%= form.text_field :genre, class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
-      </div>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :genre, "Genre", class: "text-sm font-medium text-slate-700" %>
+          <%= form.text_field :genre, value: params[:genre] || @genre_filt, class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+        </div>
 
-      <div class="flex flex-col space-y-2">
-        <%= form.label :source, "Source", class: "text-sm font-medium text-slate-700" %>
-        <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), { include_blank: false }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
-      </div>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :source, "Source", class: "text-sm font-medium text-slate-700" %>
+          <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), { include_blank: false }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
+        </div>
 
-      <div>
-        <%= form.submit "Filter Books", class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
-      </div>
-    <% end %>
+        <div>
+          <%= form.submit "Filter Books", class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
+        </div>
+      <% end %>
   </div>
 
   <!-- Right Column -->
