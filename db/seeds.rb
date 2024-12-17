@@ -51,19 +51,22 @@ u1 = User.create!(first: 'Sophia',
                 last: 'Goffe',
                 email: 'sgoffee@colslay.edu',
                 bio: 'living loving and laughing',
-                password: 'sgoffe')
+                password: 'sgoffe',
+                role: :standard)
 
 u2 = User.create!(first: 'Meghan',
                 last: 'Subak',
                 email: 'msubak@colslay.edu',
                 bio: 'body builder and book lover',
-                password: 'msubak')
+                password: 'msubak',
+                role: :standard)
 
 u3 = User.create!(first: 'Mickey',
                 last: 'Mouse',
                 email: "mmouse@colslay.edu",
                 bio: 'a sassy little mouse',
-                password: 'mmouse')
+                password: 'mmouse',
+                role: :admin)
 
 r1 = b1.reviews.create!(rating: 5,
                 review_text: 'currently my favorite book', 
@@ -71,6 +74,10 @@ r1 = b1.reviews.create!(rating: 5,
 
 r2 = b2.reviews.create!(rating: 4,
                 review_text: 'Maps Fantasy Library', 
+                user: u2)
+
+r2 = b2.reviews.create!(rating: 5,
+                review_text: 'Meghan"s second review', 
                 user: u2)
 
 r3 = b3.reviews.create!(rating: 3,

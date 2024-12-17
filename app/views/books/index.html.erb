@@ -10,6 +10,10 @@
     <h1>Welcome Fanatic Reader</h1>
 </div>
 
+<% if current_user!=nil && current_user.role == "admin" %>
+    <%= link_to "Admin actions", user_admin_path(current_user.id) %>
+<% end %>
+
 <div class="row">
     <%= form_with url: books_path, method: :get, local: true do |form| %>
         <div>
