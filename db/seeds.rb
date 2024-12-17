@@ -69,6 +69,10 @@ r2 = b2.reviews.create!(rating: 4,
                 review_text: 'Maps Fantasy Library', 
                 user: u2)
 
+r2 = b2.reviews.create!(rating: 5,
+                review_text: 'Meghan"s second review', 
+                user: u2)
+
 r3 = b3.reviews.create!(rating: 3,
                 review_text: 'sad',
                 user: u3) 
