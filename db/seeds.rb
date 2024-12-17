@@ -196,11 +196,9 @@ book_titles = [
   "The House of the Spirits by Isabel Allende"
 ]
 
-
-# Call the function to seed books from the list of titles
 seed_books_from_titles(book_titles)
 
-# Additional User Creation (if necessary)
+# create users
 u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe')
 u2 = User.create!(first: 'Meghan', last: 'Subak', email: 'msubak@colslay.edu', bio: 'body builder and book lover', password: 'msubak')
 u3 = User.create!(first: 'Mickey', last: 'Mouse', email: "mmouse@colslay.edu", bio: 'a sassy little mouse', password: 'mmouse')
