@@ -10,6 +10,13 @@
 
 # Seeds file to ensure records exist with the new genre as a string
 
+
+#delete all seeds
+Book.destroy_all
+Review.destroy_all
+User.destroy_all
+
+
 b1 = Book.create!(title: 'Sula',
                 author: 'Toni Morrison',
                 genre: 'historical_fiction',
