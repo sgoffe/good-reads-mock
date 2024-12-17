@@ -19,35 +19,41 @@ class ListsController < ApplicationController
 
     def create
         if !current_user.nil?
-            @list = List.new(create_update_params)
+            @list = List.new(title: "Untitled List")
+            
             @list.user = current_user
-      
             if @list.save
-              redirect_to profile_path, notice: 'List created successfully'
+                redirect_to profile_path, notice: 'List created successfully'
+            else
+                flash[:alert] = 'List could not be created'
+                render :new, status: :unprocessable_content     # FIXME START HERE
             end
-          else
-            flash[:alert] = 'Review could not be created'
-            render :new, status: :unprocessable_content # FIXME START HERE
-          end
+        end
     end
 
     def edit
-        
+        @list = List.find(params[:id])
     end
 
+    def update
+        @list = List.find(params[:id])
+        if @list.update(create_update_params)
+            redirect_to profile_path, notice: 'List renamed successfully'
+        else
+            flash[:alert] = 'List could not be renamed'
+            render :edit, status: :unprocessable_content    # FIXME
+        end
+    end
+    
+    # def destroy
+        
+    # end
+    
     def show
         @list = List.find(params[:list_id])
     end
 
-    def update
-        
-    end
-    
-    def destroy
-        
-    end
-
-    private
+private
     def create_update_params
         params.require(:list).permit(:title)
     end

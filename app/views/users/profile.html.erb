@@ -1,4 +1,5 @@
 <div class="container text-center">
+    
     <div class="row">
         <div class="col text-end">
             <h1><%= current_user.first.chr.capitalize %><%= current_user.last.chr.capitalize %></h1>
@@ -15,10 +16,14 @@
             <%= button_to "Inbox", user_notifications_path(current_user) %>
         </div>
     </div>
+    <div class="row text-start">
+        <%= button_to "Create list", user_lists_path(current_user.id), method: :post, params: {title: "Untitled List"}%>
+    </div>
     <div class="row">
     <% current_user.lists.each do |list| %>
-        <div class="col">
+        <div class="col text-center">
           <%= render partial: 'list', locals: {list: list}  %>
+          <%= button_to "no", edit_user_list_path(current_user.id, list.id), method: :get, params: {id: list.id}%>
         </div>
     <% end %>
     </div>
