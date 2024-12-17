@@ -45,6 +45,5 @@ Rails.application.routes.draw do
   post '/google_books/add', to: 'books#add_google_book', as: 'add_google_book'
   get '/google_books/:id', to: 'books#show_google', as: 'google_book'
   get '/users/:id/admin', to: 'users#admin', as: 'user_admin'
-
   # get '/books/:id/reviews/:id', to: 'reviews#show'
 end

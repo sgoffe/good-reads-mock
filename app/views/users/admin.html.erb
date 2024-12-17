@@ -1,1 +1,28 @@
-<p>admin page</p>
+<div>
+    <%= form_with url: user_admin_path, method: :get, local: true do |form| %>
+        <div>
+            <%= form.label :query, "Search by first name" %>
+            <%= form.text_field :first_query %>
+        </div>
+
+        <div>
+            <%= form.label :query, "Search by last name" %>
+            <%= form.text_field :last_query %>
+        </div>
+
+        <div>
+            <%= form.label :query, "Search by email" %>
+            <%= form.text_field :email_query %>
+        </div>
+
+        <div>
+            <%= form.submit "Filter Users", class: "btn btn-primary" %>
+        </div>
+    <% end %>
+
+    <% @users.each do |user| %>
+        <%= "Name: #{user.first} #{user.last}" %>
+        <%= "Email: #{user.email}" %>
+        <br>
+    <% end %>
+</div>

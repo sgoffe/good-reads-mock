@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class UsersController < ApplicationController
 
   def index
@@ -14,6 +16,20 @@ class UsersController < ApplicationController
 
   def admin
     @user = User.find(params[:id])
+    @users = User.all
+    if (params[:first_query].present?)
+      @users = @users.select{|user| user[:first].to_s.downcase.include?(params[:first_query].downcase)}
+    end
+    if (params[:last_query].present?)
+      @users.select! do |user|
+        user[:last].to_s.downcase.include?(params[:last_query].downcase)
+      end
+    end
+    if (params[:email_query].present?)
+      @users.select! do |user|
+        user[:email].to_s.downcase.include?(params[:email_query].downcase)
+      end
+    end
   end
 
   def update
