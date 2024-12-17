@@ -17,8 +17,7 @@ RSpec.describe "DeleteFriend", type: :system do
             fill_in 'Email', with: "cc@gmail.com"
             fill_in 'Password', with: "cchaplin"
             click_on "Log in"
-            expect(page).to have_content("cc@gmail.com")
-            expect(page).to have_content("Log Out")
+            expect(page).to have_content("Signed in successfully.")
             click_on "Social"
             expect(page).to have_content("This user has no friends")
             click_on "Add friend"
