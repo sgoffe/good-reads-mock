@@ -55,7 +55,7 @@ def seed_books_from_titles(book_titles)
           # Set other fields if not already set
           pages ||= item_info['pageCount'] || 0
           language ||= item_info['language'] || "Unknown"
-          img_url ||= item_info['imageLinks']&.dig('thumbnail') || "No image available"
+          img_url ||= item_info['imageLinks']&.dig('thumbnail') || "default_cover.jpg"
           isbn_13 ||= item_info['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier')
           google_books_id ||= item['id']  # Ensure we are getting the ID from the correct location
           rating ||= item_info['averageRating'] || "No rating available"

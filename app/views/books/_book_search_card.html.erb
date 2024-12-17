@@ -1,4 +1,4 @@
-<div class="flex space-x-4 p-4 border border-slate-300 rounded-lg transition ease-in-out delay-150 hover:-translate-y-2 duration-300 max-h-[200px] overflow-y-auto">
+<%= link_to google_book_path(book.google_books_id), class: "flex space-x-4 p-4 border border-slate-300 rounded-lg transition ease-in-out delay-150 hover:-translate-y-2 duration-300 max-h-[200px] overflow-y-auto" do %>
   <!-- Image Section -->
   <div class="bg-yellow-100">
     <%= image_tag(book.img_url, alt: "Book Cover", class: "h-40 object-cover rounded-sm") %>
@@ -21,4 +21,5 @@
       <%= render_star_rating(book) %>
     </div>
   </div>
-</div>
+<% end %>
+
