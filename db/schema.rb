@@ -54,7 +54,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_013309) do
     t.string "language_written"
     t.string "isbn_13"
     t.decimal "rating", precision: 3, scale: 2
-    t.integer "reviews_count"
     t.index ["google_books_id"], name: "index_books_on_google_books_id", unique: true
   end
 
