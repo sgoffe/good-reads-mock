@@ -20,7 +20,7 @@ class NotificationsController < ApplicationController
       receiver: User.find(notification_params[:receiver_id]),
       title: "<strong>#{current_user.first} #{current_user.last}</strong> recommended <strong>#{Book.find(notification_params[:book_id]).title}</strong> to you!",
       message: notification_params[:message],
-      notification_type: 'recommendation',
+      notifiable_type: 'recommendation',
       notifiable: Book.find(notification_params[:book_id]) 
     )
 

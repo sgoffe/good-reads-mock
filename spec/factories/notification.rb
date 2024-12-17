@@ -6,6 +6,6 @@ FactoryBot.define do
     
     title  { "<strong>#{sender.first} #{sender.last}</strong> recommended <strong>#{notifiable.title}</strong> to you!" }
     message { "This is a message" }
-    notification_type { 'recommendation' }
+    notifiable_type { 'recommendation' }
   end
 end
