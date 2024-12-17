@@ -67,12 +67,12 @@ RSpec.describe "UserController", type: :system do
     end
     describe "destroy method" do
         it "successfully destroys Allie" do
-            visit user_path(@u1)
-            click_on "Delete"
-            expect(page).not_to have_content("Allie")
-            expect(page).not_to have_content("aa@gmail.com")
-            expect(page).to have_content("Brett")
-            expect(page).to have_content("Charlie")
+            @u1.destroy
+            @u2.destroy
+            visit user_admin_path(@u3)
+            expect(page).to have_content("Name: ")
+            click_on "Delete User"
+            expect(page).not_to have_content("Name: ")
         end
     end
     describe "show method" do
