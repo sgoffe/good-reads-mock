@@ -6,6 +6,8 @@ class NotificationsController < ApplicationController
       redirect_to root_path, alert: "You are not authorized to view this page."
     else
       @notifications = current_user.notifications.order(created_at: :desc)
+      @unread_notifications_count = current_user.notifications.unread.count
+      current_user.notifications.unread.update_all(read: true)
     end
   end
 

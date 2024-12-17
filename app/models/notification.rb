@@ -1,6 +1,8 @@
 class Notification < ApplicationRecord
   include Rails.application.routes.url_helpers
 
+  scope :unread, -> { where(read: false) }
+
   belongs_to :sender, class_name: 'User'
   belongs_to :receiver, class_name: 'User'
   belongs_to :notifiable, polymorphic: true
