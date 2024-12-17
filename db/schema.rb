@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_17_010938) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_17_013309) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_010938) do
     t.string "language_written"
     t.string "isbn_13"
     t.decimal "rating", precision: 3, scale: 2
+    t.integer "reviews_count"
     t.index ["google_books_id"], name: "index_books_on_google_books_id", unique: true
   end
 
