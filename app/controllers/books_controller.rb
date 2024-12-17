@@ -222,7 +222,7 @@ class BooksController < ApplicationController
   
     books = books_data.map do |item|
       OpenStruct.new(
-        id: item['id'],
+        google_books_id: item['id'],
         title: item['volumeInfo']['title'],
         author: item['volumeInfo']['authors']&.join(', ') || 'Unknown Author',
         description: item['volumeInfo']['description'] || 'No description available.',
