@@ -15,7 +15,7 @@
       <div class="flex items-center space-x-2">
         <span class="text-lg font-semibold text-slate-800 truncate"><%= book.title %></span>
         <span class="text-sm text-slate-600">
-          <%= (Date.parse(book.publish_date) rescue nil)&.strftime("%Y") || "Unknown" %>
+          <%= book.formatted_publish_year %>
         </span>
 
       </div>

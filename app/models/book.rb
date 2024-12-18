@@ -32,6 +32,12 @@ class Book < ApplicationRecord
     Book.where("LOWER(genre) = ?", genre.downcase)
   end
 
+  def formatted_publish_year
+    return "Unknown" if publish_date.blank?
+
+    (Date.parse(publish_date.to_s) rescue nil)&.strftime("%Y") || "Unknown"
+  end
+
   private
   
   def publish_date_must_be_in_the_past_or_today
