@@ -28,7 +28,6 @@ def fetch_and_store_books_data(book_titles)
         isbn_13 = nil
         google_books_id = nil
         rating = nil
-
         book_data['items'].each do |item|
           item_info = item['volumeInfo']
 
@@ -216,6 +215,13 @@ book_titles = [
 ]
 
 # fetch_and_store_books_data(book_titles)
+
+
+#delete all seeds
+Review.find_each(&:destroy!)
+Book.find_each(&:destroy!)
+User.find_each(&:destroy!)
+
 seed_books_from_file
 
 # create users
