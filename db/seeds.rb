@@ -1,21 +1,6 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
-# Seeds file to ensure records exist with the new genre as a string
 require 'open-uri'
 require 'json'
 require 'date'
-
-Book.destroy_all
-User.destroy_all
-Notification.destroy_all
 
 def fetch_and_store_books_data(book_titles)
   # Fetch the book data from the API once and store it in a file
@@ -137,68 +122,103 @@ def seed_books_from_file
   end
 end
 
-b1 = Book.create!(title: 'Sula',
-                author: 'Toni Morrison',
-                genre: 'historical_fiction',
-                pages: 174,
-                description: 'Sula and Nel are two young black girls: clever and poor. They grow up together sharing their secrets, dreams and happiness. Then Sula breaks free from their small-town community in the uplands of Ohio to roam the cities of America. When she returns ten years later much has changed. Including Nel, who now has a husband and three children. The friendship between the two women becomes strained and the whole town grows wary as Sula continues in her wayward, vagabond and uncompromising ways.',
-                publisher: 'Plume',
-                publish_date: Date.new(1973, 1, 1),
-                img_url: nil,
-                isbn_13: 9780452283862,
-                language_written: 'English',
-                google_books_id: '1234567890')
+book_titles = [
+  "Ulysses by James Joyce",
+  "The Great Gatsby by F. Scott Fitzgerald",
+  "One Hundred Years of Solitude by Gabriel García Márquez",
+  "Moby-Dick by Herman Melville",
+  "War and Peace by Leo Tolstoy",
+  "Pride and Prejudice by Jane Austen",
+  "1984 by George Orwell",
+  "The Lord of the Rings by J.R.R. Tolkien",
+  "The Odyssey by Homer",
+  "Crime and Punishment by Fyodor Dostoevsky",
+  "The Brothers Karamazov by Fyodor Dostoevsky",
+  "Don Quixote by Miguel de Cervantes",
+  "The Divine Comedy by Dante Alighieri",
+  "The Iliad by Homer",
+  "The Catcher in the Rye by J.D. Salinger",
+  "The Bible by various authors",
+  "The Canterbury Tales by Geoffrey Chaucer",
+  "The Adventures of Huckleberry Finn by Mark Twain",
+  "The Grapes of Wrath by John Steinbeck",
+  "Brave New World by Aldous Huxley",
+  "The Stranger by Albert Camus",
+  "The Trial by Franz Kafka",
+  "Lolita by Vladimir Nabokov",
+  "Middlemarch by George Eliot",
+  "The Sound and the Fury by William Faulkner",
+  "The Picture of Dorian Gray by Oscar Wilde",
+  "The Old Man and the Sea by Ernest Hemingway",
+  "The Sun Also Rises by Ernest Hemingway",
+  "The Road by Cormac McCarthy",
+  "Beloved by Toni Morrison",
+  "The Hobbit by J.R.R. Tolkien",
+  "The Night Circus by Erin Morgenstern",
+  "The Goldfinch by Donna Tartt",
+  "The Nightingale by Kristin Hannah",
+  "The Tattooist of Auschwitz by Heather Morris",
+  "The Book Thief by Markus Zusak",
+  "The Help by Kathryn Stockett",
+  "The Giver of Stars by Jojo Moyes",
+  "The Alice Network by Kate Quinn",
+  "The Orphan's Tale by Pam Jenoff",
+  "The Paris Library by Janet Skeslien Charles",
+  "The Night Watchman by Louise Erdrich",
+  "The Underground Railroad by Colson Whitehead",
+  "The Nickel Boys by Colson Whitehead",
+  "The Silent Patient by Alex Michaelides",
+  "The Midnight Library by Matt Haig",
+  "The Vanishing Half by Brit Bennett",
+  "The Invisible Life of Addie LaRue by V.E. Schwab",
+  "The Song of Achilles by Madeline Miller",
+  "The Heart of the Matter by Graham Greene",
+  "A Tale of Two Cities by Charles Dickens",
+  "The Secret History by Donna Tartt",
+  "The Outsiders by S.E. Hinton",
+  "A Wrinkle in Time by Madeleine L'Engle",
+  "The Shining by Stephen King",
+  "Dune by Frank Herbert",
+  "Fahrenheit 451 by Ray Bradbury",
+  "Ender's Game by Orson Scott Card",
+  "The Hunger Games by Suzanne Collins",
+  "The Girl on the Train by Paula Hawkins",
+  "Gone Girl by Gillian Flynn",
+  "The Fault in Our Stars by John Green",
+  "The Kite Runner by Khaled Hosseini",
+  "The Time Traveler's Wife by Audrey Niffenegger",
+  "The Secret Garden by Frances Hodgson Burnett",
+  "The Hound of the Baskervilles by Arthur Conan Doyle",
+  "Dracula by Bram Stoker",
+  "Frankenstein by Mary Shelley",
+  "The Wizard of Oz by L. Frank Baum",
+  "The Chronicles of Narnia by C.S. Lewis",
+  "Harry Potter and the Sorcerer's Stone by J.K. Rowling",
+  "The Lion, the Witch and the Wardrobe by C.S. Lewis",
+  "A Game of Thrones by George R.R. Martin",
+  "The Fellowship of the Ring by J.R.R. Tolkien",
+  "The Two Towers by J.R.R. Tolkien",
+  "The Return of the King by J.R.R. Tolkien",
+  "The Maze Runner by James Dashner",
+  "Divergent by Veronica Roth",
+  "The Giver by Lois Lowry",
+  "Ready Player One by Ernest Cline",
+  "The Martian by Andy Weir",
+  "Circe by Madeline Miller",
+  "The Invisible Man by H.G. Wells",
+  "The War of the Worlds by H.G. Wells",
+  "The Time Machine by H.G. Wells",
+  "The Island of Dr. Moreau by H.G. Wells",
+  "One Flew Over the Cuckoo's Nest by Ken Kesey",
+  "Of Mice and Men by John Steinbeck",
+  "East of Eden by John Steinbeck",
+  "The House of the Spirits by Isabel Allende"
+]
 
-b2 = Book.create!(title: 'Jailbird',
-                author: 'Kurt Vonnegut Jr.',
-                genre: 'fiction',
-                pages: 288,
-                description: 'Jailbird takes us into a fractured and comic, pure Vonnegut world of high crimes and misdemeanors in government—and in the heart. This wry tale follows bumbling bureaucrat Walter F. Starbuck from Harvard to the Nixon White House to the penitentiary as Watergate’s least known co-conspirator. But the humor turns dark when Vonnegut shines his spotlight on the cold hearts and calculated greed of the mighty, giving a razor-sharp edge to an unforgettable portrait of power and politics in our times.',
-                publisher: 'Dell',
-                publish_date: Date.new(1979, 1, 1),
-                img_url: nil,
-                isbn_13: 9780440154471,
-                language_written: 'English',
-                google_books_id: '0987654321')
+# fetch_and_store_books_data(book_titles)
+seed_books_from_file
 
-b3 = Book.create!(title: 'Angela\'s Ashes',
-                author: 'Frank McCourt',
-                genre: 'nonfiction',
-                pages: 452,
-                description: 'So begins the Pulitzer Prize winning memoir of Frank McCourt, born in Depression-era Brooklyn to recent Irish immigrants and raised in the slums of Limerick, Ireland. Frank\'s mother, Angela, has no money to feed the children since Frank\'s father, Malachy, rarely works, and when he does he drinks his wages. Yet Malachy—exasperating, irresponsible and beguiling—does nurture in Frank an appetite for the one thing he can provide: a story. Frank lives for his father\'s tales of Cuchulain, who saved Ireland, and of the Angel on the Seventh Step, who brings his mother babies.',
-                publisher: 'Harper Perennial',
-                publish_date: Date.new(1996, 9, 5),
-                img_url: nil,
-                isbn_13: 9780007205233,
-                language_written: 'English',
-                google_books_id: '1122334455')
-
-u1 = User.create!(first: 'Sophia',
-                last: 'Goffe',
-                email: 'sgoffee@colslay.edu',
-                bio: 'living loving and laughing',
-                password: 'sgoffe')
-
-u2 = User.create!(first: 'Meghan',
-                last: 'Subak',
-                email: 'msubak@colslay.edu',
-                bio: 'body builder and book lover',
-                password: 'msubak')
-
-u3 = User.create!(first: 'Mickey',
-                last: 'Mouse',
-                email: "mmouse@colslay.edu",
-                bio: 'a sassy little mouse',
-                password: 'mmouse')
-
-r1 = b1.reviews.create!(rating: 5,
-                review_text: 'currently my favorite book', 
-                user: u1) 
-
-r2 = b2.reviews.create!(rating: 4,
-                review_text: 'Maps Fantasy Library', 
-                user: u2)
-
-r3 = b3.reviews.create!(rating: 3,
-                review_text: 'sad',
-                user: u3) 
+# create users
+u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe')
+u2 = User.create!(first: 'Meghan', last: 'Subak', email: 'msubak@colslay.edu', bio: 'body builder and book lover', password: 'msubak')
+u3 = User.create!(first: 'Mickey', last: 'Mouse', email: "mmouse@colslay.edu", bio: 'a sassy little mouse', password: 'mmouse')
