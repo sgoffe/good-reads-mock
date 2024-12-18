@@ -25,5 +25,18 @@ RSpec.describe "CreateList", type: :system do
             expect(page).to have_content("List created successfully")
             expect(page).to have_content("Untitled List")
         end
+        it "list create sad path" do
+            visit books_path
+            click_on "Log In"
+            fill_in 'Email', with: "aa@gmail.com"
+            fill_in 'Password', with: "aamerson"
+            click_on "Log in"
+            expect(page).to have_content("Signed in successfully.")
+            visit profile_path
+            expect(page).not_to have_content("Untitled List")
+            expect(List).to receive(:new).and_return(nil)
+            expect(page).not_to have_content("Untitled List")
+            expect(page).to have_content("List could not be created.")
+        end
     end
 end

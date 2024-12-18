@@ -26,7 +26,7 @@ class ListsController < ApplicationController
                 redirect_to profile_path, notice: 'List created successfully'
             else
                 flash[:alert] = 'List could not be created'
-                render :new, status: :unprocessable_content     # FIXME START HERE
+                render :profile, status: :unprocessable_content     # FIXME START HERE
             end
         end
     end

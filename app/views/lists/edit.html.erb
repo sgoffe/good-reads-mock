@@ -1,0 +1,13 @@
+<div>
+    <h2>Edit List</h2>
+</div>
+<div>
+    <%= form_for @list, url: user_list_path(current_user), method: :put do |f| %>
+        <div class="form-group">
+            <%= f.label :title %>
+            <%= f.text_field :title, class: 'form-control' %>
+        </div>
+
+        <%= f.submit class: "btn btn-primary" %>
+    <% end %>
+</div>
