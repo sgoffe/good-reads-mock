@@ -12,10 +12,9 @@
 
 
 #delete all seeds
-Book.destroy_all
-Review.destroy_all
-User.destroy_all
-
+Review.find_each(&:destroy!)
+Book.find_each(&:destroy!)
+User.find_each(&:destroy!)
 
 b1 = Book.create!(title: 'Sula',
                 author: 'Toni Morrison',
