@@ -9,11 +9,12 @@ RSpec.describe "UserController", type: :system do
         @u1 = User.create!(first: "Allie", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
         @u2 = User.create!(first: "Brett", last: "Boyerton", email: "bb@gmail.com", bio:"howdy", password:"bboyerton", role: :standard)
         @u3 = User.create!(first: "Charlie", last: "Chaplin", email: "cc@gmail.com", bio:"hey there", password:"cchaplin", role: :standard)
-        @b1 = Book.create!(title: "test", author: "test",
-		genre: :fiction,
-		pages: 100, description: "test",
-		publisher: "test",
-		publish_date: Date.new(1222, 2, 2), isbn_13: 1111111111111, language_written: "test")
+        @b1 = FactoryBot.create(:book)
+        # @b1 = Book.create!(title: "test", author: "test",
+        #     genre: :fiction,
+        #     pages: 100, description: "test",
+        #     publisher: "test",
+        #     publish_date: Date.new(1222, 2, 2), isbn_13: 1111111111111, language_written: "test")
         @r1 = Review.create!(user: @u1, book: @b1, rating: 4, review_text: "Awesome book")
     end
 

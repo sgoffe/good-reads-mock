@@ -9,11 +9,13 @@ RSpec.describe "Show route", type: :system do
     @u1 = User.create!(first: "Allie", last: "Amberson", 
                 email: "aa@gmail.com", bio:"wassup", 
                 password:"aamerson", role: :admin)
-    @b1 = Book.create!(title: "test", author: "test",
-                genre: :fiction,
-                pages: 100, description: "test",
-                publisher: "test",
-                publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
+
+    @b1 = FactoryBot.create(:book)
+    # @b1 = Book.create!(title: "test", author: "test",
+    #             genre: :fiction,
+    #             pages: 100, description: "test",
+    #             publisher: "test",
+    #             publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
   end
 
   describe "destroying a review" do
@@ -25,10 +27,10 @@ RSpec.describe "Show route", type: :system do
       review.save!
 
       visit review_path(review)
-      expect(page).to have_content('test 1')
+      expect(page).to have_content(review.review_text)
       click_on 'Delete'
       expect(page).to have_content('Review deleted successfully')
-      expect(page).not_to have_content('test 1')
+      expect(page).not_to have_content(review.review_text)
       expect(Review.all.count).to eq(0)
     end
 

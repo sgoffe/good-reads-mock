@@ -5,11 +5,12 @@ RSpec.describe Review, type: :model do
     @u1 = User.create!(first: "Allie", last: "Amberson", 
                 email: "aa@gmail.com", bio:"wassup", 
                 password:"aamerson", role: :admin)
-    @b1 = Book.create!(title: "test", author: "test",
-                genre: :fiction,
-                pages: 100, description: "test",
-                publisher: "test",
-                publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
+    @b1 = FactoryBot.create(:book, genre: "fiction")
+    # @b1 = Book.create!(title: "test", author: "test",
+    #             genre: :fiction,
+    #             pages: 100, description: "test",
+    #             publisher: "test",
+    #             publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
   end
   
   

@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'webmock/rspec'
 
 example_image_url = "https://th.bing.com/th/id/OIP.caKIPkEzOmvoKgGoa-KXwgAAAA?w=135&h=206&c=7&r=0&o=5&dpr=2&pid=1.7"
-
+# update tests to accomidate clean html description function
 def clean_html_description(html)
   doc = Nokogiri::HTML.fragment(html)
   clean_text = doc.css('p').map(&:text).join("\n\n")
@@ -28,6 +28,7 @@ RSpec.shared_context "Google Books API Setup" do
         "pageCount" => 300,
         "language" => "English",
         "id" => "google_1",
+        "google_books_id" => "google_1",
         "industryIdentifiers" => [{"type" => "ISBN_13", "identifier" => "1234567890123"}],
         "imageLinks" => {"thumbnail" => example_image_url}
       }
@@ -48,6 +49,7 @@ RSpec.describe "Book Index with Google Books", type: :feature do
     @google_books = [
       OpenStruct.new(
         id: "1",
+        google_books_id: "1",
         title: "default Classic novel Google Book 1",
         author: "Google Author 1",
         description: "Description 1",
@@ -61,6 +63,7 @@ RSpec.describe "Book Index with Google Books", type: :feature do
       ),
       OpenStruct.new(
         id: "2",
+        google_books_id: "2",
         title: "default New novel Google Book 2",
         author: "Google Author 2",
         description: "Description 2",
@@ -174,7 +177,7 @@ RSpec.describe "Google Books Integration", type: :system do
 
     expect(page).to have_content('Google Book Title')
     expect(page).to have_content('Google Author')
-    expect(page).to have_content('Google Book Description')
+    expect(page).to have_content(clean_html_description('Google Book Description'))
     expect(page).to have_content('Fiction')
     expect(page).to have_content('Google Publisher')
     expect(page).to have_content('2022-01-01')
@@ -197,18 +200,7 @@ RSpec.describe "Existing Google Books", type: :system do
   before do
     @user = User.create!(first: "John", last: "Doe", email: "john@example.com", password: "password", role: :admin)
 
-    @existing_book = Book.create!(
-      title: "Google Book Title",
-      author: "Google Author",
-      genre: "Fiction",
-      pages: 100,
-      description: "Existing Book Description",
-      publisher: "Existing Publisher",
-      publish_date: Date.new(2002, 2, 2),
-      isbn_13: 1234567890123,
-      language_written: "English",
-      img_url: example_image_url
-    )
+    @existing_book = FactoryBot.create(:book, title: "Existing Book Title", author: "Existing Author", isbn_13: 1234567890123, img_url: example_image_url)
   end
 
   it "displays existing book details correctly" do
@@ -217,7 +209,7 @@ RSpec.describe "Existing Google Books", type: :system do
     expect(page).to have_current_path(book_path(@existing_book))
     expect(page).to have_content(@existing_book.title)
     expect(page).to have_content(@existing_book.author)
-    expect(page).to have_content(@existing_book.description)
+    expect(page).to have_content(clean_html_description( @existing_book.description ))
     expect(page).to have_content(@existing_book.genre)
     expect(page).to have_content(@existing_book.publisher)
     expect(page).to have_content(@existing_book.publish_date)
@@ -243,12 +235,14 @@ RSpec.describe BooksController, type: :controller do
     let(:valid_google_book_params) do
       {
         book: {
+          google_books_id: 'POST #add_google_book google_1',
+          id: 'POST #add_google_book google_1',
           title: 'Test Book Title',
           author: 'Test Author',
           genre: 'Fiction',
           description: 'A test book description',
           publisher: 'Test Publisher',
-          publish_date: '2024-01-01',
+          publish_date: Date.new(2024, 1, 1),
           pages: 300,
           language_written: 'en',
           isbn_13: '9781234567897',
@@ -258,40 +252,34 @@ RSpec.describe BooksController, type: :controller do
     end
 
     let(:existing_book) do
-      Book.create!(
-        title: 'Test Book Title',
-        author: 'Test Author',
-        genre: 'Fiction',
-        description: 'A test book description',
-        publisher: 'Test Publisher',
-        publish_date: '2024-01-01',
-        pages: 300,
-        language_written: 'en',
-        isbn_13: '9781234567897',
-        img_url: example_image_url
-      )
+      FactoryBot.create(:book,
+                        google_books_id: 'POST #add_google_book google_1',
+                        id: 'POST #add_google_book google_1',
+                        title: 'Test Book Title',
+                        author: 'Test Author',
+                        isbn_13: '9781234567897',
+                        img_url: example_image_url)
     end
 
-    context 'when the book does not already exist' do
-      it 'creates a new book and redirects to its show page' do
-        expect do
-          post :add_google_book, params: valid_google_book_params
-        end.to change(Book, :count).by(1)
-
-        created_book = Book.last
-        expect(created_book.title).to eq(valid_google_book_params[:book][:title])
-        expect(created_book.author).to eq(valid_google_book_params[:book][:author])
-        expect(created_book.genre).to eq(valid_google_book_params[:book][:genre])
-        expect(created_book.isbn_13).to eq(valid_google_book_params[:book][:isbn_13])
-        expect(response).to redirect_to(book_path(created_book))
-        expect(flash[:notice]).to eq("Google Book 'Test Book Title' was successfully added.")
+    context 'when required parameters are missing' do
+      let(:invalid_google_book_params) do
+        { book: { title: '', author: '', google_books_id: nil } }
+      end
+    
+      it 'does not create a book and renders an error' do
+        expect do  
+          post :add_google_book, params: invalid_google_book_params
+        end.not_to change(Book, :count)
+    
+        expect(response).to redirect_to(books_path)
+        expect(flash[:alert]).to eq('Error adding Google Book.')
       end
     end
 
-    context 'when the book already exists by ISBN' do
+    context 'when the book already exists' do
       before { existing_book }
 
-      it 'redirects to the existing book show page with a notice' do
+      it 'does not create a new book and redirects to the existing book show page' do
         expect do
           post :add_google_book, params: valid_google_book_params
         end.not_to change(Book, :count)

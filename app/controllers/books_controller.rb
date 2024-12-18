@@ -132,7 +132,8 @@ class BooksController < ApplicationController
   
   def create
     @book = Book.new(create_params)
-  
+    @book.google_books_id ||= SecureRandom.uuid
+    
     if @book.save
       if params[:book][:image].present?
         @book.image.attach(params[:book][:image])
@@ -160,36 +161,30 @@ class BooksController < ApplicationController
   end
 
   def add_google_book
-    book_data = params[:book]
+    book_params = params.require(:book).permit(
+      :title, :author, :google_books_id ,:genre, :description, :publisher, :publish_date,
+      :pages, :language_written, :isbn_13, :img_url
+    )
   
-    existing_book = Book.find_by(isbn_13: book_data[:isbn_13]) || 
-                    Book.find_by(title: book_data[:title], author: book_data[:author])
-    
+    existing_book = Book.find_by(isbn_13: book_params[:isbn_13]) || 
+                    Book.find_by(title: book_params[:title], author: book_params[:author])
+  
     if existing_book
       redirect_to book_path(existing_book), notice: "This book is already in your library."
       return
     end
   
-    @google_book = Book.new(
-      title: book_data[:title],
-      author: book_data[:author],
-      genre: book_data[:genre],
-      description: clean_html_description(book_data[:description]),
-      publisher: book_data[:publisher],
-      publish_date: book_data[:publish_date],
-      pages: book_data[:pages],
-      language_written: book_data[:language_written],
-      isbn_13: book_data[:isbn_13],
-      img_url: book_data[:img_url]
-    )
+    @google_book = Book.new(book_params)
+    @google_book.description = clean_html_description(book_params[:description]) if book_params[:description].present?
   
-    # Save the book if it's valid, and redirect to its show page
     if @google_book.save
       redirect_to book_path(@google_book), notice: "Google Book '#{@google_book.title}' was successfully added."
     else
-      redirect_to books_path, alert: "Error adding Google Book."
+      flash[:alert] = "Error adding Google Book."
+      redirect_to books_path
     end
   end
+  
 
   def destroy
     @book = Book.find(params[:id])
