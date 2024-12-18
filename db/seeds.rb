@@ -2,6 +2,10 @@ require 'open-uri'
 require 'json'
 require 'date'
 
+Review.find_each(&:destroy!)
+Book.find_each(&:destroy!)
+User.find_each(&:destroy!)
+
 def fetch_and_store_books_data(book_titles)
   # Fetch the book data from the API once and store it in a file
   books_data = []
@@ -222,3 +226,20 @@ seed_books_from_file
 u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe')
 u2 = User.create!(first: 'Meghan', last: 'Subak', email: 'msubak@colslay.edu', bio: 'body builder and book lover', password: 'msubak')
 u3 = User.create!(first: 'Mickey', last: 'Mouse', email: "mmouse@colslay.edu", bio: 'a sassy little mouse', password: 'mmouse')
+
+# create reviews
+r1 = b1.reviews.create!(rating: 5,
+                review_text: 'currently my favorite book', 
+                user: u1) 
+
+r2 = b2.reviews.create!(rating: 4,
+                review_text: 'Maps Fantasy Library', 
+                user: u2)
+
+r3 = b2.reviews.create!(rating: 5,
+                review_text: 'Meghan"s second review', 
+                user: u2)
+
+r4 = b3.reviews.create!(rating: 3,
+                review_text: 'sad',
+                user: u3) 
