@@ -8,7 +8,8 @@
       <li class="list-group-item"><%= link_to book.title, book_path(book.id) %></li>
     <% end %>
     <% if !current_user.nil? && (list.user == current_user) %>
-      <li class="list-group-item"><span class="btn btn-sm btn-info"><%= button_to "Edit list", edit_user_list_path(current_user.id, list.id), method: :get%></span></li>
+      <li class="list-group-item"><%= button_to "Edit list", edit_user_list_path(current_user.id, list.id), method: :get, class: "btn btn-sm btn-info" %></li>
+      <li class="list-group-item"><%= button_to "Delete", user_list_path(current_user.id, list.id), method: :delete, class: "btn btn-sm btn-danger", form: { data: { turbo_confirm: "Are you sure?" } } %></li>
     <% end %>
   </ul>
 </div>

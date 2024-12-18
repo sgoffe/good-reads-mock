@@ -1,21 +1,21 @@
 class ListsController < ApplicationController
     
     
-    def index # just for user_lists (show all lists? do i want this?)
-        if params[:user_id] # a user's list (user_lists)
-            user = User.find(params[:user_id])
-            @lists = user.lists.order(updated_at: :desc)
-        elsif params[:book_id] # lists a book has been added to (book_lists) - no route currently
-            book = Book.find(params[:book_id])
-            @lists = book.lists
-        else # (lists) - no route currently
-            @lists = List.all
-        end
-    end
+    # def index # just for user_lists (show all lists? do i want this?)
+    #     if params[:user_id] # a user's list (user_lists)
+    #         user = User.find(params[:user_id])
+    #         @lists = user.lists.order(updated_at: :desc)
+    #     elsif params[:book_id] # lists a book has been added to (book_lists) - no route currently
+    #         book = Book.find(params[:book_id])
+    #         @lists = book.lists
+    #     else # (lists) - no route currently
+    #         @lists = List.all
+    #     end
+    # end
 
-    def new
-        @list = List.new
-    end
+    # def new
+    #     @list = List.new
+    # end
 
     def create
         if !current_user.nil?
@@ -45,13 +45,23 @@ class ListsController < ApplicationController
         end
     end
     
-    # def destroy
-        
-    # end
+    def destroy
+        begin
+          @list = List.find(params[:id])
+          @list.destroy
+          redirect_to profile_path, notice: 'List deleted successfully'
+        rescue ActiveRecord::RecordNotFound
+          flash[:alert] = 'List not found'
+          redirect_to profile_path
+        rescue StandardError => e
+          flash[:alert] = 'Error deleting list'
+          redirect_to profile_path
+        end
+      end
     
-    def show
-        @list = List.find(params[:list_id])
-    end
+    # def show
+    #     @list = List.find(params[:list_id])
+    # end
 
 private
     def create_update_params

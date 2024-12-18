@@ -45,4 +45,38 @@ RSpec.describe "ListsController", type: :system do
         it "update sad path" do
         end
     end
+    describe "destroying a review" do
+        it 'deletes a review' do
+            visit profile_path
+            click_on "New list"
+            expect(@u1.lists.count).to eq(1)
+            expect(page).to have_content('Untitled List')
+            click_on 'Delete'
+            expect(page).to have_content('List deleted successfully')
+            expect(page).not_to have_content('Untitled List')
+            expect(@u1.lists.count).to eq(0)
+        end
+    
+        describe 'handles failed delete' do
+          it 'due to db error' do
+            l = List.create!(user: @u1, title: "test list")
+            allow_any_instance_of(List).to receive(:destroy).and_raise(StandardError)
+      
+            visit profile_path
+            click_on 'Delete'
+            expect(page.current_path).to eq(profile_path)
+            expect(page).to have_content('Error deleting list')
+          end
+    
+          it 'due to invalid id' do
+            l = List.create!(user: @u1, title: "test list")
+            allow_any_instance_of(List).to receive(:destroy).and_raise(ActiveRecord::RecordNotFound)
+    
+            visit profile_path
+            click_on 'Delete'
+            expect(page.current_path).to eq(profile_path)
+            expect(page).to have_content('List not found')
+          end
+        end
+    end
 end
