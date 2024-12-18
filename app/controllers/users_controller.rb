@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class UsersController < ApplicationController
 
   def index
@@ -10,6 +12,25 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+  end
+
+  def admin
+    @user = User.find(params[:id])
+    @users = User.all
+    if (params[:first_query].present?)
+      @users = @users.select{|user| user[:first].to_s.downcase.include?(params[:first_query].downcase)}
+    end
+    if (params[:last_query].present?)
+      @users = @users.select{|user| user[:last].to_s.downcase.include?(params[:last_query].downcase)}
+    end
+    if (params[:email_query].present?)
+      @users = @users.select{|user| user[:email].to_s.downcase.include?(params[:email_query].downcase)}
+    end
+  end
+
+  def admin_moderate
+    @user = User.find(params[:id])
+    @reviews = @user.reviews
   end
 
   def update
@@ -25,7 +46,11 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      redirect_to users_path
+      if (params[:from_admin].present? && params[:from_admin])
+        redirect_to user_admin_path(1)
+      else
+        redirect_to books_path
+      end
     else
       ##error message
     end

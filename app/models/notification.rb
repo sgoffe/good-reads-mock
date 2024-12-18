@@ -1,6 +1,8 @@
 class Notification < ApplicationRecord
   include Rails.application.routes.url_helpers
 
+  scope :unread, -> { where(read: false) }
+
   belongs_to :sender, class_name: 'User'
   belongs_to :receiver, class_name: 'User'
   belongs_to :notifiable, polymorphic: true
@@ -9,7 +11,7 @@ class Notification < ApplicationRecord
   validates :title, :presence => true
   validates :notifiable_id, :presence => true
   validates :notifiable_type, :presence => true
-  validates :notification_type, :presence => true
+  validates :notifiable_type, :presence => true
   validate :sender_and_receiver_are_different 
 
   def formatted_title
