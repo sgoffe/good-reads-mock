@@ -76,5 +76,32 @@ RSpec.describe "Recommend", type: :system do
       expect(page.current_path).to eq(root_path)
       expect(page).to have_content("You are not authorized to view this page.")
     end
+
+
+    it "should automatically update a recievers notifications count on the nav bar" do
+      visit book_path(@b1)
+      sign_in @sender
+      click_on "Recommend this book"
+      select @receiver.first, from: "Select a Friend"
+      fill_in "Message", with: "Hey Ron, I think you'll love this book!"
+      click_on "Send Recommendation"
+      sign_out @sender
+      sign_in @receiver
+      expect(@receiver.notifications.unread.count).to eq(1)
+      expect(page).to have_content("1")
+    end
+
+    it "should update a recievers notifications to 0 on the nav bar when reciever opens inbox" do
+      visit book_path(@b1)
+      sign_in @sender
+      click_on "Recommend this book"
+      select @receiver.first, from: "Select a Friend"
+      fill_in "Message", with: "Hey Ron, I think you'll love this book!"
+      click_on "Send Recommendation"
+      sign_out @sender
+      sign_in @receiver
+      visit user_notifications_path(@receiver)
+      expect(@receiver.notifications.unread.count).to eq(0)
+    end
   end
 end
