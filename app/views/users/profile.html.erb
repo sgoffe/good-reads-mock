@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="container">
 <div class="row">
     <div class="col text-end">
         <h1><%= current_user.first.chr.capitalize %><%= current_user.last.chr.capitalize %></h1>
@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="row text-start">
-   <%= button_to "New list", user_lists_path(current_user), method: :post %>
+    <%= button_to "New list", user_lists_path(current_user), method: :post, class: "btn btn-primary btn-sm" %>
 </div>
 <div class="row">
     <% current_user.lists.each do |list| %>

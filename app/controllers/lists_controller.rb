@@ -38,9 +38,9 @@ class ListsController < ApplicationController
     def update
         @list = List.find(params[:id])
         if @list.update(create_update_params)
-            redirect_to profile_path, notice: 'List renamed successfully'
+            redirect_to profile_path, notice: 'List updated successfully'
         else
-            flash[:alert] = 'List could not be renamed'
+            flash[:alert] = 'List could not be updated'
             render :edit, status: :unprocessable_content    # FIXME
         end
     end

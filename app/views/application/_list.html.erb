@@ -1,6 +1,6 @@
 <div class="card" style="width: 18rem;">
   <div class="card-header">
-    <%= list.title %></h3>
+    <h2><%= list.title %></h2>
   </div>
 
   <ul class="list-group list-group-flush">
@@ -8,7 +8,7 @@
       <li class="list-group-item"><%= link_to book.title, book_path(book.id) %></li>
     <% end %>
     <% if !current_user.nil? && (list.user == current_user) %>
-      <li class="list-group-item"><%= button_to "Edit list", edit_user_list_path(current_user.id, list.id), method: :get%></li>
+      <li class="list-group-item"><span class="btn btn-sm btn-info"><%= button_to "Edit list", edit_user_list_path(current_user.id, list.id), method: :get%></span></li>
     <% end %>
   </ul>
 </div>
