@@ -169,22 +169,59 @@ RSpec.describe "Google Books Integration", type: :system do
   include_context "Google Books API Setup"
 
   before do
-    @user = User.create!(first: "John", last: "Doe", email: "john@example.com", password: "password", role: :admin)
+    allow(HTTParty).to receive(:get).and_return(
+      double(
+        success?: true,
+        parsed_response: {
+          'volumeInfo' => {
+            'title' => 'Google Book Title',
+            'authors' => ['Google Author'],
+            'description' => 'Google Book Description',
+            'categories' => ['Fiction'],
+            'publisher' => 'Google Publisher',
+            'publishedDate' => '2022-01-01',
+            'pageCount' => 300,
+            'language' => 'en',
+            'industryIdentifiers' => [
+              { 'type' => 'ISBN_13', 'identifier' => '1234567890123' }
+            ],
+            'imageLinks' => { 'thumbnail' => example_image_url }
+          }
+        }
+      )
+    )
   end
 
   it "shows Google book details" do
     visit google_book_path(id: 'google_1', query: 'Testing')
 
-    expect(page).to have_content('Google Book Title')
-    expect(page).to have_content('Google Author')
-    expect(page).to have_content(clean_html_description('Google Book Description'))
-    expect(page).to have_content('Fiction')
-    expect(page).to have_content('Google Publisher')
-    expect(page).to have_content('2022-01-01')
-    expect(page).to have_content('300')
-    expect(page).to have_content('English')
-    expect(page).to have_content('1234567890123')
-    expect(page).to have_xpath("//img[@src='#{example_image_url}']")
+    # Wait for the book to be created in the database
+    created_book = Book.last
+
+    expect(created_book).not_to be_nil
+    expect(created_book.title).to eq('Google Book Title')
+    expect(created_book.author).to eq('Google Author')
+    expect(created_book.isbn_13).to eq('1234567890123')
+    expect(created_book.description).to eq('Google Book Description')
+    expect(created_book.genre).to eq('Fiction')
+    expect(created_book.publisher).to eq('Google Publisher')
+    expect(created_book.publish_date).to eq('2022-01-01')
+    expect(created_book.pages).to eq(300)
+    expect(created_book.language_written).to eq('en')
+    expect(created_book.img_url).to eq(example_image_url)
+
+    # Expectations for the page content
+    expect(page).to have_current_path(book_path(created_book))
+    expect(page).to have_content(created_book.title)
+    expect(page).to have_content(created_book.author)
+    expect(page).to have_content(clean_html_description(created_book.description))
+    expect(page).to have_content(created_book.genre)
+    expect(page).to have_content(created_book.publisher)
+    expect(page).to have_content(created_book.publish_date)
+    expect(page).to have_content(created_book.pages)
+    expect(page).to have_content(created_book.language_written)
+    expect(page).to have_content(created_book.isbn_13)
+    expect(page).to have_xpath("//img[@src='#{created_book.img_url}']")
   end
 
   it "handles exceptions correctly when fetching Google books" do
