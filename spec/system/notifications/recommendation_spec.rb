@@ -34,6 +34,13 @@ RSpec.describe "Recommend", type: :system do
     end
 
     it "should allow a logged-in user to view their recommended notifications" do
+      visit book_path(@b1)
+      sign_in @sender
+      click_on "Recommend this book"
+      select @receiver.first, from: "Select a Friend"
+      fill_in "Message", with: "Hey Ron, I think you'll love this book!"
+      click_on "Send Recommendation"
+      sign_out @sender
       visit user_path(@receiver)
       sign_in @receiver
       click_on "Inbox"
@@ -59,7 +66,13 @@ RSpec.describe "Recommend", type: :system do
     it "should only allow a user to view their own notifications" do
       visit book_path(@b1)
       sign_in @sender
-      visit  user_notifications_path(@receiver)
+      click_on "Recommend this book"
+      select @receiver.first, from: "Select a Friend"
+      fill_in "Message", with: "Hey Ron, I think you'll love this book!"
+      click_on "Send Recommendation"
+      sign_out @sender
+      sign_in @receiver
+      visit  user_notifications_path(@sender)
       expect(page.current_path).to eq(root_path)
       expect(page).to have_content("You are not authorized to view this page.")
     end
