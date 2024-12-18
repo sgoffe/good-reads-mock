@@ -40,18 +40,21 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_17_190100) do
   end
 
   create_table "books", force: :cascade do |t|
-    t.string "title"
+    t.string "google_books_id", null: false
+    t.string "title", null: false
     t.string "author"
+    t.string "img_url"
     t.string "genre"
-    t.integer "pages"
-    t.text "description"
-    t.string "publisher"
     t.date "publish_date"
-    t.string "isbn_13"
-    t.string "language_written"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "img_url"
+    t.string "publisher"
+    t.integer "pages"
+    t.string "language_written"
+    t.string "isbn_13"
+    t.decimal "rating", precision: 3, scale: 2
+    t.index ["google_books_id"], name: "index_books_on_google_books_id", unique: true
   end
 
   create_table "friendships", force: :cascade do |t|

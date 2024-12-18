@@ -29,7 +29,7 @@ class Book < ApplicationRecord
   end
 
   def self.in_genre(genre)
-    Book.where(genre: genre)
+    Book.where("LOWER(genre) = ?", genre.downcase)
   end
 
   private

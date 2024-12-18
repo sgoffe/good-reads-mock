@@ -1,122 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head class="container">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+<div class="flex h-auto min-h-screen mb-16 mt-6">
+  <!-- Left Column -->
+  <div class="w-1/4 h-full px-4 pt-8">
+    <p class="text-lg font-semibold mb-2">Filters</p>
+      <%= form_with url: books_path, method: :get, local: true, id: "index-search-form", class: "space-y-4" do |form| %>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :query, "Search", class: "text-sm font-medium text-slate-700" %>
+          <%= form.text_field :query, value: params[:query], class: "w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300", placeholder: "Search books..." %>
+        </div>
 
-<body>
-<div class="row">
-    <h1>Welcome Fanatic Reader</h1>
-</div>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :sort, "Sort by", class: "text-sm font-medium text-slate-700" %>
+          <%= form.select :sort, @sorts, { selected: params[:sort] || @sort_filt }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
+        </div>
 
-<% if current_user!=nil && current_user.role == "admin" %>
-    <%= link_to "Admin actions", user_admin_path(current_user.id) %>
-<% end %>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :rating, "Rating above", class: "text-sm font-medium text-slate-700" %>
+          <%= form.number_field :rating, in: 0..5, step: 0.5, value: params[:rating] || @rating_filt, class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+        </div>
 
-<div class="row">
-    <%= form_with url: books_path, method: :get, local: true do |form| %>
-        <div>
-            <%= form.label :query, "Search for" %>
-            <%= form.text_field :query %>
+        <div class="flex flex-col space-y-2">
+          <%= form.label :genre, "Genre", class: "text-sm font-medium text-slate-700" %>
+          <%= form.text_field :genre, value: params[:genre] || @genre_filt, class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" %>
+        </div>
+
+        <div class="flex flex-col space-y-2">
+          <%= form.label :source, "Source", class: "text-sm font-medium text-slate-700" %>
+          <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), { include_blank: false }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
         </div>
 
         <div>
-            <%= form.label :sort, "Sort by" %>
-            <%= form.select :sort, @sorts, selected: @sort_filt %>
+          <%= form.submit "Filter Books", class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
         </div>
+      <% end %>
+  </div>
 
-        <div>
-            <%= form.label :rating, "Rating above" %>
-            <%= form.number_field :rating, in: 0..5, step: 0.5, value: @rating_filt %>
-        </div>
+  <!-- Right Column -->
+  <div class="w-3/4 px-10 pt-8 border-l border-gray-300">
+    <% if @books.any? %>
+      <!-- Grid container with 1 column, limiting to 10 rows -->
+      <div class="grid grid-cols-1 gap-6">
+        <%= render partial: 'book_search_card', collection: @books.first(10), as: :book %>
+      </div>
 
-        <div>
-            <%= form.label :genre, "Genre" %> 
-            <%= form.text_field :genre %>
-        </div>
-
-        <div>
-            <%= form.label :source, "Source" %>
-            <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), include_blank: true %>
-        </div>
-
-        <div>
-            <%= form.submit "Filter Books", class: "btn btn-primary" %>
-        </div>
-    <% end %>
-</div>
-
-<div class="row">
-    <%= link_to "View Seeded Books", books_path(source: "seeded_books", query: params[:query]), class: "btn btn-primary" %>
-    <%= link_to "View Google Books", books_path(source: "google_books", query: params[:query]), class: "btn btn-secondary" %>
-</div>
-
-<!-- Books List -->
-<% if @books.any? %>
-    <div class="row row-cols-4">
-        <% @books.each do |book| %>
-            <div class="col">
-                <div class="card mb-1 p-2 h-100" id="book-card">
-                    <div class="card-body">
-                        <h3 class="card-title"><%= book.title %></h3>
-                        <h5><%= book.author || 'Unknown Author' %></h5>
-
-                        <%# Seeded Books image %>
-                        <% if book.is_a?(Book) %>
-                            <% if book.img_url.present? %>
-                                <img src="<%= book.img_url %>" alt="<%= book.title %>" style="max-width: 300px; height: auto;">
-                            <% else %>
-                                <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
-                            <% end %>
-                        <% elsif book.is_a?(OpenStruct) && book[:img_url] %>
-                            <%# Google Books image%>
-                            <%= image_tag book[:img_url], alt: "#{book.title} cover", class: "img-fluid" %>
-                        <% else %>
-                            <%# no image use default cover %>
-                            <%= image_tag "default_cover.jpg", alt: "Default cover", class: "img-fluid" %>
-                        <% end %>
-
-                        <p class="card-text"><%= truncate(book.description || 'No description available.', length: 100) %></p>
-                        <p><strong>Genre:</strong> <%= book.genre || 'Unknown' %></p>
-                        <p><strong>Publisher:</strong> <%= book.publisher || 'Unknown' %></p>
-
-                        <div class="btn-group">
-                            <% if book.is_a?(Book) %>
-                                <!-- Seeded Books -->
-                                <%= link_to "More...", book_path(book), class: "btn btn-sm btn-primary" %>
-                                <%= link_to "Reviews", book_reviews_path(book), class: "btn btn-sm btn-primary" %>
-                            <% else %>
-                                <!-- Google Books -->
-                                <%= link_to "More...", google_book_path(id: book.id, query: @query), class: "btn btn-sm btn-primary" %>
-                                <%= link_to "View on Google Books", "https://books.google.com?q=#{book.title}", class: "btn btn-sm btn-secondary" %>
-                            <% end %>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <% end %>
-    </div>
-    
-    <!-- Next Page stuff -->
-    <div class="pagination-buttons">
+      <!-- Pagination -->
+      <div class="pagination-buttons mt-4">
         <% if params[:page].to_i > 1 %>
-            <%= link_to "Previous Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i - 1), class: "btn btn-primary" %>
+          <%= link_to "Previous Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i - 1), class: "w-full border-2 border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white py-2 px-4 rounded-full text-sm font-medium transition duration-300" %>
         <% end %>
-
         <% if @has_more_pages %>
-            <%= link_to "Next Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i + 1), class: "btn btn-secondary" %>
+          <%= link_to "Next Page", books_path(source: params[:source], query: params[:query], page: params[:page].to_i + 1), class: "w-full bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
         <% end %>
-    </div>
-<% else %>
-    <p class="alert alert-info">No books found. Try adjusting your filters or search keywords.</p>
-<% end %>
-
-<!-- Temp Nav -->
-<div>
-    <%= link_to "Users *temporary*", users_path, class: "btn btn-sm btn-primary" %>
-    <%= link_to "Reviews *temporary*", reviews_path, class: "btn btn-sm btn-primary" %>
+      </div>
+    <% else %>
+      <p class="alert alert-info">No books found. Try adjusting your filters or search keywords.</p>
+    <% end %>
+  </div>
 </div>
-
-</body>
-</html>

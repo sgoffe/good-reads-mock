@@ -1,0 +1,22 @@
+<div class="flex items-center">  
+  <% (1..5).each do |i| %>
+    <% if stars >= i %>
+      <!-- Full star -->
+      <i class="fas fa-star text-yellow-300 me-1"></i>
+    <% elsif stars > (i - 1) && stars < i %>
+      <!-- Half star -->
+      <i class="fas fa-star-half-alt text-yellow-300 me-1"></i>
+    <% else %>
+      <!-- Empty star -->
+      <i class="fas fa-star text-gray-300 me-1"></i>
+    <% end %>
+  <% end %>
+
+  <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+    <% if rating.nil? %>
+      No ratings yet
+    <% else %>
+      <%= book.rating.round(2) %> stars
+    <% end %>
+  </p>
+</div>
