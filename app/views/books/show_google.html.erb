@@ -16,7 +16,7 @@
 
     <br>
     <h6> Description: </h6>
-    <p class="card-text"> <%= @book.description %> </p>
+    <p class="card-text"> <%= clean_description = ActionView::Base.full_sanitizer.sanitize(@book.description)%> </p>
     <br>
     <h6> Publisher: <%= @book.publisher %> </h6>
     <h6> Published: <%= @book.publish_date %> </h6>

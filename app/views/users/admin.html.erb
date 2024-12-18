@@ -1,0 +1,30 @@
+<div>
+    <%= form_with url: user_admin_path, method: :get, local: true do |form| %>
+        <div>
+            <%= form.label :query, "Search by first name" %>
+            <%= form.text_field :first_query %>
+        </div>
+
+        <div>
+            <%= form.label :query, "Search by last name" %>
+            <%= form.text_field :last_query %>
+        </div>
+
+        <div>
+            <%= form.label :query, "Search by email" %>
+            <%= form.text_field :email_query %>
+        </div>
+
+        <div>
+            <%= form.submit "Filter Users", class: "btn btn-primary" %>
+        </div>
+    <% end %>
+
+    <% @users.each do |user| %>
+        <%= "Name: #{user.first} #{user.last}" %>
+        <%= "Email: #{user.email}" %>
+        <%= button_to "Delete User", user_path(user.id), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, local: {from_admin: true} %>
+        <%= link_to "View Reviews", user_admin_moderate_path(user.id) %>
+        <br>
+    <% end %>
+</div>

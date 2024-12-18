@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'nokogiri'
 
 class BooksController < ApplicationController
   before_action :set_global_query, only: [:index, :show_google]
@@ -102,7 +103,8 @@ class BooksController < ApplicationController
         id: google_id,
         title: book_data['title'],
         author: book_data['authors']&.join(', ') || 'Unknown Author',
-        description: book_data['description'] || 'No description available.',
+        # description: book_data['description'] || 'No description available.',
+        description: clean_html_description(book_data['description']) || 'No description available.',
         genre: book_data['categories']&.join(', ') || 'Unknown',
         publisher: book_data['publisher'] || 'Unknown',
         publish_date: book_data['publishedDate'] || 'Unknown',
@@ -151,6 +153,12 @@ class BooksController < ApplicationController
     @book = Book.new
   end
 
+  def clean_html_description(html)
+    doc = Nokogiri::HTML.fragment(html)
+    clean_text = doc.css('p').map(&:text).join("\n\n")
+    clean_text.gsub(/\u00A0/, ' ')
+  end
+
   def add_google_book
     book_data = params[:book]
   
@@ -166,7 +174,7 @@ class BooksController < ApplicationController
       title: book_data[:title],
       author: book_data[:author],
       genre: book_data[:genre],
-      description: book_data[:description],
+      description: clean_html_description(book_data[:description]),
       publisher: book_data[:publisher],
       publish_date: book_data[:publish_date],
       pages: book_data[:pages],
@@ -225,7 +233,7 @@ class BooksController < ApplicationController
         google_books_id: item['id'],
         title: item['volumeInfo']['title'],
         author: item['volumeInfo']['authors']&.join(', ') || 'Unknown Author',
-        description: item['volumeInfo']['description'] || 'No description available.',
+        description: clean_html_description(item['volumeInfo']['description']) || 'No description available.',
         genre: item['volumeInfo']['categories']&.join(', ') || 'Unknown',
         publisher: item['volumeInfo']['publisher'] || 'Unknown',
         publish_date: item['volumeInfo']['publishedDate'] || 'Unknown',

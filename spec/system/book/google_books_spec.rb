@@ -3,6 +3,12 @@ require 'webmock/rspec'
 
 example_image_url = "https://th.bing.com/th/id/OIP.caKIPkEzOmvoKgGoa-KXwgAAAA?w=135&h=206&c=7&r=0&o=5&dpr=2&pid=1.7"
 
+def clean_html_description(html)
+  doc = Nokogiri::HTML.fragment(html)
+  clean_text = doc.css('p').map(&:text).join("\n\n")
+  clean_text.gsub(/\u00A0/, ' ')
+end
+
 def stub_google_books_search(query, result, filters = {})
   allow_any_instance_of(BooksController).to receive(:fetch_books_from_google_books).with(
     query, 10, 1, hash_including(filters)
