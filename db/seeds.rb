@@ -257,3 +257,19 @@ r3 = b2.reviews.create!(rating: 5,
 r4 = b3.reviews.create!(rating: 3,
                 review_text: 'sad',
                 user: u3) 
+
+l1 = List.create!(title: "Favorites",
+                user: u1)
+                l1.books << b1
+                l1.books << b3
+
+l2 = List.create!(title: "Want to read",
+                user: u2)
+                l2.books << b2
+                l2.books << b3
+
+l3 = List.create!(title: "LOVE",
+                user: u2)
+                l3.books << b1
+                l3.books << b2
+                l3.books << b3

@@ -1,22 +1,32 @@
-<div class="container text-center">
+<div class="container">
 <div class="row">
     <div class="col text-end">
         <h1><%= current_user.first.chr.capitalize %><%= current_user.last.chr.capitalize %></h1>
     </div>
     
     <div class="col-auto text-start">
-        <h2><%= "#{current_user.first} #{current_user.last}" %></h2>
+        <h1><%= "#{current_user.first} #{current_user.last}" %></h1>
         <p><%= current_user.email %></p>
         <p><%= "Bio: #{current_user.bio}" %></p>
         <p class="fst-italic">Fanatic Reader since <%= current_user.created_at.strftime("%F") %></p>
     </div>
     
-    <div class="col text-start">
+    <div class="col text-end">
         <%= link_to "Inbox", user_notifications_path(current_user) %>
     </div>
-
     <div class="col text-start">
         <%= button_to "Log Out", destroy_user_session_path, method: :delete %>
     </div>
 </div>
+<div class="row text-start">
+    <%= button_to "New list", user_lists_path(current_user), method: :post, class: "btn btn-primary btn-sm" %>
 </div>
+<div class="row">
+    <% current_user.lists.each do |list| %>
+        <div class="col text-center">
+          <%= render partial: 'list', locals: {list: list}  %>
+        </div>
+    <% end %>
+</div>
+</div>
+

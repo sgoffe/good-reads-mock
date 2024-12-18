@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :received_notifications, class_name: 'Notification', foreign_key: 'receiver_id'
   has_many :friendships
   has_many :friends, through: :friendships
+  has_many :lists
+  has_many :books, through: :lists
   
   validates :first, presence: true
   validates :last, presence: true

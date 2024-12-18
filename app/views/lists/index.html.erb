@@ -1,0 +1,12 @@
+<table class="table">
+  <thead>
+      <th>All Lists</th>
+  </thead>
+  <tbody>
+    <% @lists.each do |list| %>
+      <tr>
+        <%= render partial: 'list', locals: {list: list}  %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
