@@ -11,7 +11,6 @@ class Notification < ApplicationRecord
   validates :title, :presence => true
   validates :notifiable_id, :presence => true
   validates :notifiable_type, :presence => true
-  validates :notifiable_type, :presence => true
   validate :sender_and_receiver_are_different 
 
   def formatted_title

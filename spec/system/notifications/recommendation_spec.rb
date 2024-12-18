@@ -8,10 +8,15 @@ RSpec.describe "Recommend", type: :system do
   end
 
   before(:each) do
-    @sender = FactoryBot.create(:user)
-    @receiver = FactoryBot.create(:user)
-    @b1 = FactoryBot.create(:book)
-    @n1 = FactoryBot.create(:notification, sender: @sender, receiver: @receiver, notifiable: @b1)
+    @sender = create(:user)
+    @receiver = create(:user)
+    @b1 = create(:book)
+    @n1 = Notification.new(
+      sender: @sender,
+      receiver: @receiver,
+      title: "Book Recommendation",
+      notifiable: @b1
+    )
 
   end
 
