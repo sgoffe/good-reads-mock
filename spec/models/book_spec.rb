@@ -109,18 +109,6 @@ RSpec.describe Book, type: :model do
       end
     end
 
-    describe "#with_average_rating" do
-      before(:each) do
-        @u = User.create!(first: "Test", last: "User", email: "test@user.com", password: "password")
-        @r1 = Review.create!(user: @u, book: @b1, rating: 3, review_text: "test")
-      end
-
-      it "returns books with ratings greater than or equal to the specified value" do
-        result = Book.with_average_rating(@r1.rating)
-        expect(result).to include(@b1)
-      end
-    end
-
     describe "#rating" do
       before(:each) do
         @u = User.create!(first: "Test", last: "User", email: "test@user.com", password: "password")

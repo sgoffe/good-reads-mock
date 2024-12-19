@@ -20,10 +20,6 @@ class Book < ApplicationRecord
     Book.where(substr.split.map { |word| "(title LIKE ? OR author LIKE ? OR description LIKE ?)" }.join(" AND "), *words.flat_map { |word| [word, word, word] })
   end
 
-  def self.with_average_rating(value)
-    Book.joins(:reviews).group("books.id").having("AVG(rating) >= ?", value)
-  end
-
   def self.rating
     # Book.joins(:reviews).group("books.id")
     Book.joins(:reviews).distinct.group("books.id")
