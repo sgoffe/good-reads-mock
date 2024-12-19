@@ -92,10 +92,11 @@ class BooksController < ApplicationController
 
   def show_google
     google_id = params[:id]
-    
+  
+    # Fetch book details from Google Books API
     url = "https://www.googleapis.com/books/v1/volumes/#{google_id}"
     response = HTTParty.get(url)
-    
+  
     if response.success?
       book_data = response.parsed_response['volumeInfo']
       
@@ -103,32 +104,54 @@ class BooksController < ApplicationController
         id: google_id,
         title: book_data['title'],
         author: book_data['authors']&.join(', ') || 'Unknown Author',
-        # description: book_data['description'] || 'No description available.',
-        description: clean_html_description(book_data['description']) || 'No description available.',
+        description: (book_data['description']) || 'No description available.',
         genre: book_data['categories']&.join(', ') || 'Unknown',
         publisher: book_data['publisher'] || 'Unknown',
-        publish_date: book_data['publishedDate'] || 'Unknown',
-        pages: book_data['pageCount'] || 'Unknown',
+        publish_date: book_data['publishedDate'] || Date.today.to_s,
+        pages: book_data['pageCount'] || 0,
         language_written: book_data['language'] || 'Unknown',
-        isbn_13: book_data['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || 'Unknown',
-        img_url: book_data['imageLinks']&.dig('thumbnail') || nil
+        isbn_13: book_data['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || SecureRandom.uuid,
+        img_url: book_data['imageLinks']&.dig('thumbnail')
       )
-  
-      existing_book = Book.find_by(isbn_13: @book.isbn_13) || Book.find_by(title:@book.title, author: @book.author)
     
+      existing_book = Book.find_by(isbn_13: @book.isbn_13) ||
+        Book.find_by(title: @book.title, author: @book.author)
+
       if existing_book
         redirect_to book_path(existing_book)
-        return
-      end
+      else
+        new_book = Book.create(
+          title: @book.title.presence || "Unknown Title",
+          author: @book.author.presence || "Unknown Author",
+          description: @book.description.presence || "No description available.",
+          genre: @book.genre.presence || "Unknown",
+          publisher: @book.publisher.presence || "Unknown",
+          publish_date: (@book.publish_date.presence && Date.parse(@book.publish_date) rescue Date.today),
+          pages: @book.pages.presence || 0,
+          language_written: @book.language_written.presence || "Unknown",
+          isbn_13: @book.isbn_13.presence || SecureRandom.uuid,
+          google_books_id: google_id,
+          img_url: @book.img_url
+        )
     
+        if new_book.persisted?
+          redirect_to book_path(new_book)
+        else
+          Rails.logger.error("Failed to save Google Book: #{new_book.errors.full_messages}")
+          flash[:alert] = "Failed to save book to the database."
+          redirect_to books_path
+        end
+      end
     else
-      flash[:alert] = 'Google book not found'
+      flash[:alert] = "Google book not found"
       redirect_to books_path
     end
   rescue StandardError => e
-    flash[:alert] = 'Something went wrong while fetching Google Books data'
+    # Handle unexpected errors
+    Rails.logger.error("Error fetching Google Books data: #{e.message}")
+    flash[:alert] = "Something went wrong while fetching Google Books data"
     redirect_to books_path
-  end  
+  end
   
   def create
     @book = Book.new(create_params)
