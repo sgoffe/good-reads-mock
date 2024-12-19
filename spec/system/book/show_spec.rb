@@ -17,33 +17,7 @@ describe "Book Show Page", type: :feature do
     for i in 1..2
       @books << FactoryBot.create(:book, img_url: example_image_url)
     end
-    # @books = [
-    #   Book.create!(
-    #     title: "Example Book",
-    #     author: "John Doe",
-    #     genre: "Fiction",
-    #     pages: 250,
-    #     description: "An example description.",
-    #     publisher: "Test Publisher",
-    #     publish_date: Date.new(2023, 1, 1),
-    #     isbn_13: 1234567890123,
-    #     language_written: "English",
-    #     img_url: example_image_url
-    #   ),
-
-    #   Book.create!(
-    #     title: "Example Book 2",
-    #     author: "John Doe",
-    #     genre: "Fiction",
-    #     pages: 250,
-    #     description: "An example description.",
-    #     publisher: "Test Publisher",
-    #     publish_date: Date.new(2023, 1, 1),
-    #     isbn_13: 1234567890123,
-    #     language_written: "English",
-    #     img_url: example_image_url
-    #   )
-    # ]
+    
     @book1 = @books[0]
     @book2 = @books[1]
 

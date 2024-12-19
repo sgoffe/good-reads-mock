@@ -104,19 +104,19 @@ class BooksController < ApplicationController
         id: google_id,
         title: book_data['title'],
         author: book_data['authors']&.join(', ') || 'Unknown Author',
-        description: clean_html_description(book_data['description']) || 'No description available.',
+        description: (book_data['description']) || 'No description available.',
         genre: book_data['categories']&.join(', ') || 'Unknown',
         publisher: book_data['publisher'] || 'Unknown',
-        publish_date: book_data['publishedDate'] || Date.today,
+        publish_date: book_data['publishedDate'] || Date.today.to_s,
         pages: book_data['pageCount'] || 0,
         language_written: book_data['language'] || 'Unknown',
         isbn_13: book_data['industryIdentifiers']&.find { |id| id['type'] == 'ISBN_13' }&.dig('identifier') || SecureRandom.uuid,
         img_url: book_data['imageLinks']&.dig('thumbnail')
       )
     
-      # Find or create book
-      existing_book = Book.find_by(isbn_13: @book.isbn_13) || Book.find_by(title: @book.title, author: @book.author)
-    
+      existing_book = Book.find_by(isbn_13: @book.isbn_13) ||
+        Book.find_by(title: @book.title, author: @book.author)
+
       if existing_book
         redirect_to book_path(existing_book)
       else

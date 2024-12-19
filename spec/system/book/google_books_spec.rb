@@ -205,7 +205,7 @@ RSpec.describe "Google Books Integration", type: :system do
     expect(created_book.description).to eq('Google Book Description')
     expect(created_book.genre).to eq('Fiction')
     expect(created_book.publisher).to eq('Google Publisher')
-    expect(created_book.publish_date).to eq('2022-01-01')
+    expect(created_book.publish_date.to_s).to eq('2022-01-01')
     expect(created_book.pages).to eq(300)
     expect(created_book.language_written).to eq('en')
     expect(created_book.img_url).to eq(example_image_url)
