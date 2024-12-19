@@ -27,5 +27,26 @@ RSpec.describe "AddFriend", type: :system do
             click_on "Social"
             expect(page).to have_content("This user has no friends")
         end
+
+        it "expect the friend unsuccessfully added to not have notfication with the senders name" do
+            visit books_path
+            click_on "Log In"
+            fill_in 'Email', with: "cc@gmail.com"
+            fill_in 'Password', with: "cchaplin"
+            click_on "Log in"
+            click_on "Social"
+            expect(Friendship).to receive(:new).and_return(@u1)
+            expect(@u1).to receive(:save).and_return(nil)
+            click_on "Click to Add Friend"
+            expect(page).to have_content("Friend could not be added")
+            find('#profile_click').click
+            click_on "Log Out"
+            click_on "Log In"
+            fill_in 'Email', with: "aa@gmail.com"
+            fill_in 'Password', with: "aamerson"
+            click_on "Log in"
+            visit user_notifications_path(@u1)
+            expect(page).not_to have_content("Charlie Chaplin")
+        end
     end
 end
