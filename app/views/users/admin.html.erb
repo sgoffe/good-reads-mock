@@ -23,7 +23,7 @@
     <% @users.each do |user| %>
         <%= "Name: #{user.first} #{user.last}" %>
         <%= "Email: #{user.email}" %>
-        <%= button_to "Delete User", user_path(user.id), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, local: {from_admin: true} %>
+        <%= button_to "Delete User", user_path(user.id), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }, params: {from_admin: true} %>
         <%= link_to "View Reviews", user_admin_moderate_path(user.id) %>
         <br>
     <% end %>

@@ -242,9 +242,9 @@ b2 = Book.find_by_title!("East of Eden")
 b3 = Book.find_by_title!("The House of the Spirits")
 
 # create users
-u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe')
-u2 = User.create!(first: 'Meghan', last: 'Subak', email: 'msubak@colslay.edu', bio: 'body builder and book lover', password: 'msubak')
-u3 = User.create!(first: 'Mickey', last: 'Mouse', email: "mmouse@colslay.edu", bio: 'a sassy little mouse', password: 'mmouse')
+u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe', role: 'standard')
+u2 = User.create!(first: 'Meghan', last: 'Subak', email: 'msubak@colslay.edu', bio: 'body builder and book lover', password: 'msubak', role: 'standard')
+u3 = User.create!(first: 'Mickey', last: 'Mouse', email: "mmouse@colslay.edu", bio: 'a sassy little mouse', password: 'mmouse', role: 'admin')
 
 # create reviews
 r1 = b1.reviews.create!(rating: 5,
