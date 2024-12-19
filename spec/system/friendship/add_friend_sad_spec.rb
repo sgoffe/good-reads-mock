@@ -22,7 +22,7 @@ RSpec.describe "AddFriend", type: :system do
             expect(page).to have_content("This user has no friends")
             expect(Friendship).to receive(:new).and_return(@u1)
             expect(@u1).to receive(:save).and_return(nil)
-            click_on "Add friend"
+            click_on "Click to Add Friend"
             expect(page).to have_content("Friend could not be added")
             click_on "Social"
             expect(page).to have_content("This user has no friends")
