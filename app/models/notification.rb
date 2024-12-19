@@ -16,19 +16,17 @@ class Notification < ApplicationRecord
   def formatted_title
     if notifiable_type == 'Book'
       "<strong>#{sender.first} #{sender.last}</strong> recommended <strong>#{notifiable.title}</strong> to you"
+    elsif notifiable_type == 'User'
+      "<strong>#{sender.first} #{sender.last}</strong> added you as a friend!"
     end
-    # elsif notifiable_type == 'FriendRequest'
-    #   "#{sender.first} #{sender.last} sent you a friend request"
-    # end
   end
 
   def notification_url
     if notifiable_type == 'Book'
       book_path(notifiable_id) 
+    elsif notifiable_type == 'User'
+      user_path(notifiable_id) 
     end
-    # elsif notifiable_type == 'FriendRequest'
-    #   user_path(notifiable_id) 
-    # end
   end
 
   def formatted_timestamp

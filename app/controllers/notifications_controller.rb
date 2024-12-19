@@ -33,7 +33,7 @@ class NotificationsController < ApplicationController
     end
   end
 
-private
+  private
   def notification_params
     params.require(:notification).permit(:receiver_id, :book_id, :message)
   end

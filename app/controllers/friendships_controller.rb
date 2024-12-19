@@ -17,6 +17,7 @@ class FriendshipsController < ApplicationController
     def create
         @friendship = Friendship.new(user_id: params[:user_id], friend_id: params[:friend_id])
         if @friendship.save
+            create_friendship_notification
             flash[:notice] = "Friend successfully added"
             redirect_to books_path
         else
@@ -32,6 +33,16 @@ class FriendshipsController < ApplicationController
         redirect_to books_path, notice: 'Friend removed successfully'
     end
 
+    private
 
-
+    def create_friendship_notification
+        @notification = Notification.create(
+            sender: current_user,
+            receiver: User.find(params[:friend_id]),
+            title: "<strong>#{current_user.first} #{current_user.last}</strong> added you as a friend!",
+            message: " ",
+            notifiable_type: 'User',
+            notifiable: current_user 
+        )
+    end
 end
