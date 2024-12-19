@@ -16,8 +16,9 @@ require 'date'
 
 
 #delete all seeds
-Review.find_each(&:destroy!)
+Notification.find_each(&:destroy!)
 Book.find_each(&:destroy!)
+Review.find_each(&:destroy!)
 User.find_each(&:destroy!)
 
 def fetch_and_store_books_data(book_titles)
@@ -235,6 +236,10 @@ book_titles = [
 
 # fetch_and_store_books_data(book_titles)
 seed_books_from_file
+
+b1 = Book.find_by_title!("Ulysses")
+b2 = Book.find_by_title!("East of Eden")
+b3 = Book.find_by_title!("The House of the Spirits")
 
 # create users
 u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe')
