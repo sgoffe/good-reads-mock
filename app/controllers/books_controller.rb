@@ -41,7 +41,7 @@ class BooksController < ApplicationController
       if params[:source] == 'google_books'
         # Skip rating filter for Google Books
       else
-        @books = Book.joins(:reviews)
+        @books = @books.joins(:reviews)
                      .group("books.id")
                      .select("books.*, AVG(reviews.rating) AS avg_rating")
                      .having("AVG(reviews.rating) >= ?", params[:rating].to_f)
@@ -56,7 +56,7 @@ class BooksController < ApplicationController
         # genre filter shouldnt matter for the google books
         # @books.select! { |book| book.genre.to_s.downcase.include?(params[:genre].downcase) }
       else
-        @books = Book.where(genre: params[:genre])
+        @books = Book.where("genre LIKE ?", params[:genre])
       end
       @genre_filt = params[:genre]
     end
@@ -70,7 +70,7 @@ class BooksController < ApplicationController
       end
       @sort_filt = params[:sort]
     end
-  
+
     # Sort options
     @sorts = [
       ["Title - A to Z", "title ASC"],
