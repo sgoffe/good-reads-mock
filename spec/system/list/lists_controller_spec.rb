@@ -24,9 +24,13 @@ RSpec.describe "ListsController", type: :system do
         it "list create sad path" do
             visit profile_path
             expect(page).not_to have_content("Untitled List")
-            expect(List).to receive(:new).and_return(nil)
+            list_mock = instance_double(List, title: "Untitled List")
+            allow(List).to receive(:new).with(title: "Untitled List").and_return(list_mock)
+            expect(list_mock).to receive(:user=).and_return(@u1)
+            expect(list_mock).to receive(:save).and_return(nil)
+            click_on "New list"
             expect(page).not_to have_content("Untitled List")
-            expect(page).to have_content("List could not be created.")
+            expect(page).to have_content("List could not be created")
         end
     end
 
