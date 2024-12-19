@@ -25,6 +25,37 @@ RSpec.describe "Book actions", type: :system do
       expect page.has_css?("img[src*='default_book.png']")
     end
   end
+
+  describe 'index' do
+    it 'should show genre and rating fields when source is seeded books' do
+      visit books_path
+      select 'Seeded Books', from: 'Source'
+      click_button 'Filter Books'
+      expect(page.text).to match(/genre/i)
+      expect(page.text).to match(/rating above/i)
+    end
+
+    it 'should not show genre and rating fields when source is google books' do
+      stub_request(:get, "https://www.googleapis.com/books/v1/volumes?maxResults=10&q=default&startIndex=0")
+        .with(
+          headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent'=>'Ruby'
+          }
+        ).to_return(
+          status: 200,
+          body: { items: [] }.to_json, # Returning a valid JSON with `items` as an empty array
+          headers: { 'Content-Type' => 'application/json' }
+        )
+
+      visit books_path
+      select 'Google Books', from: 'Source'
+      click_button 'Filter Books'
+      expect(page.text).not_to match(/genre/i)
+      expect(page.text).not_to match(/rating above/i)
+    end
+  end
 end
 
 RSpec.describe BooksController, type: :controller do

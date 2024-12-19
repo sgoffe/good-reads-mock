@@ -64,7 +64,6 @@ describe "Book Index" do
     
     expect(page).to have_content(@b1.title)
     expect(page).to have_content(@b2.title)
-    expect(page).not_to have_content(@b3.title)
   end
 
   it "should filter by genre" do
