@@ -36,9 +36,8 @@
         ] %>
 
         <% links << { label: 'Social', path: friendships_find_path } if current_user %>
-        <% if current_user!=nil && current_user.role == "admin" %>
-          <%= link_to "Admin actions", user_admin_path(current_user.id) %>
-        <% end %>
+        <% links << { label: 'Admin', path: user_admin_path(current_user)} if current_user!=nil && current_user.role == "admin"  %>
+
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
             <% links.each do |link| %>
