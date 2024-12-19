@@ -5,17 +5,45 @@
 <% if current_user.friends.count == 0 %>
     <p>This user has no friends</p>
 <% else %>
+    <p><strong>Friends</strong></p><br>
     <% current_user.friends.each do |friend| %>
-        <%= "Friend: #{friend.first} #{friend.last}, #{friend.email}" %>
+        <%= render partial: "userInfo", locals: {person: friend} %>
         <%= button_to "Delete this friend", user_friendship_path(current_user.id, friend.id), method: :delete %>
         <br>
     <% end %>
 <% end %>
 
-<h5>Browse Friends</h5>
+<br><br>
+
+<h5><strong>Browse Friends</strong></h5><br>
+
+<%= form_with url: friendships_find_path, method: :get, local: true do |form| %>
+    <div>
+        <%= form.label :query, "Search by first name" %>
+        <%= form.text_field :first_query %>
+    </div>
+
+    <div>
+        <%= form.label :query, "Search by last name" %>
+        <%= form.text_field :last_query %>
+    </div>
+
+    <div>
+        <%= form.label :query, "Search by email" %>
+        <%= form.text_field :email_query %>
+    </div>
+
+    <div>
+        <%= form.submit "Filter Users", class: "btn btn-primary" %>
+    </div>
+<% end %>
+
+<br>
+
 <% @users.each do |user| %>
     <% if (user.id != current_user.id && !User.find(current_user.id).friends.exists?(email: user.email)) %>
         <%= render partial: "userInfo", locals: {person: user} %>
-        <%= button_to "Add friend", user_friendships_path(current_user.id), method: :post, params: {friend_id: user.id}%>
+        <%= button_to "Click to Add Friend", user_friendships_path(current_user.id), method: :post, params: {friend_id: user.id}%>
+        <br>
     <% end %>
 <% end %>

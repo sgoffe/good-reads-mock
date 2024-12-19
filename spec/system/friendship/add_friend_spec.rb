@@ -20,10 +20,10 @@ RSpec.describe "AddFriend", type: :system do
             expect(page).to have_content("Signed in successfully.")
             click_on "Social"
             expect(page).to have_content("This user has no friends")
-            click_on "Add friend"
+            click_on "Click to Add Friend"
             expect(page).to have_content("Friend successfully added")
             click_on "Social"
-            expect(page).to have_content("Friend: Allie Amberson")
+            expect(page).to have_content("Allie Amberson")
         end
     end
 end
