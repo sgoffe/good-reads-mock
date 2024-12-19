@@ -74,7 +74,7 @@ RSpec.describe "UserController", type: :system do
             visit user_admin_path(@u3)
             expect(page).to have_content("Name: ")
             click_on "Delete User"
-            expect(page).not_to have_content("Name: ")
+            expect(User.all.count).to eq(0)
         end
     end
     describe "profile method" do
