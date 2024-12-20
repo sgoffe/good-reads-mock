@@ -1,3 +1,29 @@
+<div class="bg-orange-50 h-screen mx-14 mt-10 rounded-lg p-12">
+  <div class="flex">
+    <div class="flex-2 flex space-x-4">
+      <%= image_tag(@book.img_url.presence || asset_path("default_cover.jpg"), alt: "Book Cover", class: "h-full object-cover rounded-sm") %>
+
+      <div class="p-2">
+        <span class="text-4xl font-kalnia font-semibold">
+          <%= @book.title %>
+        </span>
+        <span class="text-lg">
+          <%= @book.formatted_publish_year %>
+        </span>        
+        <h1 class="text-lg font-light">by <%= @book.author %></h1>
+        <p class="text-sm font-normal mt-6"><%= @book.description %></p>
+      </div>
+    </div>
+
+    <div class="flex-1 ml-10 text-2xl">
+      <%= render_star_rating(@book) %>
+    </div>
+  </div>
+</div>
+
+
+
+<!--
 <div class="container">
 <div class="row">
 
@@ -51,3 +77,4 @@
 </div>
 </div>
 </div>
+-->
