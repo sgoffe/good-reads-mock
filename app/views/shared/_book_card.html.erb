@@ -16,9 +16,10 @@
       </div>
     </div>
 
-    <%= link_to "#", class: "absolute bottom-3 right-3 bg-violet-300 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-violet-200" do %>
+    <%= button_to add_favorite_path(book.id), class: "absolute bottom-3 right-3 bg-violet-300 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-violet-200" do %>
       <i class="far fa-bookmark text-lg"></i>
     <% end %>
+    
   </div>
 <% end %>
 
