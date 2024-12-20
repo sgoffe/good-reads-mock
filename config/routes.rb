@@ -51,4 +51,7 @@ Rails.application.routes.draw do
   get '/users/:id/admin', to: 'users#admin', as: 'user_admin'
   get '/users/:id/admin/moderate', to: 'users#admin_moderate', as: 'user_admin_moderate'
   # get '/books/:id/reviews/:id', to: 'reviews#show'
+  # route to show a user's library 
+  get '/users/:id/library', to: 'users#library', as: 'user_library'
+
 end

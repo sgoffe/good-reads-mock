@@ -35,7 +35,9 @@
           { label: 'Discover', path: books_path },
         ] %>
 
+        <% links << { label: "Library", path: user_library_path(current_user.id) } if current_user %>
         <% links << { label: 'Social', path: friendships_find_path } if current_user %>
+
         <% if current_user!=nil && current_user.role == "admin" %>
           <%= link_to "Admin actions", user_admin_path(current_user.id) %>
         <% end %>
