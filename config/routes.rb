@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     resources :lists
   end
 
-  resources :reviews, only: [:index, :show, :edit, :destroy]
+  resources :reviews, only: [:index, :show, :edit, :destroy, :update]
 
   # Custom routes 
   get '/books/:id/recommend', to: 'notifications#recommend', as: 'book_recommendation'

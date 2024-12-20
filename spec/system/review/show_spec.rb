@@ -28,14 +28,14 @@ RSpec.describe "Show route", type: :system do
         expect(page).to have_content(review.review_text)
         expect(page).to have_content(review.rating)
 
-        visit book_reviews_path(@b1.id)
+        visit book_reviews_path(@b1)
       end
     end
 
     it 'should render details on the show page' do
       visit review_path(@r1.id)
       expect(page.text).to match(/user 2/m)
-      expect(page.text).to match(/Dune/m)
+      expect(page.text).to match(/Sample Title/m)
       expect(page.text).to match(/first/m)
       expect(page.text).to match(/3/m)
     end
