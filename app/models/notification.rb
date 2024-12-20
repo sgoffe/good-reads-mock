@@ -3,8 +3,8 @@ class Notification < ApplicationRecord
 
   scope :unread, -> { where(read: false) }
 
-  belongs_to :sender, class_name: 'User'
-  belongs_to :receiver, class_name: 'User'
+  belongs_to :sender, class_name: 'User', dependent: :destroy
+  belongs_to :receiver, class_name: 'User', dependent: :destroy
   belongs_to :notifiable, polymorphic: true
   validates :receiver_id, :presence => true
   validates :sender, :presence => true

@@ -57,6 +57,7 @@ class ReviewsController < ApplicationController
       flash[:alert] = 'Review not found'
       redirect_to reviews_path
     rescue StandardError => e
+      puts e
       flash[:alert] = 'Error deleting review'
       render :show
     end

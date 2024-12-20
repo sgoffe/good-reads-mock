@@ -45,6 +45,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    @user.friendships.destroy_all
     if @user.destroy
       if (params[:from_admin].present? && params[:from_admin])
         redirect_to user_admin_path(1)
