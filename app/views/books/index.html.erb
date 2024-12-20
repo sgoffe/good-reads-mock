@@ -13,15 +13,15 @@
           <%= form.select :sort, @sorts, { selected: params[:sort] || @sort_filt }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300" } %>
         </div>
 
-        <div class="flex flex-col space-y-2">
-          <%= form.label :source, "Source", class: "text-sm font-medium text-slate-700" %>
-          <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), { include_blank: false }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300", data: { turbo_frame: "conditional-fields" } } %>
-        </div>
-
         <div>
           <%= turbo_frame_tag "conditional-fields" do %>
             <%= render partial: "books/conditional_fields", locals: { form: form, params: params } %>
           <% end%>
+        </div>
+
+        <div class="flex flex-col space-y-2">
+          <%= form.label :source, "Source", class: "text-sm font-medium text-slate-700" %>
+          <%= form.select :source, options_for_select([['Google Books', 'google_books'], ['Seeded Books', 'seeded_books']], selected: params[:source]), { include_blank: false }, { class: "w-full text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300", data: { turbo_frame: "conditional-fields" } } %>
         </div>
 
         <div>

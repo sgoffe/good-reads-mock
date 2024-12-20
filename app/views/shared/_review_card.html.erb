@@ -7,7 +7,7 @@
           <span>•</span>
           <span><%= render partial: 'shared/star_rating', locals: { review: review }%></span>
         </div>
-        <p class="text-sm"><%= review.review_text %></p>  
+        <p class="text-sm mt-2"><%= truncate(review.review_text, length:150) %></p>  
       </div>
 
       <div>
