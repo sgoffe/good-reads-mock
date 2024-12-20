@@ -212,9 +212,9 @@ book_titles = [
 
 # admin 
 admin = User.create(
-  first: 'Admin', 
-  last: 'User', 
-  email: 'admin@example.com', 
+  first: 'Mickey', 
+  last: 'Mouse', 
+  email: 'mmouse@example.com', 
   password: '123456', 
   role: 0 
 )
