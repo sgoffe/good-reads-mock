@@ -11,6 +11,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     @admin = User.create!(first: "Allie", last: "Amberson", 
       email: "aa@gmail.com", bio:"wassup", 
       password:"aamerson", role: :admin)
+    sign_in @admin
     @b1 = FactoryBot.create(:book)
     # @b1 = Book.create!(title: "Test Book", author: "test",
     #   genre: :fiction,

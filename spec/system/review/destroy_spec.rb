@@ -9,6 +9,7 @@ RSpec.describe "Show route", type: :system do
     @u1 = User.create!(first: "Allie", last: "Amberson", 
                 email: "aa@gmail.com", bio:"wassup", 
                 password:"aamerson", role: :admin)
+    sign_in @u1
 
     @b1 = FactoryBot.create(:book)
     # @b1 = Book.create!(title: "test", author: "test",
@@ -47,12 +48,12 @@ RSpec.describe "Show route", type: :system do
 
       it 'due to invalid id' do
         r = Review.create!(user: @u1, book: @b1, review_text: 'test 1', rating: 3)
-        allow_any_instance_of(Review).to receive(:destroy).and_raise(ActiveRecord::RecordNotFound)
+        allow_any_instance_of(Review).to receive(:destroy).and_raise(StandardError)
 
         visit review_path(r)
         click_on 'Delete'
-        expect(page.current_path).to eq(reviews_path)
-        expect(page).to have_content('Review not found')
+        expect(page.current_path).to eq(review_path(r))
+        expect(page).to have_content('Error deleting review')
       end
     end
   end
