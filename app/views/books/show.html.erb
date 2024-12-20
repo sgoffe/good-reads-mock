@@ -1,6 +1,10 @@
 <div class="container">
 <div class="row">
-
+<br>
+<%= button_to add_favorite_path(@book.id), class: "bg-violet-300 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-violet-200" do %>
+    <i class="far fa-bookmark text-lg"></i>
+<% end %>
+<br>
 <h2 class="hero"><%= @book.title %></h3>
 
 <h5> <%= @book.author %> </h5>
@@ -10,7 +14,6 @@
     <% if @book.img_url.present? %>
         <img src="<%= @book.img_url %>" alt="<%= @book.title %>" style="max-width: 300px; height: auto;">
     <% end %>
-
     <br>
     <h6> Description: </h6>
     <p class="card-text"> <%= @book.description %> </p>

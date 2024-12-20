@@ -63,6 +63,16 @@ class ListsController < ApplicationController
     #     @list = List.find(params[:list_id])
     # end
 
+    def add_favorite
+        @book = Book.find(params[:id])
+        if current_user
+            if current_user.lists[0]
+                current_user.lists[0].books << @book
+                redirect_to '/', notice: "#{@book.title} added to favorites"
+            end
+        end
+    end
+
 private
     def create_update_params
         params.require(:list).permit(:title)
