@@ -15,28 +15,30 @@
 
 <br><br>
 
-<h5><strong>Browse Friends</strong></h5><br>
+<p class="text-lg font-semibold mb-2">Browse Friends</p>
+    <%= form_with url: friendships_find_path, method: :get, local: true, class: "space-y-4" do |form| %>
+        <div class="flex flex-col space-y-2">
+            <%= form.label :query, "Search by first name", class: "text-sm font-medium text-slate-700" %>
+            <%= form.text_field :first_query, value: params[:query], class: "w-1/4 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300", placeholder: "Search first names..." %>
+        </div>
 
-<%= form_with url: friendships_find_path, method: :get, local: true do |form| %>
-    <div>
-        <%= form.label :query, "Search by first name" %>
-        <%= form.text_field :first_query %>
-    </div>
+        <div class="flex flex-col space-y-2">
+            <%= form.label :query, "Search by last name", class: "text-sm font-medium text-slate-700" %>
+            <%= form.text_field :last_query, value: params[:query], class: "w-1/4 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300", placeholder: "Search last names..." %>
+        </div>
 
-    <div>
-        <%= form.label :query, "Search by last name" %>
-        <%= form.text_field :last_query %>
-    </div>
+        <div class="flex flex-col space-y-2">
+            <%= form.label :query, "Search by email", class: "text-sm font-medium text-slate-700" %>
+            <%= form.text_field :email_query, value: params[:query], class: "w-1/4 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-300 rounded-full px-4 py-2 transition duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300", placeholder: "Search emails..." %>
+        </div>
 
-    <div>
-        <%= form.label :query, "Search by email" %>
-        <%= form.text_field :email_query %>
-    </div>
+        <div>
+            <%= form.submit "Filter Users", class: "w-1/4 bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300" %>
+        </div>
 
-    <div>
-        <%= form.submit "Filter Users", class: "btn btn-primary" %>
-    </div>
-<% end %>
+    <% end %>
+
+
 
 <br>
 
