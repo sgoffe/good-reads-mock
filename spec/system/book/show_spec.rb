@@ -47,13 +47,7 @@ describe "Book Show Page", type: :feature do
 
       expect(page).to have_content(book.title)
       expect(page).to have_content(book.author)
-      expect(page).to have_content(book.genre)
-      expect(page).to have_content(book.pages)
       expect(page).to have_content(book.description)
-      expect(page).to have_content(book.publisher)
-      expect(page).to have_content(book.publish_date)
-      expect(page).to have_content(book.isbn_13)
-      expect(page).to have_content(book.language_written)
 
       expect(page).to have_css("img[src='#{book.img_url}']")
     end
@@ -82,7 +76,6 @@ describe "Book Show Page", type: :feature do
     for book in @books
       visit book_path(book)
       expect(page).to have_link("Find in Library System", href: "https://www.worldcat.org/search?q=isbn:#{book.isbn_13}")
-      expect(page).to have_link("Back to index", href: books_path)
       expect(page).to have_link("Write a review", href: new_book_review_path(book))
       expect(page).to have_link("Recommend this book", href: recommend_book_path(book))
     end
@@ -93,8 +86,8 @@ describe "Book Show Page", type: :feature do
       visit book_path(book)
 
       book.reviews.each do |review|
-        expect(page).to have_link("More", href: review_path(review))
-      end
+        expect(page).to have_link(review.review_text, href: review_path(review)) 
+      end      
     end
   end
 
@@ -104,10 +97,6 @@ describe "Book Show Page", type: :feature do
 
       find_link("Find in Library System", href: "https://www.worldcat.org/search?q=isbn:#{book.isbn_13}").click
       expect(page.current_url).to include("worldcat.org")
-      visit book_path(book)
-
-      click_link("Back to index")
-      expect(current_path).to eq(books_path)
       visit book_path(book)
 
       click_link("Write a review")

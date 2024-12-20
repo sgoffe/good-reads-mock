@@ -1,0 +1,18 @@
+<div class="border-t border-b border-gray-300 py-4 px-2">
+  <%= link_to review do %>
+    <div class="flex justify-between">
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="text-lg font-thin"><%= review.user.first %> <%= review.user.last %> </span>
+          <span>•</span>
+          <span><%= render partial: 'shared/star_rating', locals: { review: review }%></span>
+        </div>
+        <p class="text-sm mt-2"><%= truncate(review.review_text, length:150) %></p>  
+      </div>
+
+      <div>
+        <p class="text-sm font-medium text-gray-500"><%= review.formatted_created_at %></p>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -15,6 +15,7 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'simplecov'
+require 'webmock/rspec'
 SimpleCov.start do 
   add_filter '/spec/'        
   add_filter '/config/'     
@@ -41,6 +42,7 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+    WebMock.enable!
   end
 
   # rspec-mocks config goes here. You can use an alternate test double

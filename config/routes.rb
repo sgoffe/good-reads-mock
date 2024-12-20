@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   root 'pages#home' 
 
   # books/reviews routes
-  resources :books do
+  resources :books, except: [:destroy] do
     resources :reviews
     # resources :lists, only: [:index]
 
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     resources :lists
   end
 
-  resources :reviews, only: [:index, :show, :edit, :destroy]
+  resources :reviews, only: [:index, :show, :edit, :destroy, :update]
 
   # Custom routes 
   get '/books/:id/recommend', to: 'notifications#recommend', as: 'book_recommendation'

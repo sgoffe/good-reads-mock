@@ -1,0 +1,47 @@
+<div class="bg-stone-50 py-8 mt-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center flex-wrap mb-6">
+      <div class="text-xl font-semibold font-kalnia text-gray-800">
+        <span>Bookshelf</span>
+      </div>
+
+      <div class="space-x-6">
+        <a href="#" class="text-gray-600 hover:text-violet-500">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="text-gray-600 hover:text-violet-500">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="text-gray-600 hover:text-violet-500">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="text-gray-600 hover:text-violet-500">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6 text-sm text-gray-600">
+      <div>
+        <h5 class="font-semibold text-gray-800 mb-2">Quick Links</h5>
+        <ul class="space-y-2">
+          <li><%= link_to 'Home', root_path, class: 'hover:text-violet-500' %></li>
+          <li><%= link_to 'Discover', books_path, class: 'hover:text-violet-500' %></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-semibold text-gray-800 mb-2">Follow Us</h5>
+        <ul class="space-y-2">
+          <li><%= link_to 'Facebook', '#', class: 'hover:text-violet-500' %></li>
+          <li><%= link_to 'Twitter', '#', class: 'hover:text-violet-500' %></li>
+          <li><%= link_to 'Instagram', '#', class: 'hover:text-violet-500' %></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="text-center text-sm text-gray-500">
+      <p>&copy; <%= Time.now.year %> Bookshelf. All Rights Reserved.</p>
+    </div>
+  </div>
+</div>

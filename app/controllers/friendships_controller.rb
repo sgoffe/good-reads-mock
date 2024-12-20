@@ -12,6 +12,7 @@ class FriendshipsController < ApplicationController
         if (params[:email_query].present?)
             @users = @users.select{|user| user[:email].to_s.downcase.include?(params[:email_query].downcase)}
         end
+        @friends = current_user.friends
     end
 
     def create

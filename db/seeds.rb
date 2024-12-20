@@ -115,32 +115,6 @@ def fetch_and_store_books_data(book_titles)
   end
 end
 
-def seed_books_from_file
-  # Load the data from the file
-  file_data = File.read("books_data.json")
-  books = JSON.parse(file_data)
-
-  books.each do |book|
-    # Create books from the saved data
-    Book.create!(
-      title: book["title"],
-      author: book["author"],
-      description: book["description"],
-      publisher: book["publisher"],
-      publish_date: book["publish_date"],
-      pages: book["pages"],
-      language_written: book["language_written"],
-      img_url: book["img_url"],
-      isbn_13: book["isbn_13"],
-      google_books_id: book["google_books_id"],
-      genre: book["genre"],
-      rating: book["rating"]
-    )
-
-    puts "Seeded book: #{book["title"]}"
-  end
-end
-
 book_titles = [
   "Ulysses by James Joyce",
   "The Great Gatsby by F. Scott Fitzgerald",
@@ -235,46 +209,89 @@ book_titles = [
 ]
 
 # fetch_and_store_books_data(book_titles)
-seed_books_from_file
 
-b1 = Book.find_by_title!("Ulysses")
-b2 = Book.find_by_title!("East of Eden")
-b3 = Book.find_by_title!("The House of the Spirits")
+# admin 
+admin = User.create(
+  first: 'Mickey', 
+  last: 'Mouse', 
+  email: 'mmouse@example.com', 
+  password: '123456', 
+  role: 0 
+)
 
-# create users
-u1 = User.create!(first: 'Sophia', last: 'Goffe', email: 'sgoffee@colslay.edu', bio: 'living loving and laughing', password: 'sgoffe', role: 'standard')
-u2 = User.create!(first: 'Meghan', last: 'Subak', email: 'msubak@colslay.edu', bio: 'body builder and book lover', password: 'msubak', role: 'standard')
-u3 = User.create!(first: 'Mickey', last: 'Mouse', email: "mmouse@colslay.edu", bio: 'a sassy little mouse', password: 'mmouse', role: 'admin')
+users = User.create([
+  { first: 'John', last: 'Doe', email: 'john.doe@example.com', password: '123456', role: 1 },
+  { first: 'Jane', last: 'Smith', email: 'jane.smith@example.com', password: '123456', role: 1 },
+  { first: 'Alice', last: 'Johnson', email: 'alice.johnson@example.com', password: '123456', role: 1 },
+  { first: 'Bob', last: 'Brown', email: 'bob.brown@example.com', password: '123456', role: 1 },
+  { first: 'Charlie', last: 'Davis', email: 'charlie.davis@example.com', password: '123456', role: 1 }
+])
+users.push(admin)
 
-# create reviews
-r1 = b1.reviews.create!(rating: 5,
-                review_text: 'currently my favorite book', 
-                user: u1) 
+books_data = JSON.parse(File.read('db/books_data.json')) # Assume your books are stored in db/seed_books.json
+books = books_data.map do |book_data|
+  Book.create(
+    google_books_id: book_data['google_books_id'],
+    title: book_data['title'],
+    author: book_data['author'],
+    img_url: book_data['img_url'],
+    genre: book_data['genre'],
+    publish_date: book_data['publish_date'],
+    description: book_data['description'],
+    publisher: book_data['publisher'],
+    pages: book_data['pages'],
+    language_written: book_data['language_written'],
+    isbn_13: book_data['isbn_13'],
+    rating: book_data['rating']
+  )
+end
 
-r2 = b2.reviews.create!(rating: 4,
-                review_text: 'Maps Fantasy Library', 
-                user: u2)
+review_texts = [
+  "This book is absolutely amazing! I couldn't put it down. Highly recommend it!",
+  "I found the storyline captivating, but the pacing was a bit slow in parts.",
+  "A great read overall, but some parts felt a little predictable.",
+  "The characters were well-developed, but the plot didn't quite live up to expectations.",
+  "I couldn't connect with the characters, but the writing was still beautiful.",
+  "An interesting story, but it left me wanting more in the end.",
+  "A fantastic book! The author did a great job with the world-building.",
+  "Not my favorite book, but it was still enjoyable for fans of this genre."
+]
 
-r3 = b2.reviews.create!(rating: 5,
-                review_text: 'Meghan"s second review', 
-                user: u2)
+books.each do |book|
+  3.times do
+    user = users.sample
+    Review.create(
+      rating: rand(1..5),
+      review_text: review_texts.sample,
+      user: user,
+      book: book
+    )
+  end
+end
 
-r4 = b3.reviews.create!(rating: 3,
-                review_text: 'sad',
-                user: u3) 
+# friendships
+users.each do |user|
+  friends = users.reject { |u| u == user } 
+  2.times do
+    friend = friends.sample
+    Friendship.create(user_id: user.id, friend_id: friend.id)
+  end
+end
 
-l1 = List.create!(title: "Favorites",
-                user: u1)
-                l1.books << b1
-                l1.books << b3
+# notifs
+books.each do |book|
+  users.each do |user|
+    friend = users.reject { |u| u == user }.sample 
+    Notification.create(
+      sender_id: user.id,
+      receiver_id: friend.id,
+      title: "Book Recommendation",
+      message: "#{user.first} recommends the book '#{book.title}' to you.",
+      notifiable_type: 'Book',
+      notifiable_id: book.id
+    )
+  end
+end
 
-l2 = List.create!(title: "Want to read",
-                user: u2)
-                l2.books << b2
-                l2.books << b3
+puts "Seeding completed!"
 
-l3 = List.create!(title: "LOVE",
-                user: u2)
-                l3.books << b1
-                l3.books << b2
-                l3.books << b3

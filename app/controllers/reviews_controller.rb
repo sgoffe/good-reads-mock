@@ -1,4 +1,6 @@
 class ReviewsController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :destroy, :edit]
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_bad_id
 
   def index
     @reviews = Review.all.order(created_at: :desc)
@@ -14,19 +16,17 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    if !current_user.nil?
-      @book = Book.find(params[:book_id])
-      @review = Review.new(create_update_params)
-  
-      @review.user = current_user
-      @book.reviews << @review
+    @book = Book.find(params[:book_id])
+    @review = Review.new(create_update_params)
 
-      if @review.save
-        redirect_to book_path(@book), notice: 'Review created successfully'
-      end
+    @review.user = current_user
+    @book.reviews << @review
+
+    if @review.save
+      redirect_to book_path(@book), notice: 'Review created successfully'
     else
       flash[:alert] = 'Review could not be created'
-      render :new, status: :unprocessable_content
+      render :new, status: :unprocessable_entity
     end
   end
   
@@ -40,19 +40,22 @@ class ReviewsController < ApplicationController
       redirect_to review_path(@review.id), notice: 'Review updated successfully'
     else
       flash[:alert] = 'Review could not be edited'
-      render :edit, status: :unprocessable_content
+      render :edit
     end
+    
   end
 
   def destroy
     begin
       @review = Review.find(params[:id])
       @review.destroy
-      redirect_to reviews_path, notice: 'Review deleted successfully'
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = 'Review not found'
-      redirect_to reviews_path
+      if (params[:from_admin].present? && params[:from_admin] == 'true')
+        redirect_to user_admin_path(current_user.id)
+      else 
+        redirect_to books_path, notice: 'Review deleted successfully'
+      end
     rescue StandardError => e
+      puts e
       flash[:alert] = 'Error deleting review'
       render :show
     end
@@ -60,12 +63,11 @@ class ReviewsController < ApplicationController
 
 private 
   def create_update_params
-    # if !params[:book].nil?
-    #   @book = Book.find(params[:book])
-    # end
-    # if !params[:book_id].nil?
-    #   params[:book_id] = @books.find(params[:book_id])
-    # end
     params.require(:review).permit(:review_text, :rating)
+  end
+
+  def handle_bad_id
+    flash[:alert] = 'Invalid Review'
+    redirect_to books_path
   end
 end

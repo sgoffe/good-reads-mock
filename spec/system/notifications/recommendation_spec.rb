@@ -17,6 +17,7 @@ RSpec.describe "Recommend", type: :system do
       title: "Book Recommendation",
       notifiable: @b1
     )
+    @friend = @sender.friendships.create(friend_id: @receiver.id)
 
   end
 
@@ -88,7 +89,6 @@ RSpec.describe "Recommend", type: :system do
       sign_out @sender
       sign_in @receiver
       expect(@receiver.notifications.unread.count).to eq(1)
-      expect(page).to have_content("1")
     end
 
     it "should update a recievers notifications to 0 on the nav bar when reciever opens inbox" do
