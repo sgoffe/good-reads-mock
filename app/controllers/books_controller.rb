@@ -207,14 +207,6 @@ class BooksController < ApplicationController
       redirect_to books_path
     end
   end
-  
-
-  def destroy
-    @book = Book.find(params[:id])
-    # @book.images.each {|img| img.purge }
-    @book.destroy
-    redirect_to books_path, notice: 'Book deleted successfully'
-  end
     
   private
   

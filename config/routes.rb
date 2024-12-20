@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   root 'pages#home' 
 
   # books/reviews routes
-  resources :books do
+  resources :books, except: [:destroy] do
     resources :reviews
     # resources :lists, only: [:index]
 

@@ -8,4 +8,7 @@ class Review < ApplicationRecord
   validates :rating, presence: true
   validates :review_text, presence: true
 
+  def formatted_created_at
+    created_at.strftime("%B %d, %Y")
+  end
 end

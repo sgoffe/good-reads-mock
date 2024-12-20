@@ -1,4 +1,12 @@
-<div class="flex items-center">  
+<div class="flex items-center">
+  <% if defined?(review) && review %>  
+    <% stars = review.rating %> 
+  <% elsif defined?(book) && book %> 
+    <% stars = book.rating || 0 %>  
+  <% else %>
+    <% stars = 0 %>  <!-- Default to 0 if neither a review nor a book is provided -->
+  <% end %>
+
   <% (1..5).each do |i| %>
     <% if stars >= i %>
       <!-- Full star -->
@@ -12,11 +20,11 @@
     <% end %>
   <% end %>
 
-  <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">
-    <% if rating.nil? %>
+  <p class="ms-1 text-sm font-medium text-gray-500">
+    <% if stars == 0 %>
       No ratings yet
     <% else %>
-      <%= book.rating.round(2) %> stars
+      <%= stars.round(2) %> stars
     <% end %>
   </p>
 </div>
