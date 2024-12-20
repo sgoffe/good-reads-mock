@@ -16,36 +16,36 @@
             <%= @book.formatted_publish_year %>
           </span>        
           <h1 class="text-lg font-light">by <%= @book.author %></h1>
-          <p class="text-sm font-normal mt-6 whitespace-normal break-words mb-4">
+          <p class="text-sm font-normal mt-6 whitespace-normal break-words mb-4 w-">
             <%= @book.description %>
           </p>
-          <%= link_to "Find in Library System", "https://www.worldcat.org/search?q=isbn:#{@book.isbn_13}", 
-                target: "_blank", 
-                class: "bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300 whitespace-nowrap" %>
-          <%= link_to "Recommend this book", recommend_book_path(@book), class: "bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300 whitespace-nowrap" %>
+          <div class="flex space-x-2">
+            <%= link_to "Find in Library System", "https://www.worldcat.org/search?q=isbn:#{@book.isbn_13}", 
+                  target: "_blank", 
+                  class: "bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300 whitespace-nowrap" %>
+            <%= link_to "Recommend this book", recommend_book_path(@book), class: "bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300 whitespace-nowrap" %>
+            <%= button_to add_favorite_path(@book.id), class: "bg-violet-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-violet-300" do %>
+              <i class="far fa-bookmark text-lg"></i>
+            <% end %>
+          </div>
         </div>
       </div>
 
       <!-- Right side: Rating -->
       <div class="flex-1 ml-10 text-2xl">
-        <%= render_star_rating(@book) %>
+        <%= render partial: 'shared/star_rating', locals: { book: @book }%>
       </div>
     </div>
   </div>
 
   <div class="mt-20"> 
-    <div class="col-2 mt-6 flex items-center">
+    <div class="col-2 my-6 flex items-center">
       <h3 class="text-3xl font-bold font-kalnia">Reviews</h3>
       <%= link_to "Write a review", new_book_review_path(@book.id), class: "ml-4 bg-violet-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-violet-300 transition duration-300 whitespace-nowrap" %>
     </div>
     <div class="mt-2">
       <% if @book.reviews.count > 0 %>
-        <% @book.reviews.each do |review| %>
-            <h6><%= review.user.first %> <%= review.user.last %> • <%= review.rating %> stars</h6>
-            <p><%= review.review_text %></p>
-        
-            <%= link_to 'More', review, class: "btn btn-sm btn-primary"%>
-        <%end%>
+        <%= render partial: 'shared/review_card', collection: @book.reviews, as: :review %>
       <% else %> 
         <p>No reviews yet</p>
       <% end %>
