@@ -1,10 +1,10 @@
 <div>
-    <%= link_to "Back to admin page", user_admin_path(1) %>
+    <%= link_to "Back to admin page", user_admin_path(current_user.id) %>
     <br>
     <% @reviews.each do |review| %>   
         <%= "Rating: #{review.rating} "%>
         <%= "Content: #{review.review_text}" %>
-        <%= button_to "Delete review", review_path(review.id), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
+        <%= button_to "Delete review", review_path(review.id), params: {from_admin: true}, method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
         <br>
     <% end %>
 </div>
