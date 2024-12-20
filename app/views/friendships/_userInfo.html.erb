@@ -1,5 +1,7 @@
 <div class="card mb-1 p-2 h-100">
-    <h2>Friend: <strong><%= "#{person.first} #{person.last}" %></strong></h2>
-    <p><%= "Email: #{person.email}" %></p>
-    <p><%= "Bio: #{person.bio}" %></p>
+    <a href="<%= user_path(person) %>" class="list-group-item flex-column justify-content-between">
+        <h2>Friend: <strong><%= "#{person.first} #{person.last}" %></strong></h2>
+        <p><%= "Email: #{person.email}" %></p>
+        <p><%= "Bio: #{person.bio}" %></p>
+    </a>
 </div>
