@@ -19,15 +19,15 @@ RSpec.describe "DeleteFriend", type: :system do
             click_on "Log in"
             expect(page).to have_content("Signed in successfully.")
             click_on "Social"
-            expect(page).to have_content("This user has no friends")
-            click_on "Click to Add Friend"
+            expect(page).to have_content("Add Some Friends")
+            click_on "#{@u1.first}"
             expect(page).to have_content("Friend successfully added")
             click_on "Social"
             expect(page).to have_content("Friend: Allie Amberson")
-            click_on "Delete this friend"
+            click_on "#{@u1.first}"
             expect(page).to have_content("Friend removed successfully")
             click_on "Social"
-            expect(page).to have_content("This user has no friends")
+            expect(page).to have_content("Add Some Friends")
         end
     end
 end
