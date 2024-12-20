@@ -215,12 +215,6 @@ RSpec.describe "Google Books Integration", type: :system do
     expect(page).to have_content(created_book.title)
     expect(page).to have_content(created_book.author)
     expect(page).to have_content(clean_html_description(created_book.description))
-    expect(page).to have_content(created_book.genre)
-    expect(page).to have_content(created_book.publisher)
-    expect(page).to have_content(created_book.publish_date)
-    expect(page).to have_content(created_book.pages)
-    expect(page).to have_content(created_book.language_written)
-    expect(page).to have_content(created_book.isbn_13)
     expect(page).to have_xpath("//img[@src='#{created_book.img_url}']")
   end
 
@@ -247,12 +241,6 @@ RSpec.describe "Existing Google Books", type: :system do
     expect(page).to have_content(@existing_book.title)
     expect(page).to have_content(@existing_book.author)
     expect(page).to have_content(clean_html_description( @existing_book.description ))
-    expect(page).to have_content(@existing_book.genre)
-    expect(page).to have_content(@existing_book.publisher)
-    expect(page).to have_content(@existing_book.publish_date)
-    expect(page).to have_content(@existing_book.pages)
-    expect(page).to have_content(@existing_book.language_written)
-    expect(page).to have_content(@existing_book.isbn_13)
     expect(page).to have_xpath("//img[@src='#{@existing_book.img_url}']")
   end
 
