@@ -1,0 +1,35 @@
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+/home/emro/.rbenv/versions/3.2.0/bin/ruby -I /home/emro/.rbenv/versions/3.2.0/lib/ruby/3.2.0 extconf.rb
+checking for rb_io_path()... no
+checking for rb_io_descriptor()... yes
+checking for rb_io_get_write_io()... yes
+checking for rb_io_closed_p()... no
+checking for rb_io_open_descriptor()... no
+checking for termios.h... yes
+checking for cfmakeraw() in termios.h... yes
+checking for sys/ioctl.h... yes
+checking for HAVE_RUBY_FIBER_SCHEDULER_H... yes
+creating Makefile
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-1xocm9 sitelibdir\=./.gem.20241207-679-1xocm9 clean
+make: Warning: File 'Makefile' has modification time 7.4 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-1xocm9 sitelibdir\=./.gem.20241207-679-1xocm9
+make: Warning: File 'Makefile' has modification time 7.3 s in the future
+compiling console.c
+linking shared-object io/console.so
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-1xocm9 sitelibdir\=./.gem.20241207-679-1xocm9 install
+make: Warning: File 'Makefile' has modification time 2.5 s in the future
+/usr/bin/install -c -m 0755 console.so ./.gem.20241207-679-1xocm9/io
+make: warning:  Clock skew detected.  Your build may be incomplete.
+
+current directory: /mnt/c/Users/Emrel/OneDrive/Documents/GitHub/fnaticreadr/vendor/bundle/ruby/3.2.0/gems/io-console-0.7.2/ext/io/console
+make DESTDIR\= sitearchdir\=./.gem.20241207-679-1xocm9 sitelibdir\=./.gem.20241207-679-1xocm9 clean
+make: Warning: File 'Makefile' has modification time 1.4 s in the future
+make: warning:  Clock skew detected.  Your build may be incomplete.
