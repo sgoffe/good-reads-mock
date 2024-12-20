@@ -19,8 +19,8 @@ RSpec.describe "AddFriend", type: :system do
         it "expect a friend to be successfully added" do
             expect(page).to have_content("Signed in successfully.")
             click_on "Social"
-            expect(page).to have_content("This user has no friends")
-            click_on "Click to Add Friend"
+            expect(page).to have_content("Add Some Friends")
+            click_on "#{@u1.first}"
             expect(page).to have_content("Friend successfully added")
             click_on "Social"
             expect(page).to have_content("Allie Amberson")
@@ -29,7 +29,7 @@ RSpec.describe "AddFriend", type: :system do
         it "expect the friend added to have notification with the senders name" do
             expect(page).to have_content("Signed in successfully.")
             click_on "Social"
-            click_on "Click to Add Friend"
+            click_on "#{@u1.first}"
             find('#profile_click').click
             click_on "Log Out"
             click_on "Log In"

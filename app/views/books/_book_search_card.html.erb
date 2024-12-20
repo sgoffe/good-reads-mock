@@ -1,6 +1,6 @@
 <%= link_to google_book_path(book.google_books_id), class: "flex space-x-4 p-4 border border-slate-300 rounded-lg transition ease-in-out delay-150 hover:-translate-y-2 duration-300 max-h-[200px] overflow-y-auto" do %>
   <!-- Image Section -->
-  <div class="bg-yellow-100">
+  <div>
     <%= image_tag(
           book.img_url.presence || asset_path("default_cover.jpg"), 
           alt: "Book Cover", 
@@ -24,7 +24,7 @@
     </div>
     
     <!-- Right Side: Rating -->
-    <div class="w-1/4 flex flex-col items-end space-y-2">
+    <div class="w-1/4 flex flex-col items-end pl-10 space-y-2">
       <%= render_star_rating(book) %>
     </div>
   </div>

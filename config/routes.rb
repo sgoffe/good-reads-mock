@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     resources :lists
   end
 
-  resources :reviews, only: [:index, :show, :edit, :destroy]
+  resources :reviews, only: [:index, :show, :edit, :destroy, :update]
 
   # Custom routes 
   get '/books/:id/recommend', to: 'notifications#recommend', as: 'book_recommendation'
@@ -47,8 +47,8 @@ Rails.application.routes.draw do
   get '/profile', to: 'users#profile'
   post '/google_books/add', to: 'books#add_google_book', as: 'add_google_book'
   get '/google_books/:id', to: 'books#show_google', as: 'google_book'
-  # get '/library', to: 'lists#index', as: 'library'
   get '/users/:id/admin', to: 'users#admin', as: 'user_admin'
   get '/users/:id/admin/moderate', to: 'users#admin_moderate', as: 'user_admin_moderate'
   # get '/books/:id/reviews/:id', to: 'reviews#show'
+  post '/add_favorite/:id', to: 'lists#add_favorite', as: 'add_favorite'
 end

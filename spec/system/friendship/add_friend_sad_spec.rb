@@ -19,13 +19,13 @@ RSpec.describe "AddFriend", type: :system do
             click_on "Log in"
             expect(page).to have_content("Signed in successfully.")
             click_on "Social"
-            expect(page).to have_content("This user has no friends")
+            expect(page).to have_content("Add Some Friends")
             expect(Friendship).to receive(:new).and_return(@u1)
             expect(@u1).to receive(:save).and_return(nil)
-            click_on "Click to Add Friend"
+            click_on "#{@u1.first}"
             expect(page).to have_content("Friend could not be added")
             click_on "Social"
-            expect(page).to have_content("This user has no friends")
+            expect(page).to have_content("Add Some Friends")
         end
 
         it "expect the friend unsuccessfully added to not have notfication with the senders name" do
@@ -37,7 +37,7 @@ RSpec.describe "AddFriend", type: :system do
             click_on "Social"
             expect(Friendship).to receive(:new).and_return(@u1)
             expect(@u1).to receive(:save).and_return(nil)
-            click_on "Click to Add Friend"
+            click_on "#{@u1.first}"
             expect(page).to have_content("Friend could not be added")
             find('#profile_click').click
             click_on "Log Out"

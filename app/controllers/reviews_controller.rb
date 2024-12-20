@@ -23,10 +23,12 @@ class ReviewsController < ApplicationController
 
       if @review.save
         redirect_to book_path(@book), notice: 'Review created successfully'
+      else
+        flash[:alert] = 'Review could not be created'
+        render :new, status: :unprocessable_entity
       end
     else
-      flash[:alert] = 'Review could not be created'
-      render :new, status: :unprocessable_content
+      redirect_to book_path(@book), notice: 'Review could not be created'
     end
   end
   
@@ -36,23 +38,29 @@ class ReviewsController < ApplicationController
 
   def update
     @review = Review.find(params[:id])
+    @book = Book.find(params[:book_id])
     if @review.update(create_update_params)
       redirect_to review_path(@review.id), notice: 'Review updated successfully'
     else
       flash[:alert] = 'Review could not be edited'
-      render :edit, status: :unprocessable_content
     end
+    
   end
 
   def destroy
     begin
       @review = Review.find(params[:id])
       @review.destroy
-      redirect_to reviews_path, notice: 'Review deleted successfully'
+      if (params[:from_admin].present? && params[:from_admin])
+        redirect_to user_admin_path(current_user.id)
+      else 
+        redirect_to books_path, notice: 'Review deleted successfully'
+      end
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = 'Review not found'
       redirect_to reviews_path
     rescue StandardError => e
+      puts e
       flash[:alert] = 'Error deleting review'
       render :show
     end
