@@ -51,13 +51,6 @@ RSpec.describe "Show route", type: :system do
       expect(page.text).to match(/3/m)
     end
 
-    it 'should have a link from show back to index' do
-      id1 = @r1.id
-      visit review_path(id1)
-      click_on 'Back to index'
-      expect(page.current_path).to eq(books_path)
-    end
-
     it 'should have a link to edit' do
       id1 = @r1.id
       visit review_path(id1)

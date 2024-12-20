@@ -86,8 +86,8 @@ describe "Book Show Page", type: :feature do
       visit book_path(book)
 
       book.reviews.each do |review|
-        expect(page).to have_link("More", href: review_path(review))
-      end
+        expect(page).to have_link(review.review_text, href: review_path(review)) 
+      end      
     end
   end
 

@@ -17,6 +17,7 @@ RSpec.describe "Recommend", type: :system do
       title: "Book Recommendation",
       notifiable: @b1
     )
+    @friend = @sender.friendships.create(friend_id: @receiver.id)
 
   end
 

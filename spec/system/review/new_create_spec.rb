@@ -21,7 +21,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       visit new_book_review_path(@b1)
       fill_in 'Rating', with: 4
       fill_in 'Review text', with: 'Test Review Text'
-      click_on 'Create Review'
+      click_on 'Submit Review'
       expect(page).to have_content('Review created successfully')
       expect(page.current_path).to eq(book_path(@b1.id))
       expect(page).to have_content('Sample Title')
@@ -35,7 +35,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       visit new_book_review_path(@b1)
       fill_in 'Rating', with: 4
       fill_in 'Review text', with: 'Test Review Text'
-      click_on 'Create Review'
+      click_on 'Submit Review'
       expect(page).to have_content('Review could not be created')
     end
   end
@@ -50,7 +50,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
 
     it 'successful update' do
       visit book_path(@b1)
-      click_on 'More', match: :first
+      click_on @r.review_text
       expect(page).to have_content('test 1')
       click_on 'Edit'
       fill_in 'Review text', with: 'new review text'
@@ -64,7 +64,7 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       allow(@r).to receive(:update).and_return(false)
     
       visit book_path(@b1)
-      click_on 'More', match: :first
+      click_on @r.review_text
       expect(page).to have_content('test 1')
       click_on 'Edit'
       fill_in 'Review text', with: 'new review text'

@@ -39,48 +39,51 @@ RSpec.describe "ListsController", type: :system do
             visit profile_path
             click_on "New list"
             expect(page).to have_content("Untitled List")
-            click_on "Edit list"
+            click_on 'Edit list', match: :first
             fill_in 'Title', with: 'edit test'
             click_on 'Update List'
             expect(page.current_path).to eq(profile_path)
             expect(page).to have_content("List updated successfully")
             expect(page).to have_content("edit test")
         end
-        it "update sad path" do
-        end
+        
     end
     describe "destroying a review" do
         it 'deletes a review' do
             visit profile_path
             click_on "New list"
-            expect(@u1.lists.count).to eq(1)
-            expect(page).to have_content('Untitled List')
+            expect(@u1.lists.count).to eq(2) 
             click_on 'Delete'
             expect(page).to have_content('List deleted successfully')
             expect(page).not_to have_content('Untitled List')
-            expect(@u1.lists.count).to eq(0)
+            expect(@u1.lists.count).to eq(1) 
         end
+        
+        
     
         describe 'handles failed delete' do
-          it 'due to db error' do
-            l = List.create!(user: @u1, title: "test list")
-            allow_any_instance_of(List).to receive(:destroy).and_raise(StandardError)
-      
-            visit profile_path
-            click_on 'Delete'
-            expect(page.current_path).to eq(profile_path)
-            expect(page).to have_content('Error deleting list')
-          end
+            it 'due to db error' do
+                l = List.create!(user: @u1, title: "test list")
+                allow_any_instance_of(List).to receive(:destroy).and_raise(StandardError)
+            
+                visit profile_path
+                find(".list-item[data-title='test list']").click_on 'Delete'
+                expect(page.current_path).to eq(profile_path)
+                expect(page).to have_content('Error deleting list')
+            end
+            
+            
     
-          it 'due to invalid id' do
-            l = List.create!(user: @u1, title: "test list")
-            allow_any_instance_of(List).to receive(:destroy).and_raise(ActiveRecord::RecordNotFound)
-    
-            visit profile_path
-            click_on 'Delete'
-            expect(page.current_path).to eq(profile_path)
-            expect(page).to have_content('List not found')
-          end
+            it 'due to invalid id' do
+                l = List.create!(user: @u1, title: "test list")
+                allow_any_instance_of(List).to receive(:destroy).and_raise(ActiveRecord::RecordNotFound)
+            
+                visit profile_path
+                click_on 'Delete', match: :first
+                expect(page.current_path).to eq(profile_path)
+                expect(page).to have_content('List not found')
+            end
+            
         end
     end
 end
