@@ -12,26 +12,18 @@ RSpec.describe "Show route", type: :system do
     sign_in @u1
 
     @b1 = FactoryBot.create(:book)
-    # @b1 = Book.create!(title: "test", author: "test",
-    #             genre: :fiction,
-    #             pages: 100, description: "test",
-    #             publisher: "test",
-    #             publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
+    @r1 = FactoryBot.create(:review, book_id: @b1.id, user_id: @u1.id)
   end
 
   describe "destroying a review" do
     it 'deletes a review' do
-      expect(Review.all.count).to eq(0)
-      review = Review.new(review_text: 'test 1', rating: 3)
-      review.user = @u1
-      (@b1).reviews << review
-      review.save!
+      expect(Review.all.count).to eq(1)
 
-      visit review_path(review)
-      expect(page).to have_content(review.review_text)
+      visit review_path(@r1)
+      expect(page).to have_content(@r1.review_text)
       click_on 'Delete'
       expect(page).to have_content('Review deleted successfully')
-      expect(page).not_to have_content(review.review_text)
+      expect(page).not_to have_content(@r1.review_text)
       expect(Review.all.count).to eq(0)
     end
 

@@ -49,7 +49,7 @@ class ReviewsController < ApplicationController
     begin
       @review = Review.find(params[:id])
       @review.destroy
-      if (params[:from_admin].present? && params[:from_admin])
+      if (params[:from_admin].present? && params[:from_admin] == 'true')
         redirect_to user_admin_path(current_user.id)
       else 
         redirect_to books_path, notice: 'Review deleted successfully'
