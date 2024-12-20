@@ -210,28 +210,24 @@ book_titles = [
 
 # fetch_and_store_books_data(book_titles)
 
-# Create an admin user
+# admin 
 admin = User.create(
   first: 'Admin', 
   last: 'User', 
   email: 'admin@example.com', 
-  password: 'adminpassword123', 
-  role: 1 # Admin role
+  password: '123456', 
+  role: 0 
 )
 
-# Create other users
 users = User.create([
-  { first: 'John', last: 'Doe', email: 'john.doe@example.com', password: 'password123', role: 0 },
-  { first: 'Jane', last: 'Smith', email: 'jane.smith@example.com', password: 'password123', role: 0 },
-  { first: 'Alice', last: 'Johnson', email: 'alice.johnson@example.com', password: 'password123', role: 0 },
-  { first: 'Bob', last: 'Brown', email: 'bob.brown@example.com', password: 'password123', role: 0 },
-  { first: 'Charlie', last: 'Davis', email: 'charlie.davis@example.com', password: 'password123', role: 0 }
+  { first: 'John', last: 'Doe', email: 'john.doe@example.com', password: '123456', role: 1 },
+  { first: 'Jane', last: 'Smith', email: 'jane.smith@example.com', password: '123456', role: 1 },
+  { first: 'Alice', last: 'Johnson', email: 'alice.johnson@example.com', password: '123456', role: 1 },
+  { first: 'Bob', last: 'Brown', email: 'bob.brown@example.com', password: '123456', role: 1 },
+  { first: 'Charlie', last: 'Davis', email: 'charlie.davis@example.com', password: '123456', role: 1 }
 ])
-
-# Add the admin user to the users array for easier access
 users.push(admin)
 
-# Seed books from JSON file
 books_data = JSON.parse(File.read('db/books_data.json')) # Assume your books are stored in db/seed_books.json
 books = books_data.map do |book_data|
   Book.create(
@@ -250,7 +246,6 @@ books = books_data.map do |book_data|
   )
 end
 
-# Create reviews for each book with varied texts
 review_texts = [
   "This book is absolutely amazing! I couldn't put it down. Highly recommend it!",
   "I found the storyline captivating, but the pacing was a bit slow in parts.",
@@ -274,7 +269,7 @@ books.each do |book|
   end
 end
 
-# Create friendships (randomly link users)
+# friendships
 users.each do |user|
   friends = users.reject { |u| u == user } 
   2.times do
@@ -283,7 +278,7 @@ users.each do |user|
   end
 end
 
-# Send notifications (recommending books to friends)
+# notifs
 books.each do |book|
   users.each do |user|
     friend = users.reject { |u| u == user }.sample 

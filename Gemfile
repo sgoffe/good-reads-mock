@@ -79,3 +79,5 @@ gem 'tailwindcss-rails'
 gem "dotenv-rails", "~> 3.1", :groups => [:development, :test]
 
 gem "kaminari", "~> 1.2"
+
+gem "aws-sdk-s3", "~> 1.176", :require => false
