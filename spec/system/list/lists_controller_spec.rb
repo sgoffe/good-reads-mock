@@ -53,7 +53,7 @@ RSpec.describe "ListsController", type: :system do
             visit profile_path
             click_on "New list"
             expect(@u1.lists.count).to eq(2) 
-            click_on 'Delete'
+            click_on 'Delete', match: :first
             expect(page).to have_content('List deleted successfully')
             expect(page).not_to have_content('Untitled List')
             expect(@u1.lists.count).to eq(1) 
@@ -67,7 +67,7 @@ RSpec.describe "ListsController", type: :system do
                 allow_any_instance_of(List).to receive(:destroy).and_raise(StandardError)
             
                 visit profile_path
-                find(".list-item[data-title='test list']").click_on 'Delete'
+                click_on 'Delete', match: :first
                 expect(page.current_path).to eq(profile_path)
                 expect(page).to have_content('Error deleting list')
             end

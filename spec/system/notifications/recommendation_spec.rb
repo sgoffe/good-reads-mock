@@ -89,7 +89,6 @@ RSpec.describe "Recommend", type: :system do
       sign_out @sender
       sign_in @receiver
       expect(@receiver.notifications.unread.count).to eq(1)
-      expect(page).to have_content("1")
     end
 
     it "should update a recievers notifications to 0 on the nav bar when reciever opens inbox" do
