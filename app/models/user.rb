@@ -16,6 +16,8 @@ class User < ApplicationRecord
   validates :last, presence: true
   validates :email, presence: true
 
+  after_create :create_favorites_list
+
   enum :role, %i[admin standard]
 
   def notifications
@@ -24,5 +26,9 @@ class User < ApplicationRecord
 
   def num_unread_messages
     self.notifications.unread.count
+  end
+
+  def create_favorites_list 
+    List.create(title: "Favorites", user_id: self.id)
   end
 end
