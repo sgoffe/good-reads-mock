@@ -7,6 +7,8 @@ RSpec.describe "Badids", type: :system do
 
   it "displays an error for an invalid review" do
     visit '/reviews/1000'
-    expect(page.text).to match(/Invalid Review/)
+    expect(page).to have_content('Invalid Review') 
+    expect(current_path).to eq(books_path) 
   end
+  
 end

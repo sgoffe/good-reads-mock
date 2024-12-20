@@ -8,12 +8,23 @@ RSpec.describe "Show route", type: :system do
   describe "#show" do
     before(:each) do
       @u1 = User.create!(first: "user 2", last: "Amberson", email: "aa@gmail.com", bio:"wassup", password:"aamerson", role: :admin)
+      sign_in @u1
       @b1 = FactoryBot.create(:book, genre: "fiction")
       # @b1 = Book.create!(title: "Dune", author: "test", genre: :fiction, pages: 100, description: "test", publisher: "test", 
       #                     publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
       @r1 = Review.new(review_text: 'first', rating: 3)
       @r1.user = @u1
       @b1.reviews << @r1
+      stub_request(:get, %r{https://www.googleapis.com/books/v1/volumes/.*})
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'User-Agent' => 'Ruby'
+        }
+      )
+      .to_return(status: 200, body: "", headers: {})
+    
     end
 
     it "navigates to the correct review show page when clicking 'More'" do
@@ -44,7 +55,7 @@ RSpec.describe "Show route", type: :system do
       id1 = @r1.id
       visit review_path(id1)
       click_on 'Back to index'
-      expect(page.current_path).to eq(reviews_path)
+      expect(page.current_path).to eq(books_path)
     end
 
     it 'should have a link to edit' do
@@ -58,7 +69,7 @@ RSpec.describe "Show route", type: :system do
       id1 = @r1.id
       visit review_path(id1)
       click_on 'Delete'
-      expect(page.current_path).to eq(reviews_path)
+      expect(page.current_path).to eq(books_path)
       expect(Review.exists?(id1)).to be(false)
     end
   end

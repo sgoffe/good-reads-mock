@@ -6,5 +6,13 @@ FactoryBot.define do
     password { 'colgate13' }
     password_confirmation { 'colgate13' }
     role { :standard }
+
+    trait :admin do
+      role { :admin }
+    end
+
+    trait :standard do
+      role { :standard }
+    end
   end
 end

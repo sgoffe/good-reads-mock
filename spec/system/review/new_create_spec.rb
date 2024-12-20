@@ -11,13 +11,8 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     @admin = User.create!(first: "Allie", last: "Amberson", 
       email: "aa@gmail.com", bio:"wassup", 
       password:"aamerson", role: :admin)
+    sign_in @admin
     @b1 = FactoryBot.create(:book)
-    # @b1 = Book.create!(title: "Test Book", author: "test",
-    #   genre: :fiction,
-    #   pages: 100, description: "test",
-    #   publisher: "test",
-    #   publish_date: Date.new(2002, 2, 2), isbn_13: 1111111111111, language_written: "test")
-    # @r1 = Review.create!(user: @u1, book: @b1, review_text: 'first', rating: 3)
   end
 
   describe "create a new review" do
@@ -32,25 +27,17 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
       expect(page).to have_content('Sample Title')
     end
 
-    # it "handles failed create" do 
-    #   # r = Review.new
-    #   # allow(Review).to receive(:new).and_return(r)
-    #   # allow(r).to receive(:save).and_return(nil)
+    it "handles failed create" do 
+      r = Review.new
+      allow(Review).to receive(:new).and_return(r)
+      allow(r).to receive(:save).and_return(nil)
 
-    #   visit new_book_review_path(@b1)
-    #   fill_in 'Rating', with: 4
-    #   fill_in 'Review text', with: 'Test Review Text'
-
-    #   review_mock = instance_double(Review)
-      
-    #   expect(Review).to receive(:new).with(book_id: @b1.id).and_return(review_mock)
-    #   expect(Book).to receive(:find).and_return(@b1)
-    #   expect(@b1).to receive(:id).and_return(4)
-    #   expect(review_mock).to receive(:save).and_return(nil)
-    #   visit new_book_review_path(4)
-    #   click_on 'Create Review'
-    #   expect(page.text).to match(/Review could not be created/i)
-    # end
+      visit new_book_review_path(@b1)
+      fill_in 'Rating', with: 4
+      fill_in 'Review text', with: 'Test Review Text'
+      click_on 'Create Review'
+      expect(page).to have_content('Review could not be created')
+    end
   end
 
   describe 'edit a review' do
@@ -62,27 +49,29 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     end
 
     it 'successful update' do
-      visit book_reviews_path(@b1.id)
-      find("a[href='#{review_path(@r)}']").click
+      visit book_path(@b1)
+      click_on 'More', match: :first
       expect(page).to have_content('test 1')
       click_on 'Edit'
       fill_in 'Review text', with: 'new review text'
       click_on 'Update Review'
-      expect(page).to have_content('new review text')
+      expect(page).to have_content('Review updated successfully') 
     end
+    
 
     it "handles failed update" do
       allow(Review).to receive(:find).and_return(@r)
-      allow(@r).to receive(:update).and_return(nil)
-
-      visit reviews_path
-      find("a[href='#{review_path(@r)}']").click
+      allow(@r).to receive(:update).and_return(false)
+    
+      visit book_path(@b1)
+      click_on 'More', match: :first
       expect(page).to have_content('test 1')
       click_on 'Edit'
       fill_in 'Review text', with: 'new review text'
       click_on 'Update Review'
-      
+      expect(page).to have_current_path(review_path(@r))      
       expect(page).to have_content('Review could not be edited')
     end
+    
   end
 end
