@@ -51,11 +51,16 @@ class ReviewsController < ApplicationController
     begin
       @review = Review.find(params[:id])
       @review.destroy
-      redirect_to reviews_path, notice: 'Review deleted successfully'
+      if (params[:from_admin].present? && params[:from_admin])
+        redirect_to user_admin_path(current_user.id)
+      else 
+        redirect_to books_path, notice: 'Review deleted successfully'
+      end
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = 'Review not found'
       redirect_to reviews_path
     rescue StandardError => e
+      puts e
       flash[:alert] = 'Error deleting review'
       render :show
     end
