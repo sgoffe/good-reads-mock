@@ -36,11 +36,11 @@ class ReviewsController < ApplicationController
 
   def update
     @review = Review.find(params[:id])
-    @book = Book.find(params[:book_id])
     if @review.update(create_update_params)
       redirect_to review_path(@review.id), notice: 'Review updated successfully'
     else
       flash[:alert] = 'Review could not be edited'
+      render :edit
     end
     
   end

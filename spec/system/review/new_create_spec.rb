@@ -63,27 +63,29 @@ RSpec.describe "NewCreateEditUpdate", type: :system do
     end
 
     it 'successful update' do
-      visit book_reviews_path(@b1.id)
-      find("a[href='#{review_path(@r)}']").click
+      visit book_path(@b1)
+      click_on 'More', match: :first
       expect(page).to have_content('test 1')
       click_on 'Edit'
       fill_in 'Review text', with: 'new review text'
       click_on 'Update Review'
-      expect(page).to have_content('new review text')
+      expect(page).to have_content('Review updated successfully') 
     end
+    
 
     it "handles failed update" do
       allow(Review).to receive(:find).and_return(@r)
-      allow(@r).to receive(:update).and_return(nil)
-
-      visit reviews_path
-      find("a[href='#{review_path(@r)}']").click
+      allow(@r).to receive(:update).and_return(false)
+    
+      visit book_path(@b1)
+      click_on 'More', match: :first
       expect(page).to have_content('test 1')
       click_on 'Edit'
       fill_in 'Review text', with: 'new review text'
       click_on 'Update Review'
-      
+      expect(page).to have_current_path(review_path(@r))      
       expect(page).to have_content('Review could not be edited')
     end
+    
   end
 end
