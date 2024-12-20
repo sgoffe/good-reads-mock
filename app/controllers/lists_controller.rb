@@ -66,10 +66,15 @@ class ListsController < ApplicationController
     def add_favorite
         @book = Book.find(params[:id])
         if current_user
-            if current_user.lists[0]
-                current_user.lists[0].books << @book
-                redirect_to '/', notice: "#{@book.title} added to favorites"
+            if current_user.lists.where("title LIKE ?", "Favorites").count == 0
+                @favorites_list = current_user.lists.build(title: "Favorites")
+            else
+                @favorites_list = current_user.lists.where("title LIKE ?", "Favorites")[0]
             end
+            @favorites_list.user = current_user
+            @favorites_list.save
+            @favorites_list.books << @book
+            redirect_to '/', notice: "#{@book.title} added to favorites"
         end
     end
 
